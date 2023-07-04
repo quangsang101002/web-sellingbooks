@@ -1,14 +1,14 @@
-import { Outlet } from "react-router-dom";
-import { Container } from "react-bootstrap";
+import React from 'react';
+import CustomerHeaderComponent from '../components/partials/CustomerHeaderComponent';
+import CustomerMenuComponent from '../components/partials/CustomerMenuComponent';
 
-function CustomerLayout() {
-    return (
-        <Container>
-            <div>Header <code>FIXME: src/customer-site/layouts/CustomerLayout.js</code></div>
-            <Outlet />
-            <div>Footer <code>FIXME: src/customer-site/layouts/CustomerLayout.js</code></div>
-        </Container>
-    );
+const CustomerLayout = () => {
+  return (
+    <div>
+      <CustomerHeaderComponent />
+      <CustomerMenuComponent />
+    </div>
+  );
 };
 
 export default CustomerLayout;

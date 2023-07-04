@@ -1,7 +1,5 @@
 function CustomerPaginationComponent() {
-    return (
-        <>CustomerPaginationComponent</>
-    );
-};
+  return <>CustomerPaginationComponent</>;
+}
 
 export default CustomerPaginationComponent;

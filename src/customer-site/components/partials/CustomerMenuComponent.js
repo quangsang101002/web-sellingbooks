@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import './CustomerHeaderComponent.scss';
+import { Container } from 'react-bootstrap';
 
 function CustomerMenuComponent() {
   return (
@@ -44,7 +45,17 @@ function CustomerMenuComponent() {
           </Carousel.Item>
         </Carousel>
       </div>
-      <div className="CustomerMenu_search"></div>
+
+      <Container>
+        <div className="CustomerMenu_search">
+          <input placeholder="Nhập từ khóa sản phẩm bạn tìm kiếm..."></input>{' '}
+          <button>Tìm kiếm </button>
+        </div>
+
+        <div className="body-product">
+          <h2>Sản phẩm nổi bật</h2>
+        </div>
+      </Container>
     </div>
   );
 }

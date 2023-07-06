@@ -1,7 +1,5 @@
 function AdminHeaderComponent() {
-    return (
-        <>AdminHeaderComponent</>
-    );
-};
+  return <>AdminHeaderComponent</>;
+}
 
 export default AdminHeaderComponent;

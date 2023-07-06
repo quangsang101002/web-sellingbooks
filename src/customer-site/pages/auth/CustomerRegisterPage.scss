@@ -12,4 +12,12 @@
   & input {
     width: 400px;
   }
+  & small {
+    color: red;
+  }
+}
+.modal-title.h4 {
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
 }

@@ -1,7 +1,5 @@
 function CustomerFooterComponent() {
-    return (
-        <>CustomerFooterComponent</>
-    );
-};
+  return <>CustomerFooterComponent</>;
+}
 
 export default CustomerFooterComponent;

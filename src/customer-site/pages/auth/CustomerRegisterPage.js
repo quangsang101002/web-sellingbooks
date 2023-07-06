@@ -5,6 +5,7 @@ import Row from 'react-bootstrap/Row';
 import './CustomerRegisterPage.scss';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment/moment';
 
 function CustomerRegisterPage() {
   const [user, setUser] = useState('');
@@ -15,8 +16,10 @@ function CustomerRegisterPage() {
   const [reapeat, setRepeatPassWord] = useState('');
   const [validate, setValidate] = useState('');
   const [validatePw, setValidatePw] = useState('');
+
   const navigate = useNavigate();
   const getAddUser = JSON.parse(localStorage.getItem('infoUser')) ?? [];
+  const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
   const addInfoUser = () => {
     addUser();
@@ -25,10 +28,13 @@ function CustomerRegisterPage() {
   };
   const addUser = () => {
     const allUser = {
+      id: getAddUser.length + 1,
+      userName: user,
       email: email,
       firstName: firstName,
       lastName: lastName,
       passWord: passWord,
+      time: formattedTime,
     };
     if (email && firstName && lastName && passWord) {
       getAddUser.push(allUser);
@@ -39,6 +45,8 @@ function CustomerRegisterPage() {
 
   const validateName = () => {
     let mes = {};
+    const regex =
+      /^[A-Za-z0-9]+([.-]?[A-Za-z0-9]+)*@[A-Za-z0-9]+([.-]?[A-Za-z0-9]+)*\.[A-Za-z]{2,}$/;
     setValidate(mes);
     console.log(mes);
     if (user.length === 0) {
@@ -46,6 +54,8 @@ function CustomerRegisterPage() {
     } else if (!user.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/)) {
       mes.mesName =
         'Tên đăng nhập chỉ cho nhập chữ và số và không có các kí tự đặc biệt';
+    } else if (!email.match(regex)) {
+      mes.mesEmail = 'Email không hợp lệ';
     } else {
       mes.mesName = '';
     }
@@ -84,9 +94,9 @@ function CustomerRegisterPage() {
               onChange={(event) => setUser(event.target.value)}
             />
           </Col>
+          <small>{validate.mesName}</small>
         </Form.Group>
 
-        <small>{validate.mesName}</small>
         <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
           <Form.Label column sm="2">
             {/* Email */}
@@ -94,10 +104,13 @@ function CustomerRegisterPage() {
           <Col sm="10">
             <Form.Control
               type="email"
+              id="email"
+              name="email"
               placeholder="email"
               onChange={(event) => setEmail(event.target.value)}
             />
           </Col>
+          <small>{validate.mesEmail}</small>
         </Form.Group>
 
         <Form.Group
@@ -158,8 +171,8 @@ function CustomerRegisterPage() {
               onChange={(event) => setRepeatPassWord(event.target.value)}
             />
           </Col>
+          <small>{validatePw.mesPw}</small>
         </Form.Group>
-        <small>{validatePw.mesPw}</small>
 
         <div className="col-12 text-end">
           <Button onClick={() => addInfoUser()}>Submit</Button>

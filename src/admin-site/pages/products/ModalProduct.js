@@ -5,12 +5,12 @@ import Modal from 'react-bootstrap/Modal';
 import { useEffect } from 'react';
 import moment from 'moment/moment';
 
-const Modals = (props) => {
+const ModalProduct = (props) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const getAddUser = JSON.parse(localStorage.getItem('infoUser')) ?? [];
+  const getAddUser = JSON.parse(localStorage.getItem('products')) ?? [];
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [firstName, setFistName] = useState('');
@@ -48,7 +48,7 @@ const Modals = (props) => {
       return user;
     });
 
-    localStorage.setItem('infoUser', JSON.stringify(updatedUsers));
+    localStorage.setItem('products', JSON.stringify(updatedUsers));
 
     setShow(false);
   };
@@ -99,4 +99,4 @@ const Modals = (props) => {
   );
 };
 
-export default Modals;
+export default ModalProduct;

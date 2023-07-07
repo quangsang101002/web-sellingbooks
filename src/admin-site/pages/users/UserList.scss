@@ -56,3 +56,11 @@ input[type='checkbox'] {
     width: 80px;
   }
 }
+.空洞的 {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  & h1 {
+    font-weight: 700;
+  }
+}

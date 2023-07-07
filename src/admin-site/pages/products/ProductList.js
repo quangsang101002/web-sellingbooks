@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import { Link } from 'react-router-dom';
-import './UserList.scss';
-import Modals from './Modal';
-import ModalAddUser from './ModalAddUser';
+import ModalProduct from './ModalProduct';
+import ModalAddProduct from './ModalAddProduct';
 import unidecode from 'unidecode';
 import { Button } from 'react-bootstrap';
 
-const AdminLayout = () => {
-  const getAllUser = JSON.parse(localStorage.getItem('infoUser')) ?? [];
+const ProductList = () => {
+  const getAllUser = JSON.parse(localStorage.getItem('products')) ?? [];
   const [choose, setChoose] = useState([]);
   const [search, setSearch] = useState('');
   const [btnSearchUser, setBtnSearchUser] = useState([]);
@@ -20,7 +19,7 @@ const AdminLayout = () => {
   const deleteUsers = () => {
     const updatedUsers = getAllUser.filter((user) => !choose.includes(user.id));
     window.location.reload();
-    localStorage.setItem('infoUser', JSON.stringify(updatedUsers));
+    localStorage.setItem('products', JSON.stringify(updatedUsers));
     setChoose([]);
   };
 
@@ -44,7 +43,7 @@ const AdminLayout = () => {
   const deleteUser = (index) => {
     const spead = [...getAllUser];
     spead.splice(index, 1);
-    localStorage.setItem('infoUser', JSON.stringify(spead));
+    localStorage.setItem('products', JSON.stringify(spead));
     window.location.reload();
   };
 
@@ -90,7 +89,7 @@ const AdminLayout = () => {
               </Table>
             </div>
             <div className="manager col-9">
-              <h1 className="mb-3">Quản lí người dùng</h1>
+              <h1 className="mb-3">Quản lí sản phẩm</h1>
               <div className="serch mb-3">
                 <div className="btn_search">
                   <input
@@ -104,7 +103,7 @@ const AdminLayout = () => {
                   </button>
                 </div>
                 <div className="btn-addnew">
-                  <ModalAddUser />
+                  <ModalAddProduct />
                 </div>
                 <div className="btn-delete">
                   <Button variant="danger" type="button" onClick={deleteUsers}>
@@ -122,10 +121,10 @@ const AdminLayout = () => {
                         onChange={toggleSelectAll}
                       />
                     </th>
-                    <th>Tên dăng nhập</th>
-                    <th>Email</th>
-                    <th>Tên người dùng</th>
-                    <th>Vai trò</th>
+                    <th>Mã sản phẩm</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Đơn giá</th>
+                    <th>Phân loại</th>
                     <th>Thời gian tạo</th>
                     <th>Thời gian cập nhật</th>
                     <th>Hành động</th>
@@ -162,7 +161,7 @@ const AdminLayout = () => {
                           <td>{user.time}</td>
                           <td>{user.timmeUpdate}</td>
                           <td>
-                            <Modals user={user} />
+                            <ModalProduct user={user} />
                             <Button
                               className="ml-3"
                               variant="danger"
@@ -187,4 +186,4 @@ const AdminLayout = () => {
   return <>{container()}</>;
 };
 
-export default AdminLayout;
+export default ProductList;

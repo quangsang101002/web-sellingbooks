@@ -12,23 +12,26 @@ const AdminLayout = () => {
   const [choose, setChoose] = useState([]);
   const [search, setSearch] = useState('');
   const [btnSearchUser, setBtnSearchUser] = useState([]);
+  console.log(choose.length);
 
   useEffect(() => {
     setBtnSearchUser(getAllUser);
   }, [search]);
-  console.log(search);
   const deleteUsers = () => {
     const updatedUsers = getAllUser.filter((user) => !choose.includes(user.id));
-    window.location.reload();
+
     localStorage.setItem('infoUser', JSON.stringify(updatedUsers));
     setChoose([]);
+    window.location.reload();
   };
 
   const toggleSelectAll = () => {
+    console.log(choose.length === getAllUser.length);
     if (choose.length === getAllUser.length) {
       setChoose([]);
     } else {
       const allUserIds = getAllUser.map((user) => user.id);
+
       setChoose(allUserIds);
     }
   };
@@ -75,16 +78,24 @@ const AdminLayout = () => {
                   </tr>
                   <tr></tr>
                   <tr>
-                    <td>Quản lí sản phẩm</td>
+                    <td>
+                      <Link to="/admin/product">Quản lí sản phẩm</Link>
+                    </td>
                   </tr>
                   <tr>
-                    <Link to="/admin/manager">Quản lí người dùng</Link>
+                    <td>
+                      <Link to="/admin/manager">Quản lí người dùng</Link>
+                    </td>
                   </tr>
                   <tr>
-                    <td>Quản lí đơn hàng</td>
+                    <td>
+                      <Link to="/admin/order">Quản lí đơn hàng</Link>
+                    </td>
                   </tr>
                   <tr>
-                    <td>Quản lí liên hệ</td>
+                    <td>
+                      <Link to="/admin/manager_contact">Liên hệ</Link>
+                    </td>
                   </tr>
                 </tbody>
               </Table>

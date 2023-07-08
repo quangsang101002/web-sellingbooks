@@ -6,20 +6,18 @@ import { useState } from 'react';
 import moment from 'moment/moment';
 import Modal from 'react-bootstrap/Modal';
 
-function ModalAddProduct() {
+function ModalAddContact() {
   const [code, setCode] = useState('');
   const [nameProduct, setNameProduct] = useState('');
   const [price, setPrice] = useState('');
-  const [description, setDescription] = useState('');
   const [classify, setClassify] = useState('');
-  const [image, setImage] = useState('');
   const [validate, setValidate] = useState('');
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const getAddProduct = JSON.parse(localStorage.getItem('products')) ?? [];
+  const getAddProduct = JSON.parse(localStorage.getItem('userOrder')) ?? [];
   const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
   const addInfoUser = () => {
@@ -29,16 +27,14 @@ function ModalAddProduct() {
   const addUser = () => {
     const allProduct = {
       id: getAddProduct.length + 1,
-      code: code,
-      nameProduct: nameProduct,
-      price: price,
-      description: description,
-      classify: classify,
+      codeOrder: code,
+      nameUserOrder: nameProduct,
+      totalPrice: price,
       time: formattedTime,
     };
     if (nameProduct && price && code) {
       getAddProduct.push(allProduct);
-      localStorage.setItem('products', JSON.stringify(getAddProduct));
+      localStorage.setItem('userOrder', JSON.stringify(getAddProduct));
     } else {
       return;
     }
@@ -55,8 +51,6 @@ function ModalAddProduct() {
       mes.mesProduct = 'Tên sản phẩm không được bỏ trống';
     } else if (price.length === 0) {
       mes.mesPrice = 'Đơn giá không được bỏ trống';
-    } else if (image.length === 0) {
-      mes.image = 'Hình ảnh không được để trống';
     } else {
       mes.mesName = '';
     }
@@ -85,7 +79,7 @@ function ModalAddProduct() {
             <Col sm="10">
               <Form.Control
                 type="text"
-                placeholder="Mã sản phẩm"
+                placeholder="Tên người liên hệ"
                 value={code}
                 onChange={(event) => setCode(event.target.value)}
               />
@@ -103,7 +97,7 @@ function ModalAddProduct() {
               <Form.Control
                 type="email"
                 name="text"
-                placeholder="Tên sản phẩm"
+                placeholder="Email"
                 value={nameProduct}
                 onChange={(event) => setNameProduct(event.target.value)}
               />
@@ -111,24 +105,6 @@ function ModalAddProduct() {
             <small className="text-center" style={{ color: 'red' }}>
               {validate.mesProduct}
             </small>
-          </Form.Group>
-
-          <Form.Group
-            as={Row}
-            className="mb-3"
-            controlId="formPlaintextFirstName"
-          >
-            <Form.Label column sm="2">
-              {/* Họ */}
-            </Form.Label>
-            <Col sm="10">
-              <Form.Control
-                type="text"
-                placeholder="Mô tả"
-                value={description}
-                onChange={(event) => setDescription(event.target.value)}
-              />
-            </Col>
           </Form.Group>
 
           <Form.Group
@@ -142,7 +118,7 @@ function ModalAddProduct() {
             <Col sm="10">
               <Form.Control
                 type="text"
-                placeholder="Đơn giá"
+                placeholder="Nội dung"
                 value={price}
                 onChange={(event) => setPrice(event.target.value)}
               />
@@ -175,22 +151,7 @@ function ModalAddProduct() {
             as={Row}
             className="mb-3"
             controlId="formPlaintextRepeatPassword"
-          >
-            <Form.Label column sm="2">
-              {/* Mật khẩu nhập lại */}
-            </Form.Label>
-            <Col sm="10">
-              <Form.Control
-                type="text"
-                placeholder="Hình ảnh"
-                value={image}
-                onChange={(event) => setImage(event.target.value)}
-              />
-              <small className="text-center" style={{ color: 'red' }}>
-                {validate.image}
-              </small>
-            </Col>
-          </Form.Group>
+          ></Form.Group>
 
           <div className="col-12 text-end">
             <Button onClick={() => addInfoUser()}>Submit</Button>
@@ -211,4 +172,4 @@ function ModalAddProduct() {
   );
 }
 
-export default ModalAddProduct;
+export default ModalAddContact;

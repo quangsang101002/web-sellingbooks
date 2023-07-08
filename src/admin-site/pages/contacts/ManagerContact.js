@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import { Link } from 'react-router-dom';
-import ModalProduct from './ModalProduct';
-import ModalAddProduct from './ModalAddProduct';
 import unidecode from 'unidecode';
 import { Button } from 'react-bootstrap';
+import ModalAddContact from './ModalAddContact';
 
-const ProductList = () => {
-  const getAllUser = JSON.parse(localStorage.getItem('products')) ?? [];
+const ManagerContact = () => {
+  const getAllUser = JSON.parse(localStorage.getItem('userOrder')) ?? [];
   const [choose, setChoose] = useState([]);
   const [search, setSearch] = useState('');
   const [btnSearchUser, setBtnSearchUser] = useState([]);
@@ -17,7 +16,7 @@ const ProductList = () => {
   }, [search]);
   const deleteUsers = () => {
     const updatedUsers = getAllUser.filter((user) => !choose.includes(user.id));
-    localStorage.setItem('products', JSON.stringify(updatedUsers));
+    localStorage.setItem('userOrder', JSON.stringify(updatedUsers));
     setChoose([]);
     window.location.reload();
   };
@@ -95,7 +94,7 @@ const ProductList = () => {
               </Table>
             </div>
             <div className="manager col-9">
-              <h1 className="mb-3">Quản lí sản phẩm</h1>
+              <h1 className="mb-3">Quản lí liên hệ</h1>
               <div className="serch mb-3">
                 <div className="btn_search">
                   <input
@@ -109,7 +108,7 @@ const ProductList = () => {
                   </button>
                 </div>
                 <div className="btn-addnew">
-                  <ModalAddProduct />
+                  <ModalAddContact />
                 </div>
                 <div className="btn-delete">
                   <Button variant="danger" type="button" onClick={deleteUsers}>
@@ -127,10 +126,10 @@ const ProductList = () => {
                         onChange={toggleSelectAll}
                       />
                     </th>
-                    <th>Mã sản phẩm</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Đơn giá</th>
-                    <th>Phân loại</th>
+                    <th>Tên người liên hệ </th>
+                    <th>Email </th>
+                    <th>Nội dung</th>
+                    <th>Trạng thái </th>
                     <th>Thời gian tạo</th>
                     <th>Thời gian cập nhật</th>
                     <th>Hành động</th>
@@ -155,14 +154,16 @@ const ProductList = () => {
                               onChange={() => toggleCheckbox(user.id)}
                             />
                           </td>
-                          <td>{user.code}</td>
-                          <td>{user.nameProduct}</td>
-                          <td>{user.price}</td>
+                          <td>{user.codeOder}</td>
+                          <td>{user.nameUserOder}</td>
+                          <td>{user.time}</td>
                           <td>{user.classify}</td>
                           <td>{user.time}</td>
                           <td>{user.timmeUpdate}</td>
                           <td>
-                            <ModalProduct user={user} />
+                            <Link to="/admin/manager_contact_detail">
+                              <Button>Xem</Button>
+                            </Link>
                             <Button
                               className="ml-3"
                               variant="danger"
@@ -187,4 +188,4 @@ const ProductList = () => {
   return <>{container()}</>;
 };
 
-export default ProductList;
+export default ManagerContact;

@@ -24,10 +24,10 @@ const ModalProduct = (props) => {
   const changeValue = () => {
     getAddUser.forEach((user) => {
       if (user.id === props.user.id) {
-        setUserName(user.userName);
-        setEmail(user.email);
-        setFistName(user.firstName);
-        setLastName(user.lastName);
+        setUserName(user.code);
+        setEmail(user.nameProduct);
+        setFistName(user.price);
+        setLastName(user.classify);
       }
     });
   };
@@ -37,10 +37,10 @@ const ModalProduct = (props) => {
       if (user.id === props.user.id) {
         return {
           ...user,
-          userName: userName,
-          email: email,
-          firstName: firstName,
-          lastName: lastName,
+          code: userName,
+          nameProduct: email,
+          price: firstName,
+          classify: lastName,
           timmeUpdate: formattedTime,
         };
       }
@@ -80,11 +80,11 @@ const ModalProduct = (props) => {
             value={firstName}
             onChange={(event) => setFistName(event.target.value)}
           ></Form.Control>
-          <Form.Control
-            className="mb-2"
-            value={lastName}
-            onChange={(event) => setLastName(event.target.value)}
-          ></Form.Control>
+          <Form.Select onChange={(event) => setLastName(event.target.value)}>
+            <option>Sách thiếu nhi</option>
+            <option>Sách văn học nghệ thuật</option>
+            <option>Sách Truyện, tiểu thuyết</option>
+          </Form.Select>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

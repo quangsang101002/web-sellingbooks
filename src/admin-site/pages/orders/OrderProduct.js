@@ -41,13 +41,13 @@ const OrderProduct = () => {
   const deleteUser = (index) => {
     const spead = [...getAllUser];
     spead.splice(index, 1);
-    localStorage.setItem('products', JSON.stringify(spead));
+    localStorage.setItem('userOrder', JSON.stringify(spead));
     window.location.reload();
   };
 
   const btnSearch = () => {
     const searchNameUser = btnSearchUser.filter((user) => {
-      return unidecode(user.nameProduct.toLowerCase()).includes(
+      return unidecode(user.nameUserOrder.toLowerCase()).includes(
         unidecode(search.toLowerCase()),
       );
     });
@@ -155,11 +155,11 @@ const OrderProduct = () => {
                               onChange={() => toggleCheckbox(user.id)}
                             />
                           </td>
-                          <td>{user.codeOder}</td>
-                          <td>{user.nameUserOder}</td>
+                          <td>{user.codeOrder}</td>
+                          <td>{user.nameUserOrder}</td>
                           <td>{user.time}</td>
+                          <td>{user.totalPrice}</td>
                           <td>{user.classify}</td>
-                          <td></td>
                           <td>{user.time}</td>
                           <td>{user.timmeUpdate}</td>
                           <td>

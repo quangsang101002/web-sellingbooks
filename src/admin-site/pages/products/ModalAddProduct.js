@@ -3,6 +3,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import moment from 'moment/moment';
 import Modal from 'react-bootstrap/Modal';
 
@@ -23,8 +24,8 @@ function ModalAddProduct() {
   const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
   const addInfoUser = () => {
-    addUser();
     validateName();
+    addUser();
   };
   const addUser = () => {
     const allProduct = {
@@ -162,7 +163,7 @@ function ModalAddProduct() {
             </Form.Label>
             <Col sm="10">
               <Form.Select
-                onChange={(event) => setClassify(event.target.value)}
+                onChange={(event) => setClassify(event.currentTarget.value)}
               >
                 <option>Sách thiếu nhi</option>
                 <option>Sách văn học nghệ thuật</option>

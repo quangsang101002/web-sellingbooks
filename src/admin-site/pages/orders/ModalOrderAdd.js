@@ -21,8 +21,8 @@ function ModalOrderAdd() {
   const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
   const addInfoUser = () => {
-    addUser();
     validateName();
+    addUser();
   };
   const addUser = () => {
     const allProduct = {
@@ -31,6 +31,7 @@ function ModalOrderAdd() {
       nameUserOrder: nameProduct,
       totalPrice: price,
       time: formattedTime,
+      classify: classify,
     };
     if (nameProduct && price && code) {
       getAddProduct.push(allProduct);
@@ -137,11 +138,13 @@ function ModalOrderAdd() {
             </Form.Label>
             <Col sm="10">
               <Form.Select
-                onChange={(event) => setClassify(event.target.value)}
+                onChange={(event) => setClassify(event.currentTarget.value)}
               >
-                <option>Sách thiếu nhi</option>
-                <option>Sách văn học nghệ thuật</option>
-                <option>Sách Truyện, tiểu thuyết</option>
+                <option>Đơn hàng ...</option>
+                <option>Đã xác thực ...</option>
+                <option>Đang giao ...</option>
+                <option>Hoàn tất ...</option>
+                <option>Bị từ chối ...</option>
               </Form.Select>
             </Col>
           </Form.Group>

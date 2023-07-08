@@ -3,7 +3,6 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import moment from 'moment/moment';
 import Modal from 'react-bootstrap/Modal';
 
@@ -16,13 +15,12 @@ function ModalAddUser() {
   const [reapeat, setRepeatPassWord] = useState('');
   const [validate, setValidate] = useState('');
   const [validatePw, setValidatePw] = useState('');
-
   const [show, setShow] = useState(false);
+  const [selectedClassify, setSelectedClassify] = useState('');
 
+  console.log('classify', selectedClassify);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  const navigate = useNavigate();
   const getAddUser = JSON.parse(localStorage.getItem('infoUser')) ?? [];
   const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
@@ -38,6 +36,7 @@ function ModalAddUser() {
       email: email,
       firstName: firstName,
       lastName: lastName,
+      classify: selectedClassify,
       passWord: passWord,
       time: formattedTime,
     };
@@ -97,17 +96,22 @@ function ModalAddUser() {
             className="mb-3"
             controlId="formPlaintextUserName"
           >
-            <Form.Label column sm="2">
-              {/* Tên đăng nhập */}
-            </Form.Label>
-            <Col sm="10">
-              <Form.Control
-                type="text"
-                placeholder="UserName"
-                value={user}
-                onChange={(event) => setUser(event.target.value)}
-              />
-            </Col>
+            <Form.Group as={Row} className="mb-3">
+              <Form.Label column sm="2">
+                {/* Tên đăng nhập */}
+              </Form.Label>
+              <Col sm="10">
+                <Form.Control
+                  type="text"
+                  placeholder="UserName"
+                  id="formPlaintextUserName"
+                  value={user}
+                  onChange={(event) => setUser(event.target.value)}
+                />
+              </Col>
+              <small>{validate.mesName}</small>
+            </Form.Group>
+
             <small>{validate.mesName}</small>
           </Form.Group>
 
@@ -118,7 +122,6 @@ function ModalAddUser() {
             <Col sm="10">
               <Form.Control
                 type="email"
-                id="email"
                 name="email"
                 placeholder="email"
                 onChange={(event) => setEmail(event.target.value)}
@@ -158,6 +161,24 @@ function ModalAddUser() {
                 placeholder="LastName"
                 onChange={(event) => setLastName(event.target.value)}
               />
+            </Col>
+          </Form.Group>
+
+          <Form.Group
+            as={Row}
+            className="mb-3"
+            controlId="formPlaintextPassword"
+          >
+            <Form.Label column sm="2">
+              {/* Mật khẩu */}
+            </Form.Label>
+            <Col sm="10">
+              <Form.Select
+                onChange={(event) => setSelectedClassify(event.target.value)}
+              >
+                <option>Quản trị viên</option>
+                <option>Khách hàng</option>
+              </Form.Select>
             </Col>
           </Form.Group>
 

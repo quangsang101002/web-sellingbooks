@@ -169,7 +169,7 @@ const AdminLayout = () => {
                             <span>{user.firstName}</span>
                             <span>{user.lastName}</span>
                           </td>
-                          <td>Khách hàng</td>
+                          <td>{user.classify}</td>
                           <td>{user.time}</td>
                           <td>{user.timmeUpdate}</td>
                           <td>

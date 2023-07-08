@@ -154,8 +154,8 @@ const ManagerContact = () => {
                               onChange={() => toggleCheckbox(user.id)}
                             />
                           </td>
-                          <td>{user.codeOder}</td>
-                          <td>{user.nameUserOder}</td>
+                          <td>{user.codeOrder}</td>
+                          <td>{user.nameUserOrder}</td>
                           <td>{user.time}</td>
                           <td>{user.classify}</td>
                           <td>{user.time}</td>

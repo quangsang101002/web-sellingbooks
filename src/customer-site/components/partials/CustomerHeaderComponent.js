@@ -1,6 +1,7 @@
 import React from 'react';
 import './CustomerHeaderComponent.scss';
 import { FiUser } from 'react-icons/fi';
+import { BsCart4 } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 
 function CustomerHeaderComponent() {
@@ -15,9 +16,6 @@ function CustomerHeaderComponent() {
         </div>
       </Link>
 
-      <div className="wrapper_search">
-        <input></input>
-      </div>
       <ul className="wrapper_playlist-list">
         <Link to="/">
           <li>Home</li>
@@ -32,11 +30,19 @@ function CustomerHeaderComponent() {
           <li>Contact</li>
         </Link>
       </ul>
+
       <Link to="/register">
         <div className="wrapper_accout">
-          <FiUser /> Tài khoản
+          <div>
+            <FiUser /> Tài khoản
+          </div>
+          <div>
+            {' '}
+            <BsCart4 /> Giỏ hàng
+          </div>
         </div>
       </Link>
+
       <div className="wrapper_change-language">
         <select>
           <option>Tiếng Việt </option>

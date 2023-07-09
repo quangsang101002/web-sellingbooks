@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import './CustomerHeaderComponent.scss';
 import { Container } from 'react-bootstrap';
@@ -28,6 +28,8 @@ function CustomerMenuComponent() {
     fetchData();
   }, []);
 
+  const [showVanHoc, setShowVanHoc] = useState(true);
+
   return (
     <div className="wrapper_CustomerMenuComponent">
       <div className="CustomerMenu_banner mb-5">
@@ -35,7 +37,7 @@ function CustomerMenuComponent() {
           <Carousel.Item>
             <img
               className="d-block w-100"
-              src="https://cdn.tuoitre.vn/thumb_w/730/471584752817336320/2023/7/2/black-pink-1688268429280389421007.jpg"
+              src="https://images.pexels.com/photos/1031588/pexels-photo-1031588.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
               alt="First slide"
             />
             <Carousel.Caption>
@@ -46,7 +48,7 @@ function CustomerMenuComponent() {
           <Carousel.Item>
             <img
               className="d-block w-100"
-              src="https://vcdn-giaitri.vnecdn.net/2023/07/04/BlackPink-2-7427-1688445866.jpg?w=0&h=0&q=100&dpr=1&fit=crop&s=bZGu-vst-P9e_N3q1LSCBg"
+              src="https://images.pexels.com/photos/3060324/pexels-photo-3060324.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
               alt="Second slide"
             />
             <Carousel.Caption>
@@ -57,7 +59,7 @@ function CustomerMenuComponent() {
           <Carousel.Item>
             <img
               className="d-block w-100"
-              src="https://2sao.vietnamnetjsc.vn/images/2019/11/03/01/57/Blackpink-aba.jpg"
+              src="https://images.pexels.com/photos/5331072/pexels-photo-5331072.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
               alt="Third slide"
             />
             <Carousel.Caption>
@@ -72,27 +74,54 @@ function CustomerMenuComponent() {
 
       <Container>
         <div className="CustomerMenu_search">
-          <input placeholder="Nhập từ khóa sản phẩm bạn tìm kiếm..."></input>{' '}
-          <button>Tìm kiếm </button>
+          <input placeholder="Nhập từ khóa sản phẩm bạn tìm kiếm..." />{' '}
+          <button>Tìm kiếm</button>
         </div>
 
         <div className="body-product">
-          <h2>Sản phẩm nổi bật</h2>
+          <h2 className="fade-ins">Sách đọc nhiều</h2>
         </div>
-        <div className="container-product row mt-5 mb-5">
+        <div className="container-product mt-5 mb-5 row">
           {products.map((product) => {
-            console.log(product.id);
-            return (
-              <div className="col-3">
-                <img src={product.image} alt=""></img>
-                <h2 className="mt-4">{product.description}</h2>
-                <span>{product.nameProduct}</span>
-                <h3>${product.price}</h3>
-                <Link to={`/detail-product/${product.id}`}>
-                  <Button>Buy</Button>
-                </Link>
-              </div>
-            );
+            if (product.classify === 'Sách văn học nghệ thuật') {
+              if (showVanHoc) {
+                setShowVanHoc(false);
+                return (
+                  <div key="sach-van-hoc" className="col">
+                    <h2 className="fade-ins">Sách văn học</h2>
+                    <div className="col-2">
+                      <img src={product.image} alt="" />
+                      <h2 className="mt-4 product-description text-center">
+                        {product.description}
+                      </h2>
+                      <h2 className="fade-ins product-name_product text-center">
+                        {product.nameProduct}
+                      </h2>
+                      <h3>${product.price}</h3>
+                      <Link to={`/detail-product/${product.id}`}>
+                        <Button>Buy</Button>
+                      </Link>
+                    </div>
+                  </div>
+                );
+              }
+              return (
+                <div key={product.id} className="col-2">
+                  <img src={product.image} alt="" />
+                  <h2 className="mt-4 product-description text-center">
+                    {product.description}
+                  </h2>
+                  <h2 className="fade-ins product-name_product text-center">
+                    {product.nameProduct}
+                  </h2>
+                  <h3>${product.price}</h3>
+                  <Link to={`/detail-product/${product.id}`}>
+                    <Button>Buy</Button>
+                  </Link>
+                </div>
+              );
+            }
+            return null;
           })}
         </div>
       </Container>

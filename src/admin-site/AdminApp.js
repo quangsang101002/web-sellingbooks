@@ -21,9 +21,9 @@ function AdminApp() {
         <Route path="/manager" element={<UserList />} />
         <Route path="/product" element={<ProductList />} />
         <Route path="/order" element={<OrderProduct />} />
-        <Route path="/order_detail" element={<OrderDetail />} />
+        <Route path="/order_detail/:id" element={<OrderDetail />} />
         <Route path="/manager_contact" element={<ManagerContact />} />
-        <Route path="/manager_contact_detail" element={<ContactDetail />} />
+        <Route path="/manager_contact_detail/:id" element={<ContactDetail />} />
         <Route path="/" element={<AdminLayout />}>
           <Route index element={<AdminHomePage />} />
           <Route path="*" element={<AdminNotFoundPage />} />

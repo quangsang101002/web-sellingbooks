@@ -13,12 +13,17 @@ function ModalOrderAdd() {
   const [classify, setClassify] = useState('');
   const [validate, setValidate] = useState('');
   const [show, setShow] = useState(false);
+  const [note, setNote] = useState('');
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const getAddProduct = JSON.parse(localStorage.getItem('userOrder')) ?? [];
   const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
+
+  const addNote = (event) => {
+    setNote(event.target.value);
+  };
 
   const addInfoUser = () => {
     validateName();
@@ -29,6 +34,7 @@ function ModalOrderAdd() {
       id: getAddProduct.length + 1,
       codeOrder: code,
       nameUserOrder: nameProduct,
+      note: note,
       totalPrice: price,
       time: formattedTime,
       classify: classify,
@@ -117,6 +123,29 @@ function ModalOrderAdd() {
             </Form.Label>
             <Col sm="10">
               <Form.Control
+                as="textarea"
+                rows={3}
+                type="text"
+                placeholder="Nội dung"
+                value={note}
+                onChange={(event) => addNote(event)}
+              />
+            </Col>
+            <small className="text-center" style={{ color: 'red' }}>
+              {validate.mesPrice}
+            </small>
+          </Form.Group>
+
+          <Form.Group
+            as={Row}
+            className="mb-3"
+            controlId="formPlaintextLastName"
+          >
+            <Form.Label column sm="2">
+              {/* Tên */}
+            </Form.Label>
+            <Col sm="10">
+              <Form.Control
                 type="text"
                 placeholder="Tổng giá"
                 value={price}
@@ -139,7 +168,11 @@ function ModalOrderAdd() {
             <Col sm="10">
               <Form.Select
                 onChange={(event) => setClassify(event.currentTarget.value)}
+                value={classify}
               >
+                <option disabled hidden value="">
+                  Trạng thái
+                </option>
                 <option>Đơn hàng ...</option>
                 <option>Đã xác thực ...</option>
                 <option>Đang giao ...</option>

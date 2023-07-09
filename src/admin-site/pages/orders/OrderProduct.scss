@@ -1,0 +1,20 @@
+.container {
+  position: relative;
+  font-size: 16px;
+}
+.card-body {
+  position: absolute;
+  left: 30%;
+  & b {
+    margin-right: 10px;
+  }
+}
+.manager_order {
+  h2 {
+    font-size: 16px;
+    margin-bottom: 30px;
+  }
+  & .info-general {
+    margin-left: 100px;
+  }
+}

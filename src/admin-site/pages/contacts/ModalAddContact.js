@@ -8,7 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 
 function ModalAddContact() {
   const [code, setCode] = useState('');
-  const [nameProduct, setNameProduct] = useState('');
+  const [nameContact, setNameContact] = useState('');
   const [price, setPrice] = useState('');
   const [classify, setClassify] = useState('');
   const [validate, setValidate] = useState('');
@@ -17,7 +17,7 @@ function ModalAddContact() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const getAddProduct = JSON.parse(localStorage.getItem('userOrder')) ?? [];
+  const getAddProduct = JSON.parse(localStorage.getItem('Contacts')) ?? [];
   const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
   const addInfoUser = () => {
@@ -27,14 +27,15 @@ function ModalAddContact() {
   const addUser = () => {
     const allProduct = {
       id: getAddProduct.length + 1,
-      codeOrder: code,
-      nameUserOrder: nameProduct,
-      totalPrice: price,
+      userContact: code,
+      note: price,
+      email: nameContact,
+      status: classify,
       time: formattedTime,
     };
-    if (nameProduct && price && code) {
+    if (nameContact && price && code) {
       getAddProduct.push(allProduct);
-      localStorage.setItem('userOrder', JSON.stringify(getAddProduct));
+      localStorage.setItem('Contacts', JSON.stringify(getAddProduct));
     } else {
       return;
     }
@@ -46,11 +47,11 @@ function ModalAddContact() {
     setValidate(mes);
     console.log(mes);
     if (code.length === 0) {
-      mes.mesName = 'Mã sản phẩm không được bỏ trống';
-    } else if (nameProduct.length === 0) {
-      mes.mesProduct = 'Tên sản phẩm không được bỏ trống';
-    } else if (price.length === 0) {
-      mes.mesPrice = 'Đơn giá không được bỏ trống';
+      mes.mesName = 'Tên người liên hệ không được bỏ trống ';
+    } else if (nameContact.length === 0) {
+      mes.mesProduct = 'Email không được bỏ trống';
+    } else if (classify === '') {
+      mes.mesStatus = 'Bạn chưa chọn trạng thái';
     } else {
       mes.mesName = '';
     }
@@ -96,10 +97,10 @@ function ModalAddContact() {
             <Col sm="10">
               <Form.Control
                 type="email"
-                name="text"
+                name="email"
                 placeholder="Email"
-                value={nameProduct}
-                onChange={(event) => setNameProduct(event.target.value)}
+                value={nameContact}
+                onChange={(event) => setNameContact(event.target.value)}
               />
             </Col>
             <small className="text-center" style={{ color: 'red' }}>
@@ -117,6 +118,8 @@ function ModalAddContact() {
             </Form.Label>
             <Col sm="10">
               <Form.Control
+                as="textarea"
+                rows={3}
                 type="text"
                 placeholder="Nội dung"
                 value={price}
@@ -139,12 +142,19 @@ function ModalAddContact() {
             <Col sm="10">
               <Form.Select
                 onChange={(event) => setClassify(event.target.value)}
+                value={classify}
               >
-                <option>Sách thiếu nhi</option>
-                <option>Sách văn học nghệ thuật</option>
-                <option>Sách Truyện, tiểu thuyết</option>
+                <option disabled hidden value="">
+                  Trạng thái
+                </option>
+                <option>Liên hệ mới</option>
+                <option>Đã nhận</option>
+                <option>Bị từ chối</option>
               </Form.Select>
             </Col>
+            <small className="text-center" style={{ color: 'red' }}>
+              {validate.mesStatus}{' '}
+            </small>
           </Form.Group>
 
           <Form.Group

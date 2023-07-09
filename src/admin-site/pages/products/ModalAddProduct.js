@@ -164,7 +164,11 @@ function ModalAddProduct() {
             <Col sm="10">
               <Form.Select
                 onChange={(event) => setClassify(event.currentTarget.value)}
+                value={classify}
               >
+                <option disabled hidden value="">
+                  Thể loại
+                </option>
                 <option>Sách thiếu nhi</option>
                 <option>Sách văn học nghệ thuật</option>
                 <option>Sách Truyện, tiểu thuyết</option>

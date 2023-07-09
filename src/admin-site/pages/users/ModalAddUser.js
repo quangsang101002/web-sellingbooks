@@ -2,7 +2,7 @@ import { Button } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import moment from 'moment/moment';
 import Modal from 'react-bootstrap/Modal';
 
@@ -23,6 +23,10 @@ function ModalAddUser() {
   const handleShow = () => setShow(true);
   const getAddUser = JSON.parse(localStorage.getItem('infoUser')) ?? [];
   const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
+
+  const getClassify = (event) => {
+    setSelectedClassify(event.target.value);
+  };
 
   const addInfoUser = () => {
     addUser();
@@ -173,11 +177,12 @@ function ModalAddUser() {
               {/* Mật khẩu */}
             </Form.Label>
             <Col sm="10">
-              <Form.Select
-                onChange={(event) => setSelectedClassify(event.target.value)}
-              >
-                <option>Quản trị viên</option>
-                <option>Khách hàng</option>
+              <Form.Select onChange={getClassify} value={selectedClassify}>
+                <option disabled hidden value="">
+                  Vai trò
+                </option>
+                <option value="Quản trị viên">Quản trị viên</option>
+                <option value="Khách hàng">Khách hàng</option>
               </Form.Select>
             </Col>
           </Form.Group>

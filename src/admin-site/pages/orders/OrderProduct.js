@@ -54,7 +54,7 @@ const OrderProduct = () => {
     setBtnSearchUser(searchNameUser);
   };
 
-  const container = () => {
+  const Container = () => {
     return (
       <>
         <div className="mt-5">
@@ -128,6 +128,7 @@ const OrderProduct = () => {
                     </th>
                     <th>Mã đơn</th>
                     <th>Tên người đặt </th>
+                    <th>Ghi chú </th>
                     <th>Thời gian đặt</th>
                     <th>Tổng giá </th>
                     <th>Trạng thái</th>
@@ -140,7 +141,7 @@ const OrderProduct = () => {
                   {btnSearchUser.length === 0 ? (
                     <div className="空洞的">
                       <b>
-                        <h1 className="text-center">Không tìm thấy sản phẩm</h1>
+                        <h1 className="text-center">Không tìm thấy đơn hàng</h1>
                       </b>
                     </div>
                   ) : (
@@ -157,13 +158,14 @@ const OrderProduct = () => {
                           </td>
                           <td>{user.codeOrder}</td>
                           <td>{user.nameUserOrder}</td>
+                          <td>{user.note}</td>
                           <td>{user.time}</td>
                           <td>{user.totalPrice}</td>
                           <td>{user.classify}</td>
                           <td>{user.time}</td>
                           <td>{user.timmeUpdate}</td>
                           <td>
-                            <Link to="/admin/order_detail">
+                            <Link to={`/admin/order_detail/${user.id}`}>
                               <Button>Xem</Button>
                             </Link>
                             <Button
@@ -187,7 +189,7 @@ const OrderProduct = () => {
     );
   };
 
-  return <>{container()}</>;
+  return <>{Container()}</>;
 };
 
 export default OrderProduct;

@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap';
 import ModalAddContact from './ModalAddContact';
 
 const ManagerContact = () => {
-  const getAllUser = JSON.parse(localStorage.getItem('userOrder')) ?? [];
+  const getAllUser = JSON.parse(localStorage.getItem('Contacts')) ?? [];
   const [choose, setChoose] = useState([]);
   const [search, setSearch] = useState('');
   const [btnSearchUser, setBtnSearchUser] = useState([]);
@@ -16,7 +16,7 @@ const ManagerContact = () => {
   }, [search]);
   const deleteUsers = () => {
     const updatedUsers = getAllUser.filter((user) => !choose.includes(user.id));
-    localStorage.setItem('userOrder', JSON.stringify(updatedUsers));
+    localStorage.setItem('Contacts', JSON.stringify(updatedUsers));
     setChoose([]);
     window.location.reload();
   };
@@ -41,13 +41,13 @@ const ManagerContact = () => {
   const deleteUser = (index) => {
     const spead = [...getAllUser];
     spead.splice(index, 1);
-    localStorage.setItem('products', JSON.stringify(spead));
+    localStorage.setItem('Contacts', JSON.stringify(spead));
     window.location.reload();
   };
 
   const btnSearch = () => {
     const searchNameUser = btnSearchUser.filter((user) => {
-      return unidecode(user.nameProduct.toLowerCase()).includes(
+      return unidecode(user.userContact.toLowerCase()).includes(
         unidecode(search.toLowerCase()),
       );
     });
@@ -139,7 +139,9 @@ const ManagerContact = () => {
                   {btnSearchUser.length === 0 ? (
                     <div className="空洞的">
                       <b>
-                        <h1 className="text-center">Không tìm thấy sản phẩm</h1>
+                        <h1 className="text-center">
+                          Không tìm thấy người liên hệ
+                        </h1>
                       </b>
                     </div>
                   ) : (
@@ -154,10 +156,10 @@ const ManagerContact = () => {
                               onChange={() => toggleCheckbox(user.id)}
                             />
                           </td>
-                          <td>{user.codeOrder}</td>
-                          <td>{user.nameUserOrder}</td>
-                          <td>{user.time}</td>
-                          <td>{user.classify}</td>
+                          <td>{user.userContact}</td>
+                          <td>{user.email}</td>
+                          <td>{user.note}</td>
+                          <td>{user.status}</td>
                           <td>{user.time}</td>
                           <td>{user.timmeUpdate}</td>
                           <td>

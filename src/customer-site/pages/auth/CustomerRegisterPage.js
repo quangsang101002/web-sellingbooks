@@ -33,6 +33,7 @@ function CustomerRegisterPage() {
       email: email,
       firstName: firstName,
       lastName: lastName,
+      classify: 'khách hàng',
       passWord: passWord,
       time: formattedTime,
     };

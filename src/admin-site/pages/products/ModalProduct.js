@@ -15,6 +15,8 @@ const ModalProduct = (props) => {
   const [email, setEmail] = useState('');
   const [firstName, setFistName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState('');
   const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
   useEffect(() => {
@@ -28,6 +30,8 @@ const ModalProduct = (props) => {
         setEmail(user.nameProduct);
         setFistName(user.price);
         setLastName(user.classify);
+        setDescription(user.description);
+        setImage(user.image);
       }
     });
   };
@@ -42,6 +46,8 @@ const ModalProduct = (props) => {
           price: firstName,
           classify: lastName,
           timmeUpdate: formattedTime,
+          description: description,
+          image: image,
         };
       }
       window.location.reload();
@@ -79,6 +85,16 @@ const ModalProduct = (props) => {
             className="mb-2"
             value={firstName}
             onChange={(event) => setFistName(event.target.value)}
+          ></Form.Control>
+          <Form.Control
+            className="mb-2"
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+          ></Form.Control>
+          <Form.Control
+            className="mb-2"
+            value={image}
+            onChange={(event) => setImage(event.target.value)}
           ></Form.Control>
           <Form.Select onChange={(event) => setLastName(event.target.value)}>
             <option>Sách thiếu nhi</option>

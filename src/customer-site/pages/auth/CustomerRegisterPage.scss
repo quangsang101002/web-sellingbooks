@@ -14,10 +14,19 @@
   }
   & small {
     color: red;
+    // margin-left: 38px;
+    text-align: center;
+    display: grid;
+    place-items: center;
   }
 }
 .modal-title.h4 {
   font-size: 16px;
   display: flex;
+  justify-content: center;
+}
+.col {
+  display: flex;
+  align-items: center;
   justify-content: center;
 }

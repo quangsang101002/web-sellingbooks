@@ -1,7 +1,6 @@
 import { Button } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
 import './CustomerRegisterPage.scss';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -82,103 +81,82 @@ function CustomerRegisterPage() {
   };
   return (
     <div className="wrapper_CustomerRegisterPage">
-      <Form>
-        <Form.Group as={Row} className="mb-3" controlId="formPlaintextUserName">
-          <Form.Label column sm="2">
-            {/* Tên đăng nhập */}
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control
-              type="text"
-              placeholder="UserName"
-              value={user}
-              onChange={(event) => setUser(event.target.value)}
-            />
-          </Col>
-          <small>{validate.mesName}</small>
-        </Form.Group>
-
-        <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
-          <Form.Label column sm="2">
-            {/* Email */}
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control
-              type="email"
-              id="email"
-              name="email"
-              placeholder="email"
-              onChange={(event) => setEmail(event.target.value)}
-            />
-          </Col>
-          <small>{validate.mesEmail}</small>
-        </Form.Group>
-
-        <Form.Group
-          as={Row}
-          className="mb-3"
-          controlId="formPlaintextFirstName"
-        >
-          <Form.Label column sm="2">
-            {/* Họ */}
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control
-              type="text"
-              placeholder="FirstName"
-              onChange={(event) => setFistName(event.target.value)}
-            />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} className="mb-3" controlId="formPlaintextLastName">
-          <Form.Label column sm="2">
-            {/* Tên */}
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control
-              type="text"
-              placeholder="LastName"
-              onChange={(event) => setLastName(event.target.value)}
-            />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
-          <Form.Label column sm="2">
-            {/* Mật khẩu */}
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              onChange={(event) => setPassWord(event.target.value)}
-            />
-          </Col>
-        </Form.Group>
-
-        <Form.Group
-          as={Row}
-          className="mb-3"
-          controlId="formPlaintextRepeatPassword"
-        >
-          <Form.Label column sm="2">
-            {/* Mật khẩu nhập lại */}
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control
-              type="password"
-              placeholder="RepeatPassword"
-              onChange={(event) => setRepeatPassWord(event.target.value)}
-            />
-          </Col>
-          <small>{validatePw.mesPw}</small>
-        </Form.Group>
-
-        <div className="col-12 text-end">
-          <Button onClick={() => addInfoUser()}>Submit</Button>
+      <div className="container">
+        <div className="title">
+          <h2 className="text-center ">Đăng kí</h2>
         </div>
-      </Form>
+        <Form>
+          <Form.Group className="mb-3" controlId="formPlaintextUserName">
+            <Col>
+              <Form.Control
+                type="text"
+                placeholder="UserName"
+                value={user}
+                onChange={(event) => setUser(event.target.value)}
+              />
+            </Col>
+            <small className="text-center">{validate.mesName}</small>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formPlaintextEmail">
+            <Col>
+              <Form.Control
+                type="email"
+                id="email"
+                name="email"
+                placeholder="email"
+                onChange={(event) => setEmail(event.target.value)}
+              />
+            </Col>
+            <small className="text-center">{validate.mesEmail}</small>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formPlaintextFirstName">
+            <Col>
+              <Form.Control
+                type="text"
+                placeholder="FirstName"
+                onChange={(event) => setFistName(event.target.value)}
+              />
+            </Col>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formPlaintextLastName">
+            <Col>
+              <Form.Control
+                type="text"
+                placeholder="LastName"
+                onChange={(event) => setLastName(event.target.value)}
+              />
+            </Col>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formPlaintextPassword">
+            <Col>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                onChange={(event) => setPassWord(event.target.value)}
+              />
+            </Col>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formPlaintextRepeatPassword">
+            <Col>
+              <Form.Control
+                type="password"
+                placeholder="RepeatPassword"
+                onChange={(event) => setRepeatPassWord(event.target.value)}
+              />
+            </Col>
+            <small className="text-center">{validatePw.mesPw}</small>
+          </Form.Group>
+
+          <div className="text-end">
+            <Button onClick={() => addInfoUser()}>Submit</Button>
+          </div>
+        </Form>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,15 @@
-import { createReducer } from "@reduxjs/toolkit";
+import { createReducer } from '@reduxjs/toolkit';
 
-const customerProductReducer = createReducer({}, {});
+const customerProductReducer = createReducer(
+  { products: [] },
+  {
+    ADD_PRODUCT: (state, action) => {
+      return {
+        ...state,
+        products: action.payload,
+      };
+    },
+  },
+);
 
 export default customerProductReducer;

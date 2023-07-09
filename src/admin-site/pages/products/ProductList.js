@@ -130,6 +130,7 @@ const ProductList = () => {
                     <th>Mã sản phẩm</th>
                     <th>Tên sản phẩm</th>
                     <th>Đơn giá</th>
+                    <th>Mô tả</th>
                     <th>Phân loại</th>
                     <th>Thời gian tạo</th>
                     <th>Thời gian cập nhật</th>
@@ -158,6 +159,7 @@ const ProductList = () => {
                           <td>{user.code}</td>
                           <td>{user.nameProduct}</td>
                           <td>{user.price}</td>
+                          <td>{user.description}</td>
                           <td>{user.classify}</td>
                           <td>{user.time}</td>
                           <td>{user.timmeUpdate}</td>

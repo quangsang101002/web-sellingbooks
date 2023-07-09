@@ -26,6 +26,7 @@ function ModalAddProduct() {
   const addInfoUser = () => {
     validateName();
     addUser();
+    setShow(false);
   };
   const addUser = () => {
     const allProduct = {
@@ -36,6 +37,7 @@ function ModalAddProduct() {
       description: description,
       classify: classify,
       time: formattedTime,
+      image: image,
     };
     if (nameProduct && price && code) {
       getAddProduct.push(allProduct);
@@ -198,7 +200,7 @@ function ModalAddProduct() {
           </Form.Group>
 
           <div className="col-12 text-end">
-            <Button onClick={() => addInfoUser()}>Submit</Button>
+            <Button onClick={addInfoUser}>Submit</Button>
           </div>
           {/* </Form>
           </div> */}

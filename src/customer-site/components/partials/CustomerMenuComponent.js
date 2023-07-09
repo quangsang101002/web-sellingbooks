@@ -1,9 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import './CustomerHeaderComponent.scss';
 import { Container } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProduct } from '../../store/actions/customerProductAction';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 function CustomerMenuComponent() {
+  const getProduct = JSON.parse(localStorage.getItem('products'));
+  const dispatch = useDispatch();
+  const products = useSelector(
+    (state) => state.customerProductReducer.products,
+  );
+  console.log('product', products);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getProduct;
+
+        dispatch(addProduct(data));
+      } catch (error) {
+        alert(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="wrapper_CustomerMenuComponent">
       <div className="CustomerMenu_banner mb-5">
@@ -54,6 +78,22 @@ function CustomerMenuComponent() {
 
         <div className="body-product">
           <h2>Sản phẩm nổi bật</h2>
+        </div>
+        <div className="container-product row mt-5 mb-5">
+          {products.map((product) => {
+            console.log(product.id);
+            return (
+              <div className="col-3">
+                <img src={product.image} alt=""></img>
+                <h2 className="mt-4">{product.description}</h2>
+                <span>{product.nameProduct}</span>
+                <h3>${product.price}</h3>
+                <Link to={`/detail-product/${product.id}`}>
+                  <Button>Buy</Button>
+                </Link>
+              </div>
+            );
+          })}
         </div>
       </Container>
     </div>

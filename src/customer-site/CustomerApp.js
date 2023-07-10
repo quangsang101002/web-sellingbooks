@@ -10,6 +10,9 @@ import CustomerLoginPage from './pages/auth/CustomerLoginPage';
 import CustomerHomePage from './pages/CustomerHomePage';
 import CustomerHeaderComponent from './components/partials/CustomerHeaderComponent';
 import CustomerDetails from './components/partials/CustomerDetails';
+import Cart from './pages/cart/Cart';
+import Contacts from './pages/contacts/Contacts';
+import Products from './pages/products/Products';
 function CustomerApp() {
   return (
     <Provider store={store}>
@@ -17,6 +20,10 @@ function CustomerApp() {
       <Routes>
         <Route path="/register" element={<CustomerRegisterPage />} />
         <Route path="/login" element={<CustomerLoginPage />} />
+        <Route path="/carts" element={<Cart />} />
+        <Route path="/Products" element={<Products />} />
+        <Route path="/contacts" element={<Contacts />} />
+
         <Route path="/detail-product/:id" element={<CustomerDetails />} />
         <Route path="/" element={<CustomerLayout />}>
           <Route index element={<CustomerHomePage />} />

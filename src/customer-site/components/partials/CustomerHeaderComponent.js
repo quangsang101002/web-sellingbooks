@@ -20,13 +20,14 @@ function CustomerHeaderComponent() {
         <Link to="/">
           <li>Home</li>
         </Link>
-        <Link to="/about">
-          <li>About</li>
-        </Link>
-        <Link to="/product">
+
+        <Link to="/products">
           <li>Product</li>
         </Link>
-        <Link to="/contact">
+        <Link to="/abouts">
+          <li>About</li>
+        </Link>
+        <Link to="/contacts">
           <li>Contact</li>
         </Link>
       </ul>
@@ -36,10 +37,12 @@ function CustomerHeaderComponent() {
           <div>
             <FiUser /> Tài khoản
           </div>
-          <div>
-            {' '}
-            <BsCart4 /> Giỏ hàng
-          </div>
+          <Link to="/carts">
+            <div>
+              {' '}
+              <BsCart4 /> Giỏ hàng
+            </div>
+          </Link>
         </div>
       </Link>
 

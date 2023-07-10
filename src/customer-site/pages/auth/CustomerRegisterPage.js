@@ -95,7 +95,7 @@ function CustomerRegisterPage() {
                 onChange={(event) => setUser(event.target.value)}
               />
             </Col>
-            <small className="text-center">{validate.mesName}</small>
+            <small>{validate.mesName}</small>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPlaintextEmail">
@@ -108,7 +108,7 @@ function CustomerRegisterPage() {
                 onChange={(event) => setEmail(event.target.value)}
               />
             </Col>
-            <small className="text-center">{validate.mesEmail}</small>
+            <small>{validate.mesEmail}</small>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPlaintextFirstName">
@@ -149,7 +149,7 @@ function CustomerRegisterPage() {
                 onChange={(event) => setRepeatPassWord(event.target.value)}
               />
             </Col>
-            <small className="text-center">{validatePw.mesPw}</small>
+            <small>{validatePw.mesPw}</small>
           </Form.Group>
 
           <div className="text-end">

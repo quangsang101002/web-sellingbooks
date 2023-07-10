@@ -189,3 +189,21 @@ h2.mt-4.product-description.text-center {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   }
 }
+.col-height {
+  height: 400px;
+  width: 300px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  & img {
+    height: 100%;
+    width: 100%;
+  }
+}
+.fade-ins {
+  font-size: 16px;
+}
+.color-btn {
+  background-color: rgb(201, 33, 39);
+  & :hover {
+    background-color: rgb(201, 33, 39);
+  }
+}

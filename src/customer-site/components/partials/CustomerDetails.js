@@ -11,7 +11,6 @@ const CustomerDetails = () => {
     (state) => state.customerProductReducer.products,
   );
 
-  console.log('đA', products);
   return (
     <div className="container">
       {products.map((product, index) => {

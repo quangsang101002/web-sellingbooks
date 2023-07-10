@@ -143,14 +143,49 @@ ul.wrapper_playlist-list {
 }
 .product-description {
   font-size: 15px;
-  margin: 20px;
 }
 .product-name_product {
   font-size: 13px;
+  white-space: nowrap;
+  width: 156px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .col {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 15px;
+}
+.product_image {
+  height: 220px;
+  & img {
+    height: 100%;
+  }
+}
+h2.mt-4.product-description.text-center {
+  height: 40px;
+}
+.price-product {
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  display: flex;
+  & .old-price {
+    font-size: 14px;
+    text-decoration: line-through #000000;
+  }
+  & .new-product {
+    font-size: 16px;
+  }
+}
+.col-2.wrap-container_product {
+  margin-bottom: 36px;
+  height: 374px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
 }

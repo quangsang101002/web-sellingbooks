@@ -4,15 +4,20 @@ import { Button } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Container } from 'react-bootstrap';
+import { LiaCartPlusSolid } from 'react-icons/lia';
+import { useDispatch } from 'react-redux';
+import { addProduct } from '../../store/actions/customerProductAction';
 const CustomerDetails = () => {
   const useParam = useParams();
   let { id } = useParam;
+  const dispatch = useDispatch();
   const producted = useSelector(
     (state) => state.customerProductReducer.products,
   );
+
   const products = JSON.parse(localStorage.getItem('products'));
   const [similarProducts, setSimilarProducts] = useState('');
-  console.log('similarProducts', similarProducts);
+  const [inceaseProduct, setInceaseProduct] = useState(0);
 
   useEffect(() => {
     const selectedProduct = () => {
@@ -90,6 +95,17 @@ const CustomerDetails = () => {
     selectedProduct();
   }, []);
 
+  const addProductNew = (product, inceaseProduct) => {
+    dispatch(addProduct(product, inceaseProduct));
+  };
+
+  const increaseQuality = () => {
+    setInceaseProduct(inceaseProduct + 1);
+  };
+  const reduceQuality = () => {
+    setInceaseProduct(inceaseProduct - 1);
+  };
+
   const displaySelectedProduct = () => {
     return (
       <>
@@ -139,15 +155,31 @@ const CustomerDetails = () => {
                     <h2>{product.price}đ</h2>
                     Số lượng
                     <div className="d-flex mb-5">
-                      <button className="color-btn">-</button>
-                      <input style={{ width: '35px' }} min="1"></input>
+                      <button className="color-btn" onClick={reduceQuality}>
+                        -
+                      </button>
+                      <input
+                        value={inceaseProduct}
+                        style={{ width: '35px' }}
+                        min="1"
+                      ></input>
 
-                      <button className="color-btn">+</button>
+                      <button className="color-btn" onClick={increaseQuality}>
+                        +
+                      </button>
                     </div>
-                    <Link to="/cart">
-                      <button>Chọn mua</button>
-                    </Link>
-                    <button>Thêm vào giỏ hàng</button>
+                    <div className="add-product">
+                      <button
+                        className="add-product_cart"
+                        onClick={() => addProductNew(product, inceaseProduct)}
+                      >
+                        {' '}
+                        <LiaCartPlusSolid /> Thêm vào giỏ hàng
+                      </button>
+                      <Link to="/cart">
+                        <button className="add-product_buy">Chọn mua</button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               );

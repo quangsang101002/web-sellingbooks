@@ -8,25 +8,25 @@ import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 function CustomerMenuComponent() {
-  const getProduct = JSON.parse(localStorage.getItem('products'));
+  const products = JSON.parse(localStorage.getItem('products'));
   const dispatch = useDispatch();
-  const products = useSelector(
-    (state) => state.customerProductReducer.products,
-  );
-  console.log('product', products);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getProduct;
+  // const products = useSelector(
+  //   (state) => state.customerProductReducer.products,
+  // );
+  // console.log('product', products);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const data = await products;
 
-        dispatch(addProduct(data));
-      } catch (error) {
-        alert(error);
-      }
-    };
+  //       dispatch(addProduct(data));
+  //     } catch (error) {
+  //       alert(error);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   const headerProduct = () => {
     return (

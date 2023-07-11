@@ -1,15 +1,30 @@
-export const addProduct = (product, quanlity) => {
+export const addProduct = (product, quantity) => {
   return {
     type: 'ADD_TO_CART',
     payload: {
       ...product,
-      quanlity,
+      quantity,
     },
   };
 };
 export const deleteProduct = (product) => {
   return {
     type: 'DELETE-PRODUCT_CART',
+    payload: product,
+  };
+};
+export const changeQuantity = (quantity, id) => {
+  return {
+    type: 'CHANGE_QUANTITY',
+    payload: {
+      id,
+      quantity,
+    },
+  };
+};
+export const totalPay = (product) => {
+  return {
+    type: 'TOTAL_PAY',
     payload: product,
   };
 };

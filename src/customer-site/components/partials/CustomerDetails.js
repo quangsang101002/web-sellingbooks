@@ -106,7 +106,9 @@ const CustomerDetails = () => {
       Swal.close();
     }, 4000);
   };
-
+  const addProductBuy = (product, inceaseProduct) => {
+    dispatch(addProduct(product, inceaseProduct));
+  };
   const increaseQuality = () => {
     setInceaseProduct(inceaseProduct + 1);
   };
@@ -189,7 +191,7 @@ const CustomerDetails = () => {
                       <Link to="/carts">
                         <button
                           className="add-product_buy"
-                          onClick={() => addProductNew(product, inceaseProduct)}
+                          onClick={() => addProductBuy(product, inceaseProduct)}
                         >
                           Chọn mua
                         </button>

@@ -1,26 +1,42 @@
-import { createAction, createReducer } from '@reduxjs/toolkit';
+const initState = {
+  products: [],
+  total: [],
+};
+const customerProductReducer = (state = initState, action) => {
+  console.log(action);
+  let products = [];
+  switch (action.type) {
+    case 'ADD_TO_CART':
+      let isExits = false;
+      products = state.products.map((item) => {
+        if (action.payload.id === item.id) {
+          isExits = true;
+          item.quanlity = item.quanlity + action.payload.quanlity;
+          item.subTotal = item.quanlity * item.price;
+        }
+        return item;
+      });
 
-const addProduct = createAction('ADD_PRODUCT', (product, inceaseProduct) => {
-  return { payload: { product, inceaseProduct } };
-});
-
-const customerProductReducer = createReducer(
-  { products: [], chung: [] }, // Thêm một mảng chung với sản phẩm
-  {
-    [addProduct]: (state, action) => {
-      console.log('new', action.payload);
-      const { product, inceaseProduct } = action.payload;
-
-      // Thêm inceaseProduct vào mảng chung
-      const chungUpdated = [...state.chung, inceaseProduct];
-
-      return {
-        ...state,
-        products: [...state.products, product],
-        chung: chungUpdated, // Cập nhật mảng chung với inceaseProduct mới
-      };
-    },
-  },
-);
-
+      if (!isExits) {
+        products = [
+          ...products,
+          {
+            ...action.payload,
+            subTotal: action.payload.price * action.payload.quantity,
+          },
+        ];
+      }
+      break;
+    case 'DELETE-PRODUCT_CART':
+      products = state.products.filter(
+        (product) => product.id !== action.payload.id,
+      );
+      break;
+    default:
+      return state;
+  }
+  return {
+    products: products,
+  };
+};
 export default customerProductReducer;

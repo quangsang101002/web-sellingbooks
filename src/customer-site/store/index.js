@@ -1,15 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { combineReducers } from 'redux';
-import customerAuthReducer from './reducers/customerAuthReducer';
+import { createStore, combineReducers } from 'redux';
 import customerProductReducer from './reducers/customerProductReducer';
 
-const reducer = combineReducers({
-  customerAuthReducer: customerAuthReducer,
-  customerProductReducer: customerProductReducer,
+const reducers = combineReducers({
+  customerProductReducer,
 });
 
-const store = configureStore({
-  reducer: reducer,
-});
+const store = createStore(
+  reducers,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+);
 
 export default store;

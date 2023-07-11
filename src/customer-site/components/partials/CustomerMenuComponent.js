@@ -41,7 +41,7 @@ function CustomerMenuComponent() {
                   alt="First slide"
                 />
                 <Carousel.Caption>
-                  <h3>First slide label</h3>
+                  <h3>Cần cù bù siêng năng</h3>
                   <p>
                     Nulla vitae elit libero, a pharetra augue mollis interdum.
                   </p>
@@ -54,7 +54,7 @@ function CustomerMenuComponent() {
                   alt="Second slide"
                 />
                 <Carousel.Caption>
-                  <h3>Second slide label</h3>
+                  <h3>Thất bại là mẹ thành công</h3>
                   <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   </p>
@@ -67,7 +67,7 @@ function CustomerMenuComponent() {
                   alt="Third slide"
                 />
                 <Carousel.Caption>
-                  <h3>Third slide label</h3>
+                  <h3>Không làm mà vẫn có ăn</h3>
                   <p>
                     Praesent commodo cursus magna, vel scelerisque nisl
                     consectetur.

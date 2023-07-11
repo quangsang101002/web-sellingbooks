@@ -7,17 +7,17 @@ import { Container } from 'react-bootstrap';
 import { LiaCartPlusSolid } from 'react-icons/lia';
 import { useDispatch } from 'react-redux';
 import { addProduct } from '../../store/actions/customerProductAction';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+
+import 'sweetalert2/src/sweetalert2.scss';
 const CustomerDetails = () => {
   const useParam = useParams();
   let { id } = useParam;
   const dispatch = useDispatch();
-  const producted = useSelector(
-    (state) => state.customerProductReducer.products,
-  );
 
   const products = JSON.parse(localStorage.getItem('products'));
   const [similarProducts, setSimilarProducts] = useState('');
-  const [inceaseProduct, setInceaseProduct] = useState(0);
+  const [inceaseProduct, setInceaseProduct] = useState(1);
 
   useEffect(() => {
     const selectedProduct = () => {
@@ -97,13 +97,23 @@ const CustomerDetails = () => {
 
   const addProductNew = (product, inceaseProduct) => {
     dispatch(addProduct(product, inceaseProduct));
+    Swal.fire({
+      title: '',
+      text: 'Bạn đã thêm sản phẩm vào giỏ hàng',
+      icon: 'success',
+    });
+    setTimeout(function () {
+      Swal.close();
+    }, 4000);
   };
 
   const increaseQuality = () => {
     setInceaseProduct(inceaseProduct + 1);
   };
   const reduceQuality = () => {
-    setInceaseProduct(inceaseProduct - 1);
+    if (inceaseProduct > 1) {
+      setInceaseProduct(inceaseProduct - 1);
+    }
   };
 
   const displaySelectedProduct = () => {
@@ -159,8 +169,8 @@ const CustomerDetails = () => {
                         -
                       </button>
                       <input
+                        className="input-detail"
                         value={inceaseProduct}
-                        style={{ width: '35px' }}
                         min="1"
                       ></input>
 
@@ -176,8 +186,13 @@ const CustomerDetails = () => {
                         {' '}
                         <LiaCartPlusSolid /> Thêm vào giỏ hàng
                       </button>
-                      <Link to="/cart">
-                        <button className="add-product_buy">Chọn mua</button>
+                      <Link to="/carts">
+                        <button
+                          className="add-product_buy"
+                          onClick={() => addProductNew(product, inceaseProduct)}
+                        >
+                          Chọn mua
+                        </button>
                       </Link>
                     </div>
                   </div>
@@ -191,6 +206,9 @@ const CustomerDetails = () => {
     );
   };
 
+  const setResetValue = () => {
+    setInceaseProduct(1);
+  };
   const similarProduct = () => {
     return (
       <>
@@ -211,7 +229,10 @@ const CustomerDetails = () => {
                     key={product.id}
                     className="col-2 wrap-container_product"
                   >
-                    <Link to={`/detail-product/${product.id}`}>
+                    <Link
+                      to={`/detail-product/${product.id}`}
+                      onClick={setResetValue}
+                    >
                       <div className="product_image">
                         <img src={product.image} alt="" />
                       </div>

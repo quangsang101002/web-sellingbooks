@@ -3,8 +3,12 @@ import './CustomerHeaderComponent.scss';
 import { FiUser } from 'react-icons/fi';
 import { BsCart4 } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux/es/hooks/useSelector';
 
 function CustomerHeaderComponent() {
+  const products = useSelector(
+    (state) => state.customerProductReducer.products,
+  );
   return (
     <div className="wrapper">
       <Link to="/">
@@ -40,7 +44,8 @@ function CustomerHeaderComponent() {
           <Link to="/carts">
             <div>
               {' '}
-              <BsCart4 /> Giỏ hàng
+              <small className="cart-product">{products.length}</small>
+              <BsCart4 className="icon-cart" />
             </div>
           </Link>
         </div>

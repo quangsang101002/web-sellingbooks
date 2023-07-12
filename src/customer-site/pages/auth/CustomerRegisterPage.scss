@@ -84,3 +84,14 @@ button.color-btn {
   justify-content: flex-end;
   gap: 20px;
 }
+.total_price-cart {
+  left: 0;
+}
+.wrapper-total_price-cart {
+  align-items: center;
+  display: flex;
+  /* margin: 0 auto; */
+  text-align: center;
+  justify-content: center;
+  gap: 35px;
+}

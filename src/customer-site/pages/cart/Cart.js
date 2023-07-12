@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { changeQuantity } from '../../store/actions/customerProductAction';
 import { totalPay } from '../../store/actions/customerProductAction';
 import { deleteQuatity } from '../../store/actions/customerProductAction';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { useEffect } from 'react';
 const Cart = () => {
   const [totalPayProducs, setTotalPayProducs] = useState('');
@@ -20,6 +21,11 @@ const Cart = () => {
 
   const orderProductCart = () => {
     localStorage.setItem('userOrder', JSON.stringify(orderProduct));
+    Swal.fire({
+      title: '',
+      text: 'Bạn đã đặt hàng thành công',
+      icon: 'success',
+    });
   };
 
   const dispatch = useDispatch();
@@ -27,7 +33,20 @@ const Cart = () => {
     (state) => state.customerProductReducer.products,
   );
   const deleteProductCart = (product) => {
-    dispatch(deleteProduct(product));
+    Swal.fire({
+      title: 'Bạn có chắc chắn xóa không',
+      text: '',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire('Đã xóa', 'Bạn đã xóa sản phẩm.', 'success');
+        dispatch(deleteProduct(product));
+      }
+    });
     dispatch(deleteQuatity(product, totalPayProducs));
   };
 
@@ -100,7 +119,10 @@ const Cart = () => {
                   <p>{product.subTotal}</p>
                 </div>
                 <div className="cart-delete">
-                  <button onClick={() => deleteProductCart(product)}>
+                  <button
+                    className="add-product_buy"
+                    onClick={() => deleteProductCart(product)}
+                  >
                     Xoá
                   </button>
                 </div>
@@ -109,10 +131,14 @@ const Cart = () => {
           );
         })}
         <div className="total_price-cart">
-          <p>Tổng thanh toán({totalPayProducs.length}sản phẩm) </p>
-          <h2>{totalPircePay > 0 ? totalPircePay : 0}</h2>
-          <div className="total_price-cart-order">
-            <button onClick={orderProductCart}>Đặt hàng</button>
+          <div className="wrapper-total_price-cart">
+            <p>Tổng thanh toán({totalPayProducs.length}sản phẩm) </p>
+            <h2>{totalPircePay > 0 ? totalPircePay : 0}</h2>
+            <div className="total_price-cart-order">
+              <button onClick={orderProductCart} className="add-product_buy">
+                Đặt hàng
+              </button>
+            </div>
           </div>
         </div>
       </div>

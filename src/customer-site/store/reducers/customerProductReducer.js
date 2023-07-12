@@ -1,10 +1,12 @@
 const initState = {
   products: [],
   total: [],
+  totalPricePay: [],
 };
 const customerProductReducer = (state = initState, action) => {
-  console.log('121212', action.payload);
+  console.log('action.payload>>1', action);
   let products = [];
+  let totalPricePay = [];
   switch (action.type) {
     case 'ADD_TO_CART':
       let isExits = false;
@@ -12,7 +14,7 @@ const customerProductReducer = (state = initState, action) => {
         if (action.payload.id === item.id) {
           isExits = true;
           item.quantity = item.quantity + action.payload.quantity;
-          item.subTotal = item.quantity * item.price;
+          item.subTotal = item.quantity * Number(item.price);
         }
         return item;
       });
@@ -42,6 +44,10 @@ const customerProductReducer = (state = initState, action) => {
       });
       break;
     // case 'TOTAL_PAY':
+    //    totalPricePay = [...state.totalPricePay].filter(
+    //     (item) => !action.payload.includes(item.id)
+    //   );
+    // break;
     default:
       return state;
   }
@@ -53,6 +59,7 @@ const customerProductReducer = (state = initState, action) => {
   return {
     products: products,
     total: total,
+    totalPricePay: totalPricePay,
   };
 };
 export default customerProductReducer;

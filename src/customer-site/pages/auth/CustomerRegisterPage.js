@@ -9,22 +9,73 @@ import moment from 'moment/moment';
 function CustomerRegisterPage() {
   const [user, setUser] = useState('');
   const [email, setEmail] = useState('');
-  const [firstName, setFistName] = useState('');
+  const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [passWord, setPassWord] = useState('');
-  const [reapeat, setRepeatPassWord] = useState('');
-  const [validate, setValidate] = useState('');
+  const [repeat, setRepeatPassWord] = useState('');
+  const [validate, setValidate] = useState({});
   const [validatePw, setValidatePw] = useState('');
 
   const navigate = useNavigate();
   const getAddUser = JSON.parse(localStorage.getItem('infoUser')) ?? [];
   const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
-  const addInfoUser = () => {
-    addUser();
-    validateName();
-    validatePassWord();
+  const addInfoUser = (event) => {
+    event.preventDefault();
+    const validationResult = validateInput();
+    if (validationResult.isValid) {
+      addUser();
+      navigate('/login');
+    } else {
+      setValidate(validationResult.errors);
+    }
   };
+
+  const validateInput = () => {
+    const errors = {};
+
+    if (user.trim().length === 0) {
+      errors.userName = 'Tên User không được bỏ trống';
+    } else if (!user.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/)) {
+      errors.userName =
+        'Tên đăng nhập chỉ cho nhập chữ và số và không có các kí tự đặc biệt';
+    }
+
+    const regex =
+      /^[A-Za-z0-9]+([.-]?[A-Za-z0-9]+)*@[A-Za-z0-9]+([.-]?[A-Za-z0-9]+)*\.[A-Za-z]{2,}$/;
+    if (!email.match(regex)) {
+      errors.email = 'Email không hợp lệ';
+    } else {
+      const isExitsEmail = getAddUser.some((user) => user.email === email);
+      if (isExitsEmail) {
+        errors.email = 'Email đã tồn tại';
+      }
+    }
+
+    if (firstName.trim().length === 0) {
+      errors.firstName = 'FirstName không được bỏ trống';
+    }
+
+    if (lastName.trim().length === 0) {
+      errors.lastName = 'LastName không được bỏ trống';
+    }
+
+    if (passWord.trim().length === 0) {
+      errors.passWord = 'Mật khẩu không được bỏ trống';
+    } else if (passWord.length < 4 || passWord.length > 10) {
+      errors.passWord = 'Mật khẩu tối thiểu 4 kí tự và nhiều nhất 10 kí tự';
+    }
+
+    if (passWord !== repeat) {
+      errors.repeatPassWord = 'Mật khẩu không trùng khớp vui lòng nhập lại';
+    }
+
+    return {
+      isValid: Object.keys(errors).length === 0,
+      errors: errors,
+    };
+  };
+
   const addUser = () => {
     const allUser = {
       id: getAddUser.length + 1,
@@ -36,54 +87,16 @@ function CustomerRegisterPage() {
       passWord: passWord,
       time: formattedTime,
     };
-    if (email && firstName && lastName && passWord) {
-      getAddUser.push(allUser);
-      localStorage.setItem('infoUser', JSON.stringify(getAddUser));
-    } else {
-    }
+
+    getAddUser.push(allUser);
+    localStorage.setItem('infoUser', JSON.stringify(getAddUser));
   };
 
-  const validateName = () => {
-    let mes = {};
-    const regex =
-      /^[A-Za-z0-9]+([.-]?[A-Za-z0-9]+)*@[A-Za-z0-9]+([.-]?[A-Za-z0-9]+)*\.[A-Za-z]{2,}$/;
-    setValidate(mes);
-    console.log(mes);
-    if (user.length === 0) {
-      mes.mesName = 'Tên User không được bỏ trống';
-    } else if (!user.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/)) {
-      mes.mesName =
-        'Tên đăng nhập chỉ cho nhập chữ và số và không có các kí tự đặc biệt';
-    } else if (!email.match(regex)) {
-      mes.mesEmail = 'Email không hợp lệ';
-    } else {
-      mes.mesName = '';
-    }
-  };
-  const validatePassWord = () => {
-    let changePage = false;
-    console.log(validatePw);
-    let mes = {};
-    setValidatePw(mes);
-    if (passWord.length === 0) {
-      mes.mesPw = 'mật khẩu không được bỏ trống';
-    } else if (passWord.length < 4 || passWord.length > 10) {
-      mes.mesPw = 'mật khẩu tối thiểu 4 kí tự và nhiều nhất 10 kí tự';
-    } else if (passWord === reapeat) {
-      changePage = true;
-    } else if (passWord !== reapeat) {
-      mes.mesPw = 'mật khẩu không trùng lặp vui lòng nhập lại';
-    }
-
-    if (changePage) {
-      navigate('/');
-    }
-  };
   return (
     <div className="wrapper_CustomerRegisterPage">
-      <div className="container">
+      <div className="container-customer">
         <div className="title">
-          <h2 className="text-center ">Đăng kí</h2>
+          <h2 className="text-center">Đăng kí</h2>
         </div>
         <Form>
           <Form.Group className="mb-3" controlId="formPlaintextUserName">
@@ -95,7 +108,7 @@ function CustomerRegisterPage() {
                 onChange={(event) => setUser(event.target.value)}
               />
             </Col>
-            <small>{validate.mesName}</small>
+            <small>{validate.userName}</small>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPlaintextEmail">
@@ -104,11 +117,11 @@ function CustomerRegisterPage() {
                 type="email"
                 id="email"
                 name="email"
-                placeholder="email"
+                placeholder="Email"
                 onChange={(event) => setEmail(event.target.value)}
               />
             </Col>
-            <small>{validate.mesEmail}</small>
+            <small>{validate.email}</small>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPlaintextFirstName">
@@ -116,9 +129,10 @@ function CustomerRegisterPage() {
               <Form.Control
                 type="text"
                 placeholder="FirstName"
-                onChange={(event) => setFistName(event.target.value)}
+                onChange={(event) => setFirstName(event.target.value)}
               />
             </Col>
+            <small>{validate.firstName}</small>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPlaintextLastName">
@@ -129,6 +143,7 @@ function CustomerRegisterPage() {
                 onChange={(event) => setLastName(event.target.value)}
               />
             </Col>
+            <small>{validate.lastName}</small>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPlaintextPassword">
@@ -139,6 +154,7 @@ function CustomerRegisterPage() {
                 onChange={(event) => setPassWord(event.target.value)}
               />
             </Col>
+            <small>{validate.passWord}</small>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPlaintextRepeatPassword">
@@ -149,11 +165,20 @@ function CustomerRegisterPage() {
                 onChange={(event) => setRepeatPassWord(event.target.value)}
               />
             </Col>
-            <small>{validatePw.mesPw}</small>
+            <small>{validate.repeatPassWord}</small>
           </Form.Group>
 
           <div className="text-end">
-            <Button onClick={() => addInfoUser()}>Submit</Button>
+            <div className="login-user">
+              <p onClick={() => navigate('/login')}>Login</p>
+            </div>
+            <Button
+              type="button"
+              className="add-product_buy"
+              onClick={addInfoUser}
+            >
+              Submit
+            </Button>
           </div>
         </Form>
       </div>

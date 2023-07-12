@@ -11,8 +11,7 @@
   border-radius: 17px;
   padding: 25px;
   margin-top: 10px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  // background-color: rgb(201, 33, 39);
+  margin-top: 100px;
   color: #fff;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
@@ -63,4 +62,25 @@ button.color-btn {
 .add-product {
   gap: 10px;
   display: flex;
+}
+.total_price-cart {
+}
+.空洞的 h1 {
+  font-weight: 700;
+  margin-top: 35px;
+}
+.login-user {
+  display: flex;
+  cursor: pointer;
+  & p {
+    color: blue !important;
+    font-weight: bolder;
+  }
+}
+.text-end {
+  text-align: right !important;
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
 }

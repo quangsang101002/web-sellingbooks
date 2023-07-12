@@ -1,8 +1,10 @@
 import { createStore, combineReducers } from 'redux';
 import customerProductReducer from './reducers/customerProductReducer';
+import customerAuthReducer from './reducers/customerAuthReducer';
 
 const reducers = combineReducers({
   customerProductReducer,
+  customerAuthReducer,
 });
 
 const store = createStore(

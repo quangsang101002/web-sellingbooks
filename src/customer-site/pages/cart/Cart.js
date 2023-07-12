@@ -6,40 +6,63 @@ import { LiaSadCrySolid } from 'react-icons/lia';
 import { useState } from 'react';
 import { changeQuantity } from '../../store/actions/customerProductAction';
 import { totalPay } from '../../store/actions/customerProductAction';
+import { deleteQuatity } from '../../store/actions/customerProductAction';
+import { useEffect } from 'react';
 const Cart = () => {
   const [totalPayProducs, setTotalPayProducs] = useState('');
+  const [auto, setAuto] = useState('');
+  const totalPircePay = useSelector((state) => state.customerAuthReducer.total);
+  const orderProduct = useSelector(
+    (state) => state.customerAuthReducer.totalPricePay,
+  );
+
+  console.log('orderTotal>>', orderProduct);
+
+  const orderProductCart = () => {
+    localStorage.setItem('userOrder', JSON.stringify(orderProduct));
+  };
+
   const dispatch = useDispatch();
   const products = useSelector(
     (state) => state.customerProductReducer.products,
   );
-  const total = useSelector((state) => state.customerProductReducer.total);
   const deleteProductCart = (product) => {
     dispatch(deleteProduct(product));
+    dispatch(deleteQuatity(product, totalPayProducs));
   };
 
+  // const deleteQuatityProduct = () => {
+  //   dispatch(deleteQuatity())
+  // }
   const reducerProduct = (product, id) => {
     let initNumber = product - 1;
 
     if (initNumber >= 1) {
       dispatch(changeQuantity(initNumber, id));
     }
+    setAuto(initNumber);
   };
 
   const increaseProduct = (product, id) => {
     let initNumber = product + 1;
-
     dispatch(changeQuantity(initNumber, id));
+    setAuto(initNumber);
   };
-  const totalPayProduct = (productId) => {
-    if (totalPayProducs.includes(productId)) {
+
+  const totalPayProduct = (getProduct) => {
+    if (totalPayProducs.includes(getProduct)) {
       setTotalPayProducs(
-        totalPayProducs.filter((product) => product !== productId),
+        totalPayProducs.filter((product) => product !== getProduct),
       );
     } else {
-      setTotalPayProducs([...totalPayProducs, productId]);
+      setTotalPayProducs([...totalPayProducs, getProduct]);
     }
-    dispatch(totalPay(totalPayProducs));
   };
+  useEffect(() => {
+    dispatch(totalPay(totalPayProducs));
+    // totalPayProduct();
+  }, [totalPayProducs, totalPayProduct]);
+
   const empty = () => {
     return (
       <div className="container mt-5 container-cart">
@@ -50,7 +73,7 @@ const Cart = () => {
                 <div className="input-buy">
                   <input
                     type="checkbox"
-                    onClick={() => totalPayProduct(product.id)}
+                    onChange={() => totalPayProduct(product)}
                   ></input>
                 </div>
                 <div className="cart-img">
@@ -85,7 +108,13 @@ const Cart = () => {
             </div>
           );
         })}
-        <div className="total_price-cart"></div>
+        <div className="total_price-cart">
+          <p>Tổng thanh toán({totalPayProducs.length}sản phẩm) </p>
+          <h2>{totalPircePay > 0 ? totalPircePay : 0}</h2>
+          <div className="total_price-cart-order">
+            <button onClick={orderProductCart}>Đặt hàng</button>
+          </div>
+        </div>
       </div>
     );
   };

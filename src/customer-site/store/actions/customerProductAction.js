@@ -28,3 +28,12 @@ export const totalPay = (product) => {
     payload: product,
   };
 };
+export const deleteQuatity = (product, id) => {
+  return {
+    type: 'DELETE_QUATITY',
+    payload: {
+      product,
+      id,
+    },
+  };
+};

@@ -191,7 +191,7 @@ function CustomerRegisterPage() {
               <p onClick={() => navigate('/login')}>Login</p>
             </div>
             <Button
-              type="button"
+              type="submit"
               className="add-product_buy"
               onClick={addInfoUser}
             >

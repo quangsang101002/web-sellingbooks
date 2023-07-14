@@ -14,10 +14,12 @@ import Cart from './pages/cart/Cart';
 import Contacts from './pages/contacts/Contacts';
 import Products from './pages/products/Products';
 import CustomerFooterComponent from './components/partials/CustomerFooterComponent';
+import ScrollToTop from './pages/auth/ScrollToTop';
 function CustomerApp() {
   return (
     <Provider store={store}>
       <CustomerHeaderComponent />
+      <ScrollToTop />
       <Routes>
         <Route path="/register" element={<CustomerRegisterPage />} />
         <Route path="/login" element={<CustomerLoginPage />} />

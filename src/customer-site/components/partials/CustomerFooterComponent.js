@@ -89,9 +89,6 @@ const CustomerFooterComponent = () => {
           </div>
         </div>
       </div>
-      <div className="copyright-footer">
-        <span>@Copyright belongs to 4men shop</span>
-      </div>
     </>
   );
 };

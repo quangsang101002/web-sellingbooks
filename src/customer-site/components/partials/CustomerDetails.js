@@ -2,20 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
 import { Container } from 'react-bootstrap';
 import { LiaCartPlusSolid } from 'react-icons/lia';
 import { useDispatch } from 'react-redux';
 import { addProduct } from '../../store/actions/customerProductAction';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { useNavigate } from 'react-router-dom';
 
 import 'sweetalert2/src/sweetalert2.scss';
 const CustomerDetails = () => {
   const useParam = useParams();
   let { id } = useParam;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const products = JSON.parse(localStorage.getItem('products'));
+  const getUserAccount =
+    JSON.parse(localStorage.getItem('userAccount')) ?? null;
+  console.log(getUserAccount);
   const [similarProducts, setSimilarProducts] = useState('');
   const [inceaseProduct, setInceaseProduct] = useState(1);
 
@@ -96,18 +100,26 @@ const CustomerDetails = () => {
   }, []);
 
   const addProductNew = (product, inceaseProduct) => {
-    dispatch(addProduct(product, inceaseProduct));
-    Swal.fire({
-      title: '',
-      text: 'Bạn đã thêm sản phẩm vào giỏ hàng',
-      icon: 'success',
-    });
-    setTimeout(function () {
-      Swal.close();
-    }, 4000);
+    if (getUserAccount) {
+      dispatch(addProduct(product, inceaseProduct));
+      Swal.fire({
+        title: '',
+        text: 'Bạn đã thêm sản phẩm vào giỏ hàng',
+        icon: 'success',
+      });
+      setTimeout(function () {
+        Swal.close();
+      }, 4000);
+    } else {
+      navigate('/register');
+    }
   };
   const addProductBuy = (product, inceaseProduct) => {
-    dispatch(addProduct(product, inceaseProduct));
+    if (getUserAccount) {
+      dispatch(addProduct(product, inceaseProduct));
+    } else {
+      navigate('/register');
+    }
   };
   const increaseQuality = () => {
     setInceaseProduct(inceaseProduct + 1);
@@ -188,14 +200,26 @@ const CustomerDetails = () => {
                         {' '}
                         <LiaCartPlusSolid /> Thêm vào giỏ hàng
                       </button>
-                      <Link to="/carts">
+
+                      {getUserAccount ? (
+                        <Link to="/carts">
+                          <button
+                            className="add-product_buy"
+                            onClick={() =>
+                              addProductBuy(product, inceaseProduct)
+                            }
+                          >
+                            Chọn mua
+                          </button>
+                        </Link>
+                      ) : (
                         <button
                           className="add-product_buy"
                           onClick={() => addProductBuy(product, inceaseProduct)}
                         >
                           Chọn mua
                         </button>
-                      </Link>
+                      )}
                     </div>
                   </div>
                 </div>

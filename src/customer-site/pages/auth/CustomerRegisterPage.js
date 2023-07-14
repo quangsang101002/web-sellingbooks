@@ -5,6 +5,7 @@ import './CustomerRegisterPage.scss';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment/moment';
+import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 
 function CustomerRegisterPage() {
   const [user, setUser] = useState('');
@@ -17,9 +18,15 @@ function CustomerRegisterPage() {
   const [validatePw, setValidatePw] = useState('');
 
   const navigate = useNavigate();
+  const setShowPassword = () => {
+    setShowPw(!showPw);
+  };
+  const setShowRpPassword = () => {
+    setValidatePw(!validatePw);
+  };
   const getAddUser = JSON.parse(localStorage.getItem('infoUser')) ?? [];
   const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
-
+  const [showPw, setShowPw] = useState('');
   const addInfoUser = (event) => {
     event.preventDefault();
     const validationResult = validateInput();
@@ -147,24 +154,35 @@ function CustomerRegisterPage() {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPlaintextPassword">
-            <Col>
+            <Col className="wrapper_password">
               <Form.Control
-                type="password"
+                type={!showPw ? 'text' : 'password'}
                 placeholder="Password"
                 onChange={(event) => setPassWord(event.target.value)}
               />
+              {!showPw ? (
+                <FaEye className="showinput" onClick={setShowPassword} />
+              ) : (
+                <FaEyeSlash className="showinput" onClick={setShowPassword} />
+              )}
             </Col>
             <small>{validate.passWord}</small>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPlaintextRepeatPassword">
-            <Col>
+            <Col className="wrapper_password">
               <Form.Control
-                type="password"
+                type={!validatePw ? 'text' : 'password'}
                 placeholder="RepeatPassword"
                 onChange={(event) => setRepeatPassWord(event.target.value)}
               />
+              {!validatePw ? (
+                <FaEye className="showinput" onClick={setShowRpPassword} />
+              ) : (
+                <FaEyeSlash className="showinput" onClick={setShowRpPassword} />
+              )}
             </Col>
+
             <small>{validate.repeatPassWord}</small>
           </Form.Group>
 

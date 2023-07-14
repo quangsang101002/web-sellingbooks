@@ -43,6 +43,10 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  & p {
+    margin-bottom: 0;
+    font-weight: bold;
+  }
 }
 
 img.d-block.w-100 {
@@ -251,14 +255,17 @@ button.swal2-confirm.swal2-styled {
   text-align: center;
   justify-content: center;
   border-radius: 50px;
-  top: 25px;
-  right: 240px;
+  left: 11px;
+  bottom: -9px;
   position: absolute;
 }
 .icon-cart {
   font-size: 20px;
+  position: absolute;
 }
-
+.cart-product-main {
+  position: relative;
+}
 .row {
   display: flex;
   align-items: center;
@@ -417,13 +424,7 @@ button.swal2-confirm.swal2-styled {
 .footer-pay {
   width: 200px;
 }
-.copyright-footer {
-  text-align: center;
-  padding-bottom: 60px;
-  font-size: 12px;
-  background-color: #1e1e1e;
-  color: #bbb;
-}
+
 .footer {
   display: flex;
   justify-content: space-evenly;

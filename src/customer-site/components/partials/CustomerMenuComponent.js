@@ -2,31 +2,26 @@ import React, { useEffect, useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import './CustomerHeaderComponent.scss';
 import { Container } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { addProduct } from '../../store/actions/customerProductAction';
-import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import unidecode from 'unidecode';
 
 function CustomerMenuComponent() {
   const products = JSON.parse(localStorage.getItem('products'));
-  const dispatch = useDispatch();
-  // const products = useSelector(
-  //   (state) => state.customerProductReducer.products,
-  // );
-  // console.log('product', products);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const data = await products;
+  const [keySearch, setKeySearch] = useState('');
+  const [filterSearchProduct, setFilterSearchProduct] = useState([]);
 
-  //       dispatch(addProduct(data));
-  //     } catch (error) {
-  //       alert(error);
-  //     }
-  //   };
+  const filterProduct = (event) => {
+    setKeySearch(event.target.value);
+  };
 
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    const displayProducts = products.filter((product) =>
+      unidecode(product.nameProduct.toUpperCase()).includes(
+        unidecode(keySearch.toUpperCase()),
+      ),
+    );
+    setFilterSearchProduct(displayProducts);
+  }, [keySearch]);
 
   const headerProduct = () => {
     return (
@@ -86,7 +81,11 @@ function CustomerMenuComponent() {
       <>
         <Container>
           <div className="CustomerMenu_search">
-            <input placeholder="Nhập từ khóa sản phẩm bạn tìm kiếm..." />{' '}
+            <input
+              placeholder="Nhập từ khóa sản phẩm bạn tìm kiếm..."
+              value={keySearch}
+              onChange={(event) => filterProduct(event)}
+            />
             <button>Tìm kiếm</button>
           </div>
 
@@ -94,7 +93,7 @@ function CustomerMenuComponent() {
             <h2 className="fade-ins">Sách đọc nhiều</h2>
           </div>
           <div className="container-product mt-5 mb-5 row">
-            {products.map((product) => {
+            {filterSearchProduct.map((product) => {
               return (
                 <div key={product.id} className="col-2 wrap-container_product">
                   <Link to={`/detail-product/${product.id}`}>
@@ -129,7 +128,7 @@ function CustomerMenuComponent() {
             <h2 className="fade-ins">Sách thiếu nhi</h2>
           </div>
           <div className="container-product mt-5 mb-5 row">
-            {products.map((product) => {
+            {filterSearchProduct.map((product) => {
               if (product.classify == 'Sách thiếu nhi') {
                 return (
                   <>
@@ -171,7 +170,7 @@ function CustomerMenuComponent() {
             <h2 className="fade-ins">Sách văn học</h2>
           </div>
           <div className="container-product mt-5 mb-5 row">
-            {products.map((product) => {
+            {filterSearchProduct.map((product) => {
               if (product.classify === 'Sách văn học nghệ thuật') {
                 return (
                   <>

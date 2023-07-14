@@ -50,9 +50,6 @@ const Cart = () => {
     dispatch(deleteQuatity(product, totalPayProducs));
   };
 
-  // const deleteQuatityProduct = () => {
-  //   dispatch(deleteQuatity())
-  // }
   const reducerProduct = (product, id) => {
     let initNumber = product - 1;
 

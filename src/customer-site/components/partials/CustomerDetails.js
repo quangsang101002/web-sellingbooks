@@ -8,8 +8,8 @@ import { useDispatch } from 'react-redux';
 import { addProduct } from '../../store/actions/customerProductAction';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { useNavigate } from 'react-router-dom';
-
 import 'sweetalert2/src/sweetalert2.scss';
+
 const CustomerDetails = () => {
   const useParam = useParams();
   let { id } = useParam;

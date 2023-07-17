@@ -7,8 +7,8 @@ const customerAuthReducer = (state = initState, action) => {
   switch (action.type) {
     case 'TOTAL_PAY':
       totalPricePay = action.payload;
-      break;
 
+      break;
     default:
       return state;
   }

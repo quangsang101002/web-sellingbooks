@@ -56,7 +56,7 @@ const OrderDetail = () => {
                     return (
                       <div key={order.codeOrder} className="card-body ">
                         <p className="card-text">
-                          <b>Mã đơn hàng:</b> {order.codeOrder}
+                          <b>Mã đơn hàng:</b> {order.code}
                         </p>
                         <p className="card-text">
                           <b>Tổng giá:</b> {order.totalPrice}

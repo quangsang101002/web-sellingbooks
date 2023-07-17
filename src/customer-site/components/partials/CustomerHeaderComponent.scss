@@ -429,3 +429,30 @@ button.swal2-confirm.swal2-styled {
   display: flex;
   justify-content: space-evenly;
 }
+.cart-img-order {
+  height: 40px;
+
+  img {
+    height: 100%;
+  }
+}
+.td-order {
+  text-align: center;
+}
+.address-contact {
+  & input {
+    width: 70%;
+    margin-bottom: 10px;
+    font-size: 14px;
+    height: 40px;
+    border-radius: 4px;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+.total-order-pay {
+  float: right;
+}
+.add-product_order {
+  width: 215px;
+}

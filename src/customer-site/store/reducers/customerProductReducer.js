@@ -43,11 +43,7 @@ const customerProductReducer = (state = initState, action) => {
         return item;
       });
       break;
-    // case 'TOTAL_PAY':
-    //    totalPricePay = [...state.totalPricePay].filter(
-    //     (item) => !action.payload.includes(item.id)
-    //   );
-    // break;
+
     default:
       return state;
   }

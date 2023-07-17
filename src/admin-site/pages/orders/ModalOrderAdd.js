@@ -32,7 +32,7 @@ function ModalOrderAdd() {
   const addUser = () => {
     const allProduct = {
       id: getAddProduct.length + 1,
-      codeOrder: code,
+      code: code,
       nameUserOrder: nameProduct,
       note: note,
       totalPrice: price,

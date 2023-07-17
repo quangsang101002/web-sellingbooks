@@ -9,8 +9,9 @@ import { totalPay } from '../../store/actions/customerProductAction';
 import { deleteQuatity } from '../../store/actions/customerProductAction';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 const Cart = () => {
-  const [totalPayProducs, setTotalPayProducs] = useState('');
+  const [totalPayProducs, setTotalPayProducs] = useState([]);
   const [auto, setAuto] = useState('');
   const totalPircePay = useSelector((state) => state.customerAuthReducer.total);
   const orderProduct = useSelector(
@@ -19,14 +20,14 @@ const Cart = () => {
 
   console.log('orderTotal>>', orderProduct);
 
-  const orderProductCart = () => {
-    localStorage.setItem('userOrder', JSON.stringify(orderProduct));
-    Swal.fire({
-      title: '',
-      text: 'Bạn đã đặt hàng thành công',
-      icon: 'success',
-    });
-  };
+  // const orderProductCart = () => {
+  //   localStorage.setItem('userOrder', JSON.stringify(orderProduct));
+  //   Swal.fire({
+  //     title: '',
+  //     text: 'Bạn đã đặt hàng thành công',
+  //     icon: 'success',
+  //   });
+  // };
 
   const dispatch = useDispatch();
   const products = useSelector(
@@ -132,9 +133,9 @@ const Cart = () => {
             <p>Tổng thanh toán({totalPayProducs.length}sản phẩm) </p>
             <h2>{totalPircePay > 0 ? totalPircePay : 0}</h2>
             <div className="total_price-cart-order">
-              <button onClick={orderProductCart} className="add-product_buy">
-                Đặt hàng
-              </button>
+              <Link to="/contacts">
+                <button className="add-product_buy">Đặt hàng</button>
+              </Link>
             </div>
           </div>
         </div>

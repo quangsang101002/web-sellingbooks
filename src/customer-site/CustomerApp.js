@@ -13,7 +13,7 @@ import CustomerDetails from './components/partials/CustomerDetails';
 import Cart from './pages/cart/Cart';
 import Contacts from './pages/contacts/Contacts';
 import Products from './pages/products/Products';
-import CustomerFooterComponent from './components/partials/CustomerFooterComponent';
+// import CustomerFooterComponent from './components/partials/CustomerFooterComponent';
 import ScrollToTop from './pages/auth/ScrollToTop';
 function CustomerApp() {
   return (
@@ -34,7 +34,7 @@ function CustomerApp() {
           <Route path="*" element={<CustomerNotFoundPage />} />
         </Route>
       </Routes>
-      <CustomerFooterComponent />
+      {/* <CustomerFooterComponent /> */}
     </Provider>
   );
 }

@@ -156,7 +156,7 @@ const OrderProduct = () => {
                               onChange={() => toggleCheckbox(user.id)}
                             />
                           </td>
-                          <td>{user.codeOrder}</td>
+                          <td>{user.code}</td>
                           <td>{user.nameUserOrder}</td>
                           <td>{user.note}</td>
                           <td>{user.time}</td>

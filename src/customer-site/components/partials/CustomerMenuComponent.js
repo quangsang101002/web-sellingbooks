@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import unidecode from 'unidecode';
 
 function CustomerMenuComponent() {
-  const products = JSON.parse(localStorage.getItem('products'));
+  const products = JSON.parse(localStorage.getItem('products')) ?? [];
   const [keySearch, setKeySearch] = useState('');
   const [filterSearchProduct, setFilterSearchProduct] = useState([]);
 
@@ -62,7 +62,7 @@ function CustomerMenuComponent() {
                   alt="Third slide"
                 />
                 <Carousel.Caption>
-                  <h3>Không làm mà vẫn có ăn</h3>
+                  <h3>Có công mài sắt có ngày nên kim</h3>
                   <p>
                     Praesent commodo cursus magna, vel scelerisque nisl
                     consectetur.

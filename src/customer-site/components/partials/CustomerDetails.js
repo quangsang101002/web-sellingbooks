@@ -102,6 +102,7 @@ const CustomerDetails = () => {
   const addProductNew = (product, inceaseProduct) => {
     if (getUserAccount) {
       dispatch(addProduct(product, inceaseProduct));
+      localStorage.setItem('cart', JSON.stringify(product));
       Swal.fire({
         title: '',
         text: 'Bạn đã thêm sản phẩm vào giỏ hàng',

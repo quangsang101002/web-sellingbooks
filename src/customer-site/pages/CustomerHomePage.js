@@ -215,3 +215,37 @@
 // }
 
 // export default CustomerMenuComponent;
+import React from 'react';
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+
+const Contacts = () => {
+  const products = useSelector(
+    (state) => state.customerProductReducer.products,
+  );
+  console.log('product', products);
+  return (
+    <div>
+      <table id="customers">
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th>Đơn giá</th>
+            <th>Số lượng </th>
+            <th>Thành tiền</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Alfreds Futterkiste</td>
+            <td>12</td>
+            <td>1</td>
+            <td>17.999</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default Contacts;

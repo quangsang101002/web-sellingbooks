@@ -23,7 +23,7 @@ const Contacts = () => {
     totalPrice: totalPircePay,
     note: content,
     nameUserOrder: userContact,
-    id: products.length,
+    id: products.length + 1,
   }));
 
   const orderProduct = () => {

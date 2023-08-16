@@ -33,35 +33,6 @@ const CustomerDetails = () => {
                 setSimilarProducts(product.classify);
                 return (
                   <div className="row detail-book" key={index}>
-                    <div className="col-4 text-center ">
-                      <div className="col-height">
-                        {' '}
-                        <img src={product.image} alt=""></img>
-                      </div>
-
-                      <div className="row prev-container">
-                        <div className="col-2 prev-img">
-                          {' '}
-                          <img src={product.image2} alt=""></img>
-                        </div>
-                        <div className="col-2 prev-img">
-                          {' '}
-                          <img src={product.image3} alt=""></img>
-                        </div>
-                        <div className="col-2 prev-img">
-                          {' '}
-                          <img src={product.image4} alt=""></img>
-                        </div>
-                        <div className="col-2 prev-img">
-                          {' '}
-                          <img src={product.image5} alt=""></img>
-                        </div>
-                        <div className="col-2 prev-img">
-                          {' '}
-                          <img src={product.image6} alt=""></img>
-                        </div>
-                      </div>
-                    </div>
                     <div className="col-8">
                       <h2>
                         <b>Tên sách: </b>

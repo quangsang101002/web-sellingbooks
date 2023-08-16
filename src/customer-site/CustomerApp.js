@@ -14,6 +14,7 @@ import Cart from './pages/cart/Cart';
 import Contacts from './pages/contacts/Contacts';
 import Products from './pages/products/Products';
 // import CustomerFooterComponent from './components/partials/CustomerFooterComponent';
+import Personal from './pages/personalInfo/Personal';
 import ScrollToTop from './pages/auth/ScrollToTop';
 function CustomerApp() {
   return (
@@ -26,6 +27,7 @@ function CustomerApp() {
         <Route path="/carts" element={<Cart />} />
         <Route path="/Products" element={<Products />} />
         <Route path="/contacts" element={<Contacts />} />
+        <Route path="/personal-infomation" element={<Personal />} />
 
         <Route path="/detail-product/:id" element={<CustomerDetails />} />
         <Route path="/" element={<CustomerLayout />}>

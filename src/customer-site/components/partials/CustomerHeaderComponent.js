@@ -4,8 +4,9 @@ import { FiLogOut, FiUser } from 'react-icons/fi';
 import { BsCart4 } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
-
+import { useNavigate } from 'react-router-dom';
 function CustomerHeaderComponent() {
+  const navigate = useNavigate();
   const [login, setLogin] = useState('');
   const getUserAccount = JSON.parse(localStorage.getItem('userAccount'));
 
@@ -18,6 +19,7 @@ function CustomerHeaderComponent() {
 
   const logoutUser = () => {
     localStorage.removeItem('userAccount');
+    navigate('/');
     window.location.reload();
   };
   return (
@@ -49,7 +51,10 @@ function CustomerHeaderComponent() {
 
       {login ? (
         <div className="wrapper_accout">
-          <p>{login.email}</p>
+          <Link to="/personal-infomation">
+            <p>{login.email}</p>
+          </Link>
+
           <small onClick={logoutUser}>
             <FiLogOut />
           </small>

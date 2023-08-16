@@ -1,160 +1,136 @@
-import { Alert, Button, Container, Form } from 'react-bootstrap';
-import Table from 'react-bootstrap/Table';
-import './AdminLayout.scss';
+import { Button } from 'react-bootstrap';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import '../../customer-site/pages/auth/CustomerRegisterPage.scss';
 import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-const AdminLayout = () => {
-  const [code, setCode] = useState('');
-  const [product, setProduct] = useState('');
-  const [price, setPrice] = useState('');
-  const [category, setCategory] = useState('');
-  const [image, setImage] = useState('');
-  const [description, setDescription] = useState('');
+import { useNavigate } from 'react-router-dom';
+import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 
-  const addNewProduct = (event) => {
-    const getProduct = JSON.parse(localStorage.getItem('products')) ?? [];
+function AdminLayout() {
+  const [email, setEmail] = useState('');
+  const [passWord, setPassWord] = useState('');
+  const [validate, setValidate] = useState({});
+  const [validatePw, setValidatePw] = useState({});
+  const [showPw, setShowPw] = useState(false);
+
+  const navigate = useNavigate();
+  const getAddUser = JSON.parse(localStorage.getItem('infoUser')) ?? [];
+
+  const setShowPassword = () => {
+    setShowPw(!showPw);
+  };
+
+  const addInfoUser = (event) => {
     event.preventDefault();
-    const allProduct = {
-      code: code,
-      product: product,
-      price: price,
-      category: category,
-      image: image,
-      description: description,
-    };
-
-    getProduct.push(allProduct);
-    localStorage.setItem('products', JSON.stringify(getProduct));
-    setCategory('');
-    setCode('');
-    setDescription('');
-    setImage('');
-    setPrice('');
-    setProduct('');
+    validateName();
+    validatePassWord();
   };
 
-  const cancelHandle = () => {
-    setCategory('');
-    setCode('');
-    setDescription('');
-    setImage('');
-    setPrice('');
-    setProduct('');
+  const validateName = () => {
+    let isUser = false;
+    const admin = 'Quản trị viên';
+    for (const user of getAddUser) {
+      if (user.classify == admin && user.email === email) {
+        isUser = true;
+        break;
+      }
+    }
+
+    const regex =
+      /^[A-Za-z0-9]+([.-]?[A-Za-z0-9]+)*@[A-Za-z0-9]+([.-]?[A-Za-z0-9]+)*\.[A-Za-z]{2,}$/;
+    const validation = {};
+
+    if (email.length === 0) {
+      validation.mesEmail = 'Tên email không được bỏ trống';
+    } else if (!email.match(regex)) {
+      validation.mesEmail = 'Email không hợp lệ';
+    } else if (!isUser) {
+      validation.mesEmail = 'Email không đúng';
+    }
+
+    setValidate(validation);
   };
+
+  const validatePassWord = () => {
+    let isUserLogin = false;
+
+    for (const user of getAddUser) {
+      if (user.passWord === passWord) {
+        isUserLogin = true;
+        break;
+      }
+    }
+    const validation = {};
+
+    if (passWord.length === 0) {
+      validation.mesPw = 'Mật khẩu không được bỏ trống';
+    } else if (passWord.length < 4 || passWord.length > 10) {
+      validation.mesPw = 'Mật khẩu phải có từ 4 đến 10 kí tự';
+    } else if (!isUserLogin) {
+      validation.mesPw = 'Mật khẩu không chính xác';
+    }
+
+    setValidatePw(validation);
+
+    if (isUserLogin) {
+      const user = {
+        email,
+      };
+
+      localStorage.setItem('userAccount', JSON.stringify(user));
+      navigate('/admin/product');
+      window.location.reload();
+    }
+  };
+
   return (
-    <Container className="mt-5">
-      <div className="row">
-        <div className="col-3">
-          <Table striped hover variant="dark" className="text-center ">
-            <thead>
-              <tr>
-                <th>Trang quản trị</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Nguyễn Quang Hải</td>
-              </tr>
-              <tr>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Quản lí sản phẩm</td>
-              </tr>
-              <tr>
-                <Link to="/admin/manager">
-                  <td>Quản lí người dùng</td>
-                </Link>
-              </tr>
-              <tr>
-                <Link to="/admin/product">
-                  <td>Quản lí đơn hàng</td>
-                </Link>
-              </tr>
-              <tr>
-                <td>Quản lí liên hệ</td>
-              </tr>
-            </tbody>
-          </Table>
+    <div className="wrapper_CustomerRegisterPage">
+      <div className="container-customer">
+        <div className="title">
+          <h2 className="text-center">Đăng nhập Admin</h2>
         </div>
-        <div className="manager col-9">
-          <h2>Thêm mới sản phẩm</h2>
-          <div className="add-product">
-            <form action="">
-              <div className="form-group">
-                <label htmlFor="code">
-                  Mã sản phẩm<small>(*)</small>
-                </label>
-                <input
-                  type="text"
-                  id="code"
-                  value={code}
-                  onChange={(event) => setCode(event.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="nameProduct">
-                  Tên sản phẩm<small>(*)</small>
-                </label>
-                <input
-                  type="text"
-                  id="nameProduct"
-                  value={product}
-                  onChange={(event) => setProduct(event.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="description">Mô tả</label>
-                <input
-                  type="text"
-                  id="description"
-                  value={description}
-                  onChange={(event) => setDescription(event.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="price">
-                  Đơn giá<small>(*)</small>
-                </label>
-                <input
-                  type="text"
-                  id="price"
-                  value={price}
-                  onChange={(event) => setPrice(event.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="category">
-                  Phân loại<small>(*)</small>
-                </label>
-                <select id="category">
-                  <option>Thiếu nhi</option>
-                  <option>Văn học</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label htmlFor="image">
-                  Hình ảnh<small>(*)</small>
-                </label>
-                <input
-                  type="text"
-                  id="image"
-                  value={image}
-                  onChange={(event) => setImage(event.target.value)}
-                />
-              </div>
-              <div className="form-group-btn">
-                <button onClick={(event) => addNewProduct(event)}>Thêm</button>
-                <button type="reset" onClick={() => cancelHandle()}>
-                  Hủy
-                </button>
-              </div>
-            </form>
+        <Form>
+          <Form.Group className="mb-3" controlId="formPlaintextEmail">
+            <Col>
+              <Form.Control
+                type="email"
+                name="email"
+                placeholder="Email"
+                onChange={(event) => setEmail(event.target.value)}
+              />
+            </Col>
+            <small>{validate.mesEmail}</small>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formPlaintextPassword">
+            <Col className="wrapper_password">
+              <Form.Control
+                type={showPw ? 'text' : 'password'}
+                placeholder="Mật khẩu"
+                onChange={(event) => setPassWord(event.target.value)}
+              />
+              <span className="showinput" onClick={setShowPassword}>
+                {showPw ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </Col>
+            <small>{validatePw.mesPw}</small>
+          </Form.Group>
+
+          <div className="text-end">
+            <div className="login-user">
+              <p onClick={() => navigate('/register')}>Đăng kí</p>
+            </div>
+            <Button
+              type="button"
+              className="add-product_buy"
+              onClick={addInfoUser}
+            >
+              Submit
+            </Button>
           </div>
-        </div>
+        </Form>
       </div>
-    </Container>
+    </div>
   );
-};
+}
 
 export default AdminLayout;

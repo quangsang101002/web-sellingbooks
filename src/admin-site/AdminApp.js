@@ -13,11 +13,13 @@ import OrderProduct from './pages/orders/OrderProduct';
 import OrderDetail from './pages/orders/OrderDetail';
 import ManagerContact from './pages/contacts/ManagerContact';
 import ContactDetail from './pages/contacts/ContactDetail';
+import AdminLoginPage from './pages/auth/AdminLoginPage';
 
 function AdminApp() {
   return (
     <Provider store={store}>
       <Routes>
+        <Route path="/login" element={<AdminLoginPage />} />
         <Route path="/manager" element={<UserList />} />
         <Route path="/product" element={<ProductList />} />
         <Route path="/order" element={<OrderProduct />} />

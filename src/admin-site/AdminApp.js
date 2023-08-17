@@ -19,7 +19,8 @@ function AdminApp() {
   return (
     <Provider store={store}>
       <Routes>
-        <Route path="/login" element={<AdminLoginPage />} />
+        {/* <Route path="/login" element={<AdminLoginPage />} /> */}
+        <Route path="/login" element={<AdminLayout />} />
         <Route path="/manager" element={<UserList />} />
         <Route path="/product" element={<ProductList />} />
         <Route path="/order" element={<OrderProduct />} />

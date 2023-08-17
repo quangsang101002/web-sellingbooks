@@ -45,7 +45,6 @@ function ModalAddContact() {
     let mes = {};
 
     setValidate(mes);
-    console.log(mes);
     if (code.length === 0) {
       mes.mesName = 'Tên người liên hệ không được bỏ trống ';
     } else if (nameContact.length === 0) {

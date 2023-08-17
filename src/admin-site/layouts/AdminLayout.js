@@ -2,9 +2,10 @@ import { Button } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import '../../customer-site/pages/auth/CustomerRegisterPage.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
+import authAPI from '../../apis/auth.api';
 
 function AdminLayout() {
   const [email, setEmail] = useState('');
@@ -12,6 +13,7 @@ function AdminLayout() {
   const [validate, setValidate] = useState({});
   const [validatePw, setValidatePw] = useState({});
   const [showPw, setShowPw] = useState(false);
+  const [mgs, setMgs] = useState('');
 
   const navigate = useNavigate();
   const getAddUser = JSON.parse(localStorage.getItem('infoUser')) ?? [];
@@ -20,10 +22,18 @@ function AdminLayout() {
     setShowPw(!showPw);
   };
 
-  const addInfoUser = (event) => {
+  const handleSubmit = async (event) => {
+    // Thêm async ở đây
     event.preventDefault();
     validateName();
     validatePassWord();
+    try {
+      const response = await authAPI.login(email, passWord, 'admin');
+      window.localStorage.setItem('X-API-key', response.token);
+      navigate('/admin/manager');
+    } catch (error) {
+      setMgs(error);
+    }
   };
 
   const validateName = () => {
@@ -89,17 +99,17 @@ function AdminLayout() {
         <div className="title">
           <h2 className="text-center">Đăng nhập Admin</h2>
         </div>
-        <Form>
+        <Form method="post">
           <Form.Group className="mb-3" controlId="formPlaintextEmail">
             <Col>
               <Form.Control
-                type="email"
-                name="email"
-                placeholder="Email"
+                type="text"
+                name="username"
+                placeholder="username"
                 onChange={(event) => setEmail(event.target.value)}
               />
             </Col>
-            <small>{validate.mesEmail}</small>
+            {mgs === 'User not found' ? <small>User not found</small> : ''}
           </Form.Group>
           <Form.Group className="mb-3" controlId="formPlaintextPassword">
             <Col className="wrapper_password">
@@ -112,7 +122,8 @@ function AdminLayout() {
                 {showPw ? <FaEyeSlash /> : <FaEye />}
               </span>
             </Col>
-            <small>{validatePw.mesPw}</small>
+
+            {mgs === 'Sai mật khẩu' ? <small>Sai mật khẩu</small> : ''}
           </Form.Group>
 
           <div className="text-end">
@@ -122,7 +133,7 @@ function AdminLayout() {
             <Button
               type="button"
               className="add-product_buy"
-              onClick={addInfoUser}
+              onClick={handleSubmit}
             >
               Submit
             </Button>

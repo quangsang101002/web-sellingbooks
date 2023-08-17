@@ -4,12 +4,41 @@ import { Link } from 'react-router-dom';
 import unidecode from 'unidecode';
 import { Button } from 'react-bootstrap';
 import ModalAddContact from './ModalAddContact';
+import authAPI from '../../../apis/auth.api';
+import { useNavigate } from 'react-router-dom';
 
 const ManagerContact = () => {
   const getAllUser = JSON.parse(localStorage.getItem('Contacts')) ?? [];
   const [choose, setChoose] = useState([]);
   const [search, setSearch] = useState('');
   const [btnSearchUser, setBtnSearchUser] = useState([]);
+  const [userName, setUsername] = useState('');
+  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = window.localStorage.getItem('X-API-key');
+
+        const response = await authAPI.getAuth(token);
+        setUsername(response.username);
+        <ManagerContact userName={response.username} />;
+      } catch (error) {
+        alert(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const logoutUser = async () => {
+    try {
+      const token = window.localStorage.getItem('X-API-key');
+      await authAPI.logout(token);
+      navigate('/admin');
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   useEffect(() => {
     setBtnSearchUser(getAllUser);
@@ -68,7 +97,7 @@ const ManagerContact = () => {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Nguyễn Quang Hải</td>
+                    <td>{userName}</td>
                   </tr>
                   <tr>
                     <td>
@@ -88,6 +117,13 @@ const ManagerContact = () => {
                   <tr>
                     <td>
                       <Link to="/admin/manager_contact">Liên hệ</Link>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <Link to="/admin/manager_contact" onClick={logoutUser}>
+                        Đăng xuất
+                      </Link>
                     </td>
                   </tr>
                 </tbody>

@@ -18,7 +18,6 @@ function ModalAddUser() {
   const [show, setShow] = useState(false);
   const [selectedClassify, setSelectedClassify] = useState('');
 
-  console.log('classify', selectedClassify);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const getAddUser = JSON.parse(localStorage.getItem('infoUser')) ?? [];
@@ -28,7 +27,7 @@ function ModalAddUser() {
     setSelectedClassify(event.target.value);
   };
 
-  const addInfoUser = () => {
+  const handleSubmit = () => {
     addUser();
     validateName();
     validatePassWord();
@@ -56,7 +55,6 @@ function ModalAddUser() {
     const regex =
       /^[A-Za-z0-9]+([.-]?[A-Za-z0-9]+)*@[A-Za-z0-9]+([.-]?[A-Za-z0-9]+)*\.[A-Za-z]{2,}$/;
     setValidate(mes);
-    console.log(mes);
     if (user.length === 0) {
       mes.mesName = 'Tên User không được bỏ trống';
     } else if (!user.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/)) {
@@ -70,7 +68,6 @@ function ModalAddUser() {
   };
   const validatePassWord = () => {
     let changePage = false;
-    console.log(validatePw);
     let mes = {};
     setValidatePw(mes);
     if (passWord.length === 0) {
@@ -223,7 +220,7 @@ function ModalAddUser() {
           </Form.Group>
 
           <div className="col-12 text-end">
-            <Button onClick={() => addInfoUser()}>Submit</Button>
+            <Button onClick={handleSubmit}>Submit</Button>
           </div>
           {/* </Form>
           </div> */}

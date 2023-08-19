@@ -19,7 +19,6 @@ const CustomerDetails = () => {
   const products = JSON.parse(localStorage.getItem('products'));
   const getUserAccount =
     JSON.parse(localStorage.getItem('userAccount')) ?? null;
-  console.log(getUserAccount);
   const [similarProducts, setSimilarProducts] = useState('');
   const [inceaseProduct, setInceaseProduct] = useState(1);
 

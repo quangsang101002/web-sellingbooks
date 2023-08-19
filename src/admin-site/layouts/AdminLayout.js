@@ -14,14 +14,20 @@ function AdminLayout() {
   const [validatePw, setValidatePw] = useState({});
   const [showPw, setShowPw] = useState(false);
   const [mgs, setMgs] = useState('');
-
   const navigate = useNavigate();
   const getAddUser = JSON.parse(localStorage.getItem('infoUser')) ?? [];
 
   const setShowPassword = () => {
     setShowPw(!showPw);
   };
-
+  useEffect(() => {
+    const getUserLogin = window.localStorage.getItem('X-API-key');
+    if (getUserLogin) {
+      navigate('/admin/product');
+    } else {
+      navigate('/admin');
+    }
+  }, []);
   const handleSubmit = async (event) => {
     // Thêm async ở đây
     event.preventDefault();

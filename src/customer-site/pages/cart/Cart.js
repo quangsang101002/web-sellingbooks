@@ -18,8 +18,6 @@ const Cart = () => {
     (state) => state.customerAuthReducer.totalPricePay,
   );
 
-  console.log('orderTotal>>', orderProduct);
-
   // const orderProductCart = () => {
   //   localStorage.setItem('userOrder', JSON.stringify(orderProduct));
   //   Swal.fire({

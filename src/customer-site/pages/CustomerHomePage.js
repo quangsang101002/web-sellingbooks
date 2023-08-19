@@ -222,7 +222,6 @@ const Contacts = () => {
   const products = useSelector(
     (state) => state.customerProductReducer.products,
   );
-  console.log('product', products);
   return (
     <div>
       <table id="customers">

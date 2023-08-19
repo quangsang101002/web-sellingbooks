@@ -21,7 +21,7 @@ function AdminApp() {
       <Routes>
         {/* <Route path="/login" element={<AdminLoginPage />} /> */}
         <Route path="/login" element={<AdminLayout />} />
-        <Route path="/manager" element={<UserList />} />
+        <Route path="manager/:id" element={<UserList />} />
         <Route path="/product" element={<ProductList />} />
         <Route path="/order" element={<OrderProduct />} />
         <Route path="/order_detail/:id" element={<OrderDetail />} />

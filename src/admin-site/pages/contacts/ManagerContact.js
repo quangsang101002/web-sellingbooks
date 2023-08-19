@@ -23,7 +23,7 @@ const ManagerContact = () => {
         setUsername(response.username);
         <ManagerContact userName={response.username} />;
       } catch (error) {
-        alert(error);
+        navigate('/admin');
       }
     };
 
@@ -34,6 +34,7 @@ const ManagerContact = () => {
     try {
       const token = window.localStorage.getItem('X-API-key');
       await authAPI.logout(token);
+      localStorage.removeItem('X-API-key');
       navigate('/admin');
     } catch (error) {
       alert(error);

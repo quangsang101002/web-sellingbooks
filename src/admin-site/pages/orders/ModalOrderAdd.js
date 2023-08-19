@@ -51,7 +51,6 @@ function ModalOrderAdd() {
     let mes = {};
 
     setValidate(mes);
-    console.log(mes);
     if (code.length === 0) {
       mes.mesName = 'Tên người liên không được bỏ trống';
     } else if (nameProduct.length === 0) {

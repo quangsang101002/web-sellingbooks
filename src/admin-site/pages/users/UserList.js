@@ -8,6 +8,10 @@ import unidecode from 'unidecode';
 import { Button } from 'react-bootstrap';
 import authAPI from '../../../apis/auth.api';
 import { useNavigate } from 'react-router-dom';
+import userAPI from '../../../apis/user.api';
+import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
+import { useParams } from 'react-router-dom';
+import moment from 'moment';
 
 const AdminLayout = () => {
   const getAllUser = JSON.parse(localStorage.getItem('infoUser')) ?? [];
@@ -15,17 +19,36 @@ const AdminLayout = () => {
   const [search, setSearch] = useState('');
   const [btnSearchUser, setBtnSearchUser] = useState([]);
   const [username, setUsername] = useState('');
+  const [getUser, setGetUser] = useState([]);
+  const [getNumberPage, setGetNumberPage] = useState();
+
+  const { pageNumber } = useParams();
+  console.log('>>>>', pageNumber);
+
   const navigate = useNavigate();
+  const fetchData = async () => {
+    await userAPI
+      .searchUsers()
+      .then((response) => {
+        setGetUser(response.result.recount);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = window.localStorage.getItem('X-API-key');
-
         const response = await authAPI.getAuth(token);
         setUsername(response.username);
       } catch (error) {
-        alert(error);
+        navigate('/admin');
       }
     };
 
@@ -36,9 +59,10 @@ const AdminLayout = () => {
     try {
       const token = window.localStorage.getItem('X-API-key');
       await authAPI.logout(token);
+      localStorage.removeItem('X-API-key');
       navigate('/admin');
     } catch (error) {
-      alert(error);
+      navigate('/admin');
     }
   };
 
@@ -87,6 +111,9 @@ const AdminLayout = () => {
     setBtnSearchUser(searchNameUser);
   };
 
+  const getNumberPager = (event) => {
+    setGetNumberPage(event.target.textContent);
+  };
   const container = () => {
     return (
       <>
@@ -177,7 +204,7 @@ const AdminLayout = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {btnSearchUser.length === 0 ? (
+                  {btnSearchUser.length !== 0 ? (
                     <div className="空洞的">
                       <b>
                         <h1 className="text-center">
@@ -188,7 +215,7 @@ const AdminLayout = () => {
                   ) : (
                     <>
                       {' '}
-                      {btnSearchUser.map((user, index) => (
+                      {getUser.map((user, index) => (
                         <tr key={user.id}>
                           <td>
                             <input
@@ -197,15 +224,27 @@ const AdminLayout = () => {
                               onChange={() => toggleCheckbox(user.id)}
                             />
                           </td>
-                          <td>{user.userName}</td>
+
+                          <td>{user.username}</td>
                           <td>{user.email}</td>
                           <td>
-                            <span>{user.firstName}</span>
-                            <span>{user.lastName}</span>
+                            <span>{user.first_name}</span>
+                            <span>{user.last_name}</span>
                           </td>
-                          <td>{user.classify}</td>
-                          <td>{user.time}</td>
-                          <td>{user.timmeUpdate}</td>
+                          <td>
+                            {user.role === 1 ? (
+                              <span>Admin</span>
+                            ) : (
+                              <span>Customers</span>
+                            )}
+                          </td>
+                          <td>
+                            {moment(user.create_at).format('YYYY-MM-DD HH:mm')}
+                          </td>
+
+                          <td>
+                            {moment(user.update_at).format('YYYY-MM-DD HH:mm')}
+                          </td>
                           <td>
                             <Modals user={user} />
                             <Button
@@ -222,6 +261,41 @@ const AdminLayout = () => {
                   )}
                 </tbody>
               </table>
+            </div>
+          </div>
+          <div className="paging text-center mt-5 mb-5">
+            <div>
+              <button className="btn-pagig">
+                <AiOutlineLeft />
+              </button>
+              <a href={`manager/pageNumber/${getNumberPage}`}>
+                <button
+                  className="btn-pagig"
+                  onClick={(event) => getNumberPager(event)}
+                >
+                  1
+                </button>
+              </a>
+              <a href={`manager/pageNumber/${getNumberPage}`}>
+                <button
+                  className="btn-pagig"
+                  onClick={(event) => getNumberPager(event)}
+                >
+                  2
+                </button>
+              </a>
+              <a href={`manager/pageNumber/${getNumberPage}`}>
+                <button
+                  className="btn-pagig"
+                  onClick={(event) => getNumberPager(event)}
+                >
+                  3
+                </button>
+              </a>
+              <span className="btn-pagig">...</span>
+              <button className="btn-pagig">
+                <AiOutlineRight />
+              </button>
             </div>
           </div>
         </div>

@@ -20,11 +20,10 @@ const ProductList = () => {
     const fetchData = async () => {
       try {
         const token = window.localStorage.getItem('X-API-key');
-
         const response = await authAPI.getAuth(token);
         setUsername(response.username);
       } catch (error) {
-        alert(error);
+        navigate('/admin');
       }
     };
 
@@ -35,6 +34,7 @@ const ProductList = () => {
     try {
       const token = window.localStorage.getItem('X-API-key');
       await authAPI.logout(token);
+      localStorage.removeItem('X-API-key');
       navigate('/admin');
     } catch (error) {
       alert(error);

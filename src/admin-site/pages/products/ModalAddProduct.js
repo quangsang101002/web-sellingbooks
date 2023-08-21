@@ -170,9 +170,9 @@ function ModalAddProduct() {
                 <option disabled hidden value="">
                   Thể loại
                 </option>
-                <option>Sách thiếu nhi</option>
-                <option>Sách văn học nghệ thuật</option>
-                <option>Sách Truyện, tiểu thuyết</option>
+                <option value="1">Sách thiếu nhi</option>
+                <option value="2">Sách văn học nghệ thuật</option>
+                <option value="3">Sách Truyện, tiểu thuyết</option>
               </Form.Select>
             </Col>
           </Form.Group>
@@ -187,8 +187,8 @@ function ModalAddProduct() {
             </Form.Label>
             <Col sm="10">
               <Form.Control
-                type="text"
-                placeholder="Hình ảnh"
+                type="file"
+                accept="image/*"
                 value={image}
                 onChange={(event) => setImage(event.target.value)}
               />

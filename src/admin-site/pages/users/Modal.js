@@ -4,52 +4,54 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useEffect } from 'react';
 import moment from 'moment/moment';
+import userAPI from '../../../apis/user.api';
 
 const Modals = (props) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  const getAddUser = JSON.parse(localStorage.getItem('infoUser')) ?? [];
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [firstName, setFistName] = useState('');
   const [lastName, setLastName] = useState('');
   const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
+  const updateUser = {
+    username: userName,
+    email: email,
+    first_name: firstName,
+    last_name: lastName,
+    update_at: formattedTime,
+  };
   useEffect(() => {
-    changeValue();
+    const fetchData = async () => {
+      try {
+        const getUsersDb = await userAPI.searchUsers();
+        if (getUsersDb.result && getUsersDb.result.recount) {
+          changeValue(getUsersDb.result.recount);
+        }
+      } catch (error) {
+        alert(error);
+      }
+    };
+    fetchData();
   }, []);
 
-  const changeValue = () => {
-    getAddUser.forEach((user) => {
-      if (user.id === props.user.id) {
-        setUserName(user.userName);
-        setEmail(user.email);
-        setFistName(user.firstName);
-        setLastName(user.lastName);
-      }
-    });
+  const changeValue = (users) => {
+    if (users) {
+      users.forEach((user) => {
+        if (user.id == props.user) {
+          setUserName(user.username);
+          setEmail(user.email);
+          setFistName(user.first_name);
+          setLastName(user.last_name);
+        }
+      });
+    }
   };
 
-  const handleSave = () => {
-    const updatedUsers = getAddUser.map((user) => {
-      if (user.id === props.user.id) {
-        return {
-          ...user,
-          userName: userName,
-          email: email,
-          firstName: firstName,
-          lastName: lastName,
-          timmeUpdate: formattedTime,
-        };
-      }
-      window.location.reload();
-      return user;
-    });
-
-    localStorage.setItem('infoUser', JSON.stringify(updatedUsers));
-
+  const handleSave = async () => {
+    await userAPI.updateUser(props.user, updateUser);
     setShow(false);
   };
   return (
@@ -58,43 +60,52 @@ const Modals = (props) => {
         Sửa
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title className="d-flex justify-content-center">
-            Sửa thông tin người dùng
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Control
-            className="mb-2"
-            value={userName}
-            onChange={(event) => setUserName(event.target.value)}
-          ></Form.Control>
-          <Form.Control
-            className="mb-2"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          ></Form.Control>
-          <Form.Control
-            className="mb-2"
-            value={firstName}
-            onChange={(event) => setFistName(event.target.value)}
-          ></Form.Control>
-          <Form.Control
-            className="mb-2"
-            value={lastName}
-            onChange={(event) => setLastName(event.target.value)}
-          ></Form.Control>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Đóng
-          </Button>
-          <Button variant="primary" onClick={() => handleSave()}>
-            Lưu thay đổi
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <form method="PUT">
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title className="d-flex justify-content-center">
+              Sửa thông tin người dùng
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form.Control
+              className="mb-2"
+              value={userName}
+              placeholder="userName"
+              onChange={(event) => setUserName(event.target.value)}
+            ></Form.Control>
+            <Form.Control
+              className="mb-2"
+              value={email}
+              placeholder="Email"
+              type="email"
+              id="email"
+              name="email"
+              onChange={(event) => setEmail(event.target.value)}
+            ></Form.Control>
+            <Form.Control
+              className="mb-2"
+              value={firstName}
+              placeholder="firstName"
+              onChange={(event) => setFistName(event.target.value)}
+            ></Form.Control>
+            <Form.Control
+              className="mb-2"
+              value={lastName}
+              placeholder="lastName"
+              onChange={(event) => setLastName(event.target.value)}
+            ></Form.Control>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Đóng
+            </Button>
+            <Button variant="primary" onClick={handleSave}>
+              Lưu thay đổi
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </form>
     </>
   );
 };

@@ -1,8 +1,14 @@
 import api, { getHeaders } from './api';
 
-const searchUsers = async (params = {}) => {
+const searchUsers = async (limit, page) => {
+  const params = {
+    limit: limit,
+    page: page,
+  };
+
   return await api
-    .get('/users', { params: params, headers: getHeaders() })
+
+    .get('/users', { params, headers: getHeaders() })
     .then((response) => {
       return response.data;
     })
@@ -37,6 +43,7 @@ const getUserByUserId = async (userId) => {
 };
 
 const updateUser = async (userId, requestBody) => {
+  console.log('userId, requestBody', userId, requestBody);
   return await api
     .putForm(`/users/${userId}`, requestBody, { headers: getHeaders() })
     .then((response) => {
@@ -49,6 +56,7 @@ const updateUser = async (userId, requestBody) => {
 };
 
 const deleteUser = async (userId) => {
+  console.log('userId', userId);
   return await api
     .delete(`/users/${userId}`, { headers: getHeaders() })
     .then((response) => {

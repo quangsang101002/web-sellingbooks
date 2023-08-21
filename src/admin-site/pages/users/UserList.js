@@ -21,14 +21,12 @@ const AdminLayout = () => {
   const [username, setUsername] = useState('');
   const [getUser, setGetUser] = useState([]);
   const [getNumberPage, setGetNumberPage] = useState();
-
-  const { pageNumber } = useParams();
-  console.log('>>>>', pageNumber);
+  const { page } = useParams();
 
   const navigate = useNavigate();
   const fetchData = async () => {
     await userAPI
-      .searchUsers()
+      .searchUsers(5, Number(page || 1))
       .then((response) => {
         setGetUser(response.result.recount);
       })
@@ -95,11 +93,12 @@ const AdminLayout = () => {
     }
   };
 
-  const deleteUser = (index) => {
-    const spead = [...getAllUser];
-    spead.splice(index, 1);
-    localStorage.setItem('infoUser', JSON.stringify(spead));
-    window.location.reload();
+  const deleteUser = async (id) => {
+    try {
+      await userAPI.deleteUser(id);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   const btnSearch = () => {
@@ -246,11 +245,11 @@ const AdminLayout = () => {
                             {moment(user.update_at).format('YYYY-MM-DD HH:mm')}
                           </td>
                           <td>
-                            <Modals user={user} />
+                            <Modals user={user.id} />
                             <Button
                               className="ml-3"
                               variant="danger"
-                              onClick={() => deleteUser(index)}
+                              onClick={() => deleteUser(user.id)}
                             >
                               Xóa
                             </Button>
@@ -268,7 +267,7 @@ const AdminLayout = () => {
               <button className="btn-pagig">
                 <AiOutlineLeft />
               </button>
-              <a href={`manager/pageNumber/${getNumberPage}`}>
+              <a href={`/admin/manager/${getNumberPage}`}>
                 <button
                   className="btn-pagig"
                   onClick={(event) => getNumberPager(event)}
@@ -276,7 +275,7 @@ const AdminLayout = () => {
                   1
                 </button>
               </a>
-              <a href={`manager/pageNumber/${getNumberPage}`}>
+              <a href={`/admin/manager/${getNumberPage}`}>
                 <button
                   className="btn-pagig"
                   onClick={(event) => getNumberPager(event)}
@@ -284,7 +283,7 @@ const AdminLayout = () => {
                   2
                 </button>
               </a>
-              <a href={`manager/pageNumber/${getNumberPage}`}>
+              <a href={`/admin/manager/${getNumberPage}`}>
                 <button
                   className="btn-pagig"
                   onClick={(event) => getNumberPager(event)}

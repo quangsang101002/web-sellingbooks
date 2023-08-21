@@ -1,6 +1,6 @@
 import './AdminApp.css';
 
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Outlet } from 'react-router-dom';
 
 import { Provider } from 'react-redux';
 import store from './store';
@@ -13,7 +13,6 @@ import OrderProduct from './pages/orders/OrderProduct';
 import OrderDetail from './pages/orders/OrderDetail';
 import ManagerContact from './pages/contacts/ManagerContact';
 import ContactDetail from './pages/contacts/ContactDetail';
-import AdminLoginPage from './pages/auth/AdminLoginPage';
 
 function AdminApp() {
   return (
@@ -21,7 +20,9 @@ function AdminApp() {
       <Routes>
         {/* <Route path="/login" element={<AdminLoginPage />} /> */}
         <Route path="/login" element={<AdminLayout />} />
-        <Route path="manager/:id" element={<UserList />} />
+        <Route path="/manager" element={<UserList />}>
+          <Route path=":page" element={<UserList />} />
+        </Route>
         <Route path="/product" element={<ProductList />} />
         <Route path="/order" element={<OrderProduct />} />
         <Route path="/order_detail/:id" element={<OrderDetail />} />

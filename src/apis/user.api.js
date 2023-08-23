@@ -7,7 +7,6 @@ const searchUsers = async (limit, page) => {
   };
 
   return await api
-
     .get('/users', { params, headers: getHeaders() })
     .then((response) => {
       return response.data;

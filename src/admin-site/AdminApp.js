@@ -23,7 +23,7 @@ function AdminApp() {
         <Route path="/manager" element={<UserList />}>
           <Route path=":page" element={<UserList />} />
         </Route>
-        <Route path="/product" element={<ProductList />} />
+        <Route path="/product/:id" element={<ProductList />} />
         <Route path="/order" element={<OrderProduct />} />
         <Route path="/order_detail/:id" element={<OrderDetail />} />
         <Route path="/manager_contact" element={<ManagerContact />} />

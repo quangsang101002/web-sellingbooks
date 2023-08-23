@@ -7,6 +7,9 @@ import unidecode from 'unidecode';
 import { Button } from 'react-bootstrap';
 import authAPI from '../../../apis/auth.api';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import productAPI from '../../../apis/products.api';
+import moment from 'moment';
 
 const ProductList = () => {
   const getAllUser = JSON.parse(localStorage.getItem('products')) ?? [];
@@ -14,8 +17,25 @@ const ProductList = () => {
   const [search, setSearch] = useState('');
   const [btnSearchUser, setBtnSearchUser] = useState([]);
   const [userName, setUsername] = useState('');
-  const navigate = useNavigate();
+  const [getProduct, setGetProduct] = useState([]);
+  console.log('----', getProduct);
 
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  useEffect(() => {
+    const fetchDataProduct = async () => {
+      await productAPI
+        .searchProduct(16, Number(id))
+        .then((response) => {
+          setGetProduct(response.result.recount);
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    };
+    fetchDataProduct();
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -174,7 +194,7 @@ const ProductList = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {btnSearchUser.length === 0 ? (
+                  {getProduct.length === 0 ? (
                     <div className="空洞的">
                       <b>
                         <h1 className="text-center">Không tìm thấy sản phẩm</h1>
@@ -183,7 +203,7 @@ const ProductList = () => {
                   ) : (
                     <>
                       {' '}
-                      {btnSearchUser.map((user, index) => (
+                      {getProduct.map((user, index) => (
                         <tr key={user.id}>
                           <td>
                             <input
@@ -192,13 +212,17 @@ const ProductList = () => {
                               onChange={() => toggleCheckbox(user.id)}
                             />
                           </td>
-                          <td>{user.code}</td>
-                          <td>{user.nameProduct}</td>
-                          <td>{user.price}</td>
+                          <td>{user.sku}</td>
+                          <td>{user.name}</td>
+                          <td>{user.unit_price}</td>
                           <td>{user.description}</td>
-                          <td>{user.classify}</td>
-                          <td>{user.time}</td>
-                          <td>{user.timmeUpdate}</td>
+                          <td>{user.category}</td>
+                          <td>
+                            {moment(user.create_at).format('YYYY-MM-DD HH:mm')}
+                          </td>
+                          <td>
+                            {moment(user.update_at).format('YYYY-MM-DD HH:mm')}
+                          </td>
                           <td>
                             <ModalProduct user={user} />
                             <Button

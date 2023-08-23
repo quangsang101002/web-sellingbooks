@@ -67,3 +67,16 @@ input[type='checkbox'] {
 .btn-pagig {
   margin: 0 25px;
 }
+.avatar {
+  background-color: #fff;
+  & img {
+    position: absolute;
+    width: 38px !important;
+    left: 118px;
+    border-radius: 50px;
+    top: 0px;
+  }
+}
+.wrapper-avatar {
+  position: relative;
+}

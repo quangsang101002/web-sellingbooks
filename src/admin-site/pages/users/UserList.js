@@ -12,6 +12,7 @@ import userAPI from '../../../apis/user.api';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
+import getStaticFileUrl from '../../utilities/getStaticFileUrl';
 
 const AdminLayout = () => {
   const getAllUser = JSON.parse(localStorage.getItem('infoUser')) ?? [];
@@ -21,6 +22,8 @@ const AdminLayout = () => {
   const [username, setUsername] = useState('');
   const [getUser, setGetUser] = useState([]);
   const [getNumberPage, setGetNumberPage] = useState();
+  const [userAdmin, setUserAdmin] = useState([]);
+  const [avatar, setAvatar] = useState();
   const { page } = useParams();
 
   const navigate = useNavigate();
@@ -37,6 +40,17 @@ const AdminLayout = () => {
 
   useEffect(() => {
     fetchData();
+    const fetchDataUsers = async () => {
+      await userAPI
+        .searchUsers()
+        .then((response) => {
+          setUserAdmin(response.result.recount);
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    };
+    fetchDataUsers();
   }, []);
 
   useEffect(() => {
@@ -44,6 +58,7 @@ const AdminLayout = () => {
       try {
         const token = window.localStorage.getItem('X-API-key');
         const response = await authAPI.getAuth(token);
+        setAvatar(response.avatar);
         setUsername(response.username);
       } catch (error) {
         navigate('/admin');
@@ -113,6 +128,7 @@ const AdminLayout = () => {
   const getNumberPager = (event) => {
     setGetNumberPage(event.target.textContent);
   };
+
   const container = () => {
     return (
       <>
@@ -126,10 +142,12 @@ const AdminLayout = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr className="wrapper-avatar">
                     <td>{username}</td>
+                    <div className="avatar">
+                      <img src={getStaticFileUrl(avatar)} alt="Avatar" />
+                    </div>
                   </tr>
-                  <tr></tr>
                   <tr>
                     <td>
                       <Link to="/admin/product">Quản lí sản phẩm</Link>
@@ -213,49 +231,107 @@ const AdminLayout = () => {
                     </div>
                   ) : (
                     <>
-                      {' '}
-                      {getUser.map((user, index) => (
-                        <tr key={user.id}>
-                          <td>
-                            <input
-                              type="checkbox"
-                              checked={choose.includes(user.id)}
-                              onChange={() => toggleCheckbox(user.id)}
-                            />
-                          </td>
+                      {/* {userAdmin.map((user, index) => {
+                        console.log(user.avatar);
+                        if (user.role === 1) {
+                          return (
+                            <tr key={user.id}>
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  checked={choose.includes(user.id)}
+                                  onChange={() => toggleCheckbox(user.id)}
+                                />
+                              </td>
 
-                          <td>{user.username}</td>
-                          <td>{user.email}</td>
-                          <td>
-                            <span>{user.first_name}</span>
-                            <span>{user.last_name}</span>
-                          </td>
-                          <td>
-                            {user.role === 1 ? (
-                              <span>Admin</span>
-                            ) : (
-                              <span>Customers</span>
-                            )}
-                          </td>
-                          <td>
-                            {moment(user.create_at).format('YYYY-MM-DD HH:mm')}
-                          </td>
+                              <td>{user.username}</td>
+                              <td>{user.email}</td>
+                              <td>
+                                <span>{user.first_name}</span>
+                                <span>{user.last_name}</span>
+                              </td>
+                              <td>
+                                {user.role === 1 ? (
+                                  <span>Admin</span>
+                                ) : (
+                                  <span>Customers</span>
+                                )}
+                              </td>
+                              <td>
+                                {moment(user.create_at).format(
+                                  'YYYY-MM-DD HH:mm',
+                                )}
+                              </td>
 
-                          <td>
-                            {moment(user.update_at).format('YYYY-MM-DD HH:mm')}
-                          </td>
-                          <td>
-                            <Modals user={user.id} />
-                            <Button
-                              className="ml-3"
-                              variant="danger"
-                              onClick={() => deleteUser(user.id)}
-                            >
-                              Xóa
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
+                              <td>
+                                {moment(user.update_at).format(
+                                  'YYYY-MM-DD HH:mm',
+                                )}
+                              </td>
+                              <td>
+                                <Modals user={user.id} />
+                                <Button
+                                  className="ml-3"
+                                  variant="danger"
+                                  onClick={() => deleteUser(user.id)}
+                                >
+                                  Xóa
+                                </Button>
+                              </td>
+                            </tr>
+                          );
+                        }
+                      })} */}
+
+                      {getUser.map((user, index) => {
+                        return (
+                          <tr key={user.id}>
+                            <td>
+                              <input
+                                type="checkbox"
+                                checked={choose.includes(user.id)}
+                                onChange={() => toggleCheckbox(user.id)}
+                              />
+                            </td>
+
+                            <td>{user.username}</td>
+                            <td>{user.email}</td>
+
+                            <td>
+                              <span>{user.first_name}</span>
+                              <span>{user.last_name}</span>
+                            </td>
+                            <td>
+                              {user.role === 1 ? (
+                                <span>Admin</span>
+                              ) : (
+                                <span>Customers</span>
+                              )}
+                            </td>
+                            <td>
+                              {moment(user.create_at).format(
+                                'YYYY-MM-DD HH:mm',
+                              )}
+                            </td>
+
+                            <td>
+                              {moment(user.update_at).format(
+                                'YYYY-MM-DD HH:mm',
+                              )}
+                            </td>
+                            <td>
+                              <Modals user={user.id} />
+                              <Button
+                                className="ml-3"
+                                variant="danger"
+                                onClick={() => deleteUser(user.id)}
+                              >
+                                Xóa
+                              </Button>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </>
                   )}
                 </tbody>

@@ -41,7 +41,6 @@ function ModalAddUser() {
       last_name: lastName,
       role: selectedClassify,
       password: passWord,
-      time: formattedTime,
     };
     if (email && firstName && lastName && passWord) {
       try {

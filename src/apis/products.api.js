@@ -15,9 +15,30 @@ const searchProduct = async (limit, page) => {
       throw error;
     });
 };
-const addProduct = () => {};
+const addProduct = async (bodyProduct) => {
+  return await api
+    .post('/product', bodyProduct, { headers: getHeaders() })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error('API Error', error);
+      throw error;
+    });
+};
 const getDetailProduct = () => {};
-const deleteProduct = () => {};
+
+const deleteProduct = async (id) => {
+  return await api
+    .delete(`/product/${id}`, { headers: getHeaders() })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error('API Error', error);
+      throw error;
+    });
+};
 const updateProduct = () => {};
 
 const productAPI = {

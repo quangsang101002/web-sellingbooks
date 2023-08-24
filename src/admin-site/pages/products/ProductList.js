@@ -9,6 +9,7 @@ import authAPI from '../../../apis/auth.api';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import productAPI from '../../../apis/products.api';
+import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 import moment from 'moment';
 
 const ProductList = () => {
@@ -18,15 +19,18 @@ const ProductList = () => {
   const [btnSearchUser, setBtnSearchUser] = useState([]);
   const [userName, setUsername] = useState('');
   const [getProduct, setGetProduct] = useState([]);
-  console.log('----', getProduct);
+  const [getNumberPages, setGetNumberPages] = useState();
 
   const navigate = useNavigate();
   const { id } = useParams();
+  const getNumberPager = (event) => {
+    setGetNumberPages(event.target.textContent);
+  };
 
   useEffect(() => {
     const fetchDataProduct = async () => {
       await productAPI
-        .searchProduct(16, Number(id))
+        .searchProduct(7, Number(id) || 1)
         .then((response) => {
           setGetProduct(response.result.recount);
         })
@@ -64,11 +68,17 @@ const ProductList = () => {
   useEffect(() => {
     setBtnSearchUser(getAllUser);
   }, [search]);
-  const deleteUsers = () => {
-    const updatedUsers = getAllUser.filter((user) => !choose.includes(user.id));
-    localStorage.setItem('products', JSON.stringify(updatedUsers));
-    setChoose([]);
-    window.location.reload();
+  const deleteUsers = (id) => {
+    try {
+      productAPI.deleteProduct(id);
+    } catch (error) {
+      alert(error);
+    }
+
+    // const updatedUsers = getAllUser.filter((user) => !choose.includes(user.id));
+    // localStorage.setItem('products', JSON.stringify(updatedUsers));
+    // setChoose([]);
+    // window.location.reload();
   };
 
   const toggleSelectAll = () => {
@@ -218,17 +228,17 @@ const ProductList = () => {
                           <td>{user.description}</td>
                           <td>{user.category}</td>
                           <td>
-                            {moment(user.create_at).format('YYYY-MM-DD HH:mm')}
+                            {moment(user.created_at).format('YYYY-MM-DD HH:mm')}
                           </td>
                           <td>
-                            {moment(user.update_at).format('YYYY-MM-DD HH:mm')}
+                            {moment(user.updated_at).format('YYYY-MM-DD HH:mm')}
                           </td>
                           <td>
                             <ModalProduct user={user} />
                             <Button
                               className="ml-3"
                               variant="danger"
-                              onClick={() => deleteUser(index)}
+                              onClick={() => deleteUsers(user.product_id)}
                             >
                               Xóa
                             </Button>
@@ -239,6 +249,41 @@ const ProductList = () => {
                   )}
                 </tbody>
               </table>
+            </div>
+          </div>
+          <div className="paging text-center mt-5 mb-5">
+            <div>
+              <button className="btn-pagig">
+                <AiOutlineLeft />
+              </button>
+              <a href={`/admin/product/${getNumberPages}`}>
+                <button
+                  className="btn-pagig"
+                  onClick={(event) => getNumberPager(event)}
+                >
+                  1
+                </button>
+              </a>
+              <a href={`/admin/product/${getNumberPages}`}>
+                <button
+                  className="btn-pagig"
+                  onClick={(event) => getNumberPager(event)}
+                >
+                  2
+                </button>
+              </a>
+              <a href={`/admin/product/${getNumberPages}`}>
+                <button
+                  className="btn-pagig"
+                  onClick={(event) => getNumberPager(event)}
+                >
+                  3
+                </button>
+              </a>
+              <span className="btn-pagig">...</span>
+              <button className="btn-pagig">
+                <AiOutlineRight />
+              </button>
             </div>
           </div>
         </div>

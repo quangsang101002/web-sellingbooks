@@ -2,10 +2,11 @@ import { Button } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import moment from 'moment/moment';
 import Modal from 'react-bootstrap/Modal';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import productAPI from '../../../apis/products.api';
 
 function ModalAddProduct() {
   const [code, setCode] = useState('');
@@ -19,51 +20,66 @@ function ModalAddProduct() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
   const getAddProduct = JSON.parse(localStorage.getItem('products')) ?? [];
   const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
   const addInfoUser = () => {
-    validateName();
-    addUser();
-    setShow(false);
-  };
-  const addUser = () => {
-    const allProduct = {
-      id: getAddProduct.length + 1,
-      code: code,
-      nameProduct: nameProduct,
-      price: price,
-      description: description,
-      classify: classify,
-      time: formattedTime,
-      image: image,
-    };
-    if (nameProduct && price && code) {
-      getAddProduct.push(allProduct);
-      localStorage.setItem('products', JSON.stringify(getAddProduct));
+    const validateError = validateName();
+    if (validateError.size === 0) {
+      addUser();
+      setShow(false);
     } else {
-      return;
+      setValidate(Object.fromEntries(validateError));
     }
   };
 
   const validateName = () => {
-    let mes = {};
-
-    setValidate(mes);
+    // let mes = {};
+    // setValidate(mes);
+    // if (code.length === 0) {
+    //   mes.mesName = 'Mã sản phẩm không được bỏ trống';
+    // } else if (nameProduct.length === 0) {
+    //   mes.mesProduct = 'Tên sản phẩm không được bỏ trống';
+    // } else if (price.length === 0) {
+    //   mes.mesPrice = 'Đơn giá không được bỏ trống';
+    // } else if (image.length === 0) {
+    //   mes.image = 'Hình ảnh không được để trống';
+    // } else {
+    //   mes.mesName = '';
+    // }
+    let error = new Map();
     if (code.length === 0) {
-      mes.mesName = 'Mã sản phẩm không được bỏ trống';
+      error.set('sku', 'Mã sản phẩm không được bỏ trống');
     } else if (nameProduct.length === 0) {
-      mes.mesProduct = 'Tên sản phẩm không được bỏ trống';
+      error.set('nameProduct', 'Tên sản phẩm không được bỏ trống');
     } else if (price.length === 0) {
-      mes.mesPrice = 'Đơn giá không được bỏ trống';
-    } else if (image.length === 0) {
-      mes.image = 'Hình ảnh không được để trống';
-    } else {
-      mes.mesName = '';
+      error.set('price', 'Đơn giá không được bỏ trống');
+    }
+    // } else if (image.length === 0) {
+    //   error.set('image', 'Hình ảnh không được để trống');
+    // }
+    return error;
+  };
+
+  const addUser = () => {
+    const allProduct = {
+      sku: code,
+      name: nameProduct,
+      category: classify,
+      description: description,
+      unit_price: price,
+      image: image,
+    };
+    try {
+      productAPI.addProduct(allProduct);
+    } catch (error) {
+      alert(error);
     }
   };
 
+  const getClassify = (event) => {
+    setClassify(event.target.value);
+  };
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
@@ -93,7 +109,7 @@ function ModalAddProduct() {
               />
             </Col>
             <small className="text-center" style={{ color: 'red' }}>
-              {validate.mesName}
+              {validate.sku}
             </small>
           </Form.Group>
 
@@ -111,7 +127,7 @@ function ModalAddProduct() {
               />
             </Col>
             <small className="text-center" style={{ color: 'red' }}>
-              {validate.mesProduct}
+              {validate.nameProduct}
             </small>
           </Form.Group>
 
@@ -126,6 +142,7 @@ function ModalAddProduct() {
             <Col sm="10">
               <Form.Control
                 type="text"
+                as="textarea"
                 placeholder="Mô tả"
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
@@ -150,7 +167,7 @@ function ModalAddProduct() {
               />
             </Col>
             <small className="text-center" style={{ color: 'red' }}>
-              {validate.mesPrice}
+              {validate.price}
             </small>
           </Form.Group>
 
@@ -164,12 +181,13 @@ function ModalAddProduct() {
             </Form.Label>
             <Col sm="10">
               <Form.Select
-                onChange={(event) => setClassify(event.currentTarget.value)}
+                onChange={(event) => getClassify(event)}
                 value={classify}
               >
                 <option disabled hidden value="">
                   Thể loại
                 </option>
+
                 <option value="1">Sách thiếu nhi</option>
                 <option value="2">Sách văn học nghệ thuật</option>
                 <option value="3">Sách Truyện, tiểu thuyết</option>
@@ -198,9 +216,9 @@ function ModalAddProduct() {
             </Col>
           </Form.Group>
 
-          <div className="col-12 text-end">
+          {/* <div className="col-12 text-end">
             <Button onClick={addInfoUser}>Submit</Button>
-          </div>
+          </div> */}
           {/* </Form>
           </div> */}
         </Modal.Body>
@@ -208,7 +226,7 @@ function ModalAddProduct() {
           <Button variant="secondary" onClick={handleClose}>
             Đóng
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={addInfoUser}>
             Thêm mới
           </Button>
         </Modal.Footer>

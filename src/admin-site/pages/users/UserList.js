@@ -221,7 +221,7 @@ const AdminLayout = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {btnSearchUser.length !== 0 ? (
+                  {getUser.length === 0 ? (
                     <div className="空洞的">
                       <b>
                         <h1 className="text-center">

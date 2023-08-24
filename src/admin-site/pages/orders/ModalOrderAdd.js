@@ -172,11 +172,11 @@ function ModalOrderAdd() {
                 <option disabled hidden value="">
                   Trạng thái
                 </option>
-                <option>Đơn hàng ...</option>
-                <option>Đã xác thực ...</option>
-                <option>Đang giao ...</option>
-                <option>Hoàn tất ...</option>
-                <option>Bị từ chối ...</option>
+                <option value="1">Đơn hàng ...</option>
+                <option value="2">Đã xác thực ...</option>
+                <option value="3">Đang giao ...</option>
+                <option value="4">Hoàn tất ...</option>
+                <option value="5">Bị từ chối ...</option>
               </Form.Select>
             </Col>
           </Form.Group>

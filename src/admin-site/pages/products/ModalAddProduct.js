@@ -187,7 +187,6 @@ function ModalAddProduct() {
                 <option disabled hidden value="">
                   Thể loại
                 </option>
-
                 <option value="1">Sách thiếu nhi</option>
                 <option value="2">Sách văn học nghệ thuật</option>
                 <option value="3">Sách Truyện, tiểu thuyết</option>

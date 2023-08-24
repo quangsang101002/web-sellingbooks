@@ -72,9 +72,8 @@ const ProductList = () => {
     try {
       productAPI.deleteProduct(id);
     } catch (error) {
-      alert(error);
+      console.log(error);
     }
-
     // const updatedUsers = getAllUser.filter((user) => !choose.includes(user.id));
     // localStorage.setItem('products', JSON.stringify(updatedUsers));
     // setChoose([]);
@@ -234,7 +233,7 @@ const ProductList = () => {
                             {moment(user.updated_at).format('YYYY-MM-DD HH:mm')}
                           </td>
                           <td>
-                            <ModalProduct user={user} />
+                            <ModalProduct id={user.product_id} />
                             <Button
                               className="ml-3"
                               variant="danger"

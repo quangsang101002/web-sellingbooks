@@ -3,6 +3,7 @@ import { Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useEffect } from 'react';
+import productAPI from '../../../apis/products.api';
 import moment from 'moment/moment';
 
 const ModalProduct = (props) => {
@@ -10,43 +11,51 @@ const ModalProduct = (props) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const getAddUser = JSON.parse(localStorage.getItem('products')) ?? [];
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [firstName, setFistName] = useState('');
-  const [lastName, setLastName] = useState('');
+  // const getAddUser = JSON.parse(localStorage.getItem('products')) ?? [];
+  const [sku, setSku] = useState('');
+  const [nameProduct, setNameProduct] = useState('');
+  const [categoryProduct, setCategoryProduct] = useState('');
   const [description, setDescription] = useState('');
+  const [unitPrice, setUnitPrice] = useState('');
   const [image, setImage] = useState('');
+  const [category, setCategory] = useState(0);
+  const [getProduct, setGetProduct] = useState([]);
   const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
   useEffect(() => {
+    try {
+      productAPI.searchProduct().then((response) => {
+        setGetProduct(response.result.recount);
+      });
+    } catch (error) {
+      alert(error);
+    }
     changeValue();
   }, []);
 
   const changeValue = () => {
-    getAddUser.forEach((user) => {
-      if (user.id === props.user.id) {
-        setUserName(user.code);
-        setEmail(user.nameProduct);
-        setFistName(user.price);
-        setLastName(user.classify);
+    getProduct.forEach((user) => {
+      if (user.product_id === props.id) {
+        setSku(user.sku);
+        setNameProduct(user.name);
+        setCategoryProduct(user.category);
         setDescription(user.description);
+        setUnitPrice(user.unit_price);
         setImage(user.image);
       }
     });
   };
 
   const handleSave = () => {
-    const updatedUsers = getAddUser.map((user) => {
-      if (user.id === props.user.id) {
+    const updatedUsers = getProduct.map((user) => {
+      if (user.id === props.id) {
         return {
           ...user,
-          code: userName,
-          nameProduct: email,
-          price: firstName,
-          classify: lastName,
-          timmeUpdate: formattedTime,
+          sku: sku,
+          name: nameProduct,
+          category: categoryProduct,
           description: description,
+          unit_price: unitPrice,
           image: image,
         };
       }
@@ -58,12 +67,14 @@ const ModalProduct = (props) => {
 
     setShow(false);
   };
+  const classify = (event) => {
+    setCategory(event.target.value);
+  };
   return (
     <>
       <Button variant="warning" onClick={handleShow}>
         Sửa
       </Button>
-
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title className="d-flex justify-content-center">
@@ -73,40 +84,48 @@ const ModalProduct = (props) => {
         <Modal.Body>
           <Form.Control
             className="mb-2"
-            value={userName}
-            onChange={(event) => setUserName(event.target.value)}
+            placeholder="Mã sản phẩm"
+            value={sku}
+            onChange={(event) => setSku(event.target.value)}
           ></Form.Control>
           <Form.Control
             className="mb-2"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            placeholder="Tên sản phẩm "
+            value={nameProduct}
+            onChange={(event) => setNameProduct(event.target.value)}
           ></Form.Control>
           <Form.Control
             className="mb-2"
-            value={firstName}
-            onChange={(event) => setFistName(event.target.value)}
+            placeholder="Đơn giá"
+            value={unitPrice}
+            onChange={(event) => setUnitPrice(event.target.value)}
           ></Form.Control>
           <Form.Control
             className="mb-2"
+            placeholder="Mô tả"
             value={description}
             onChange={(event) => setDescription(event.target.value)}
           ></Form.Control>
           <Form.Control
             className="mb-2"
-            value={image}
-            onChange={(event) => setImage(event.target.value)}
+            placeholder="Phân loại"
+            value={categoryProduct}
+            onChange={(event) => setCategory(event.target.value)}
           ></Form.Control>
-          <Form.Select onChange={(event) => setLastName(event.target.value)}>
-            <option>Sách thiếu nhi</option>
-            <option>Sách văn học nghệ thuật</option>
-            <option>Sách Truyện, tiểu thuyết</option>
+          <Form.Select onChange={(event) => classify(event)} value={category}>
+            <option disabled hidden value="0">
+              Thể loại
+            </option>
+            <option value="1">Sách thiếu nhi</option>
+            <option value="2">Sách văn học nghệ thuật</option>
+            <option value="3">Sách Truyện, tiểu thuyết</option>
           </Form.Select>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Đóng
           </Button>
-          <Button variant="primary" onClick={() => handleSave()}>
+          <Button variant="primary" onClick={handleSave}>
             Lưu thay đổi
           </Button>
         </Modal.Footer>

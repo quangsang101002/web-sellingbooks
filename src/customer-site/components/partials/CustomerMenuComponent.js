@@ -4,24 +4,37 @@ import './CustomerHeaderComponent.scss';
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import unidecode from 'unidecode';
+import productAPI from '../../../apis/products.api';
 
 function CustomerMenuComponent() {
-  const products = JSON.parse(localStorage.getItem('products')) ?? [];
+  // const products = JSON.parse(localStorage.getItem('products')) ?? [];
   const [keySearch, setKeySearch] = useState('');
   const [filterSearchProduct, setFilterSearchProduct] = useState([]);
+  const [allProduct, setAllProduct] = useState([]);
 
   const filterProduct = (event) => {
     setKeySearch(event.target.value);
   };
-
   useEffect(() => {
-    const displayProducts = products.filter((product) =>
-      unidecode(product.nameProduct.toUpperCase()).includes(
-        unidecode(keySearch.toUpperCase()),
-      ),
-    );
-    setFilterSearchProduct(displayProducts);
-  }, [keySearch]);
+    const fetchDataProduct = async () => {
+      try {
+        await productAPI.searchProduct().then((response) => {
+          setAllProduct(response.result.recount);
+        });
+      } catch (error) {
+        alert(error);
+      }
+    };
+    fetchDataProduct();
+  }, []);
+  // useEffect(() => {
+  // const displayProducts = allProduct.filter((product) =>
+  // unidecode(product.nameProduct.toUpperCase()).includes(
+  //   unidecode(keySearch.toUpperCase()),
+  // ),
+  // );
+  // setFilterSearchProduct(displayProducts);
+  // }, [keySearch]);
 
   const headerProduct = () => {
     return (
@@ -93,7 +106,7 @@ function CustomerMenuComponent() {
             <h2 className="fade-ins">Sách đọc nhiều</h2>
           </div>
           <div className="container-product mt-5 mb-5 row">
-            {filterSearchProduct.map((product) => {
+            {allProduct.map((product) => {
               return (
                 <div key={product.id} className="col-2 wrap-container_product">
                   <Link to={`/detail-product/${product.id}`}>
@@ -102,14 +115,14 @@ function CustomerMenuComponent() {
                     </div>
                   </Link>
                   <h2 className="mt-4 product-description text-center">
-                    {product.nameProduct}
+                    {product.name}
                   </h2>
                   <h2 className="fade-ins product-name_product text-center">
                     <b>Tác giả:</b> {product.description}
                   </h2>
                   <div className="price-product">
                     <span className="old-price">122.322 đ</span>
-                    <span className="new-price">{product.price}đ</span>
+                    <span className="new-price">{product.unit_price}đ</span>
                   </div>
                 </div>
               );

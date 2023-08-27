@@ -1,9 +1,10 @@
 import api, { getHeaders } from './api';
 
-const searchProduct = async (limit, page) => {
+const searchProduct = async (name, limit, page) => {
   const params = {
     limit: limit,
     page: page,
+    name: name,
   };
   return await api
     .get('/product', { params, headers: getHeaders() })
@@ -39,7 +40,17 @@ const deleteProduct = async (id) => {
       throw error;
     });
 };
-const updateProduct = () => {};
+const updateProduct = async (id, bodyUpdate) => {
+  return await api
+    .put(`/product/${id}`, bodyUpdate, { headers: getHeaders() })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error('API Error', error);
+      throw error;
+    });
+};
 
 const productAPI = {
   searchProduct,

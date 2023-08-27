@@ -5,23 +5,58 @@ import unidecode from 'unidecode';
 import { Button } from 'react-bootstrap';
 import ModalOrderAdd from './ModalOrderAdd';
 import authAPI from '../../../apis/auth.api';
+import orderApi from '../../../apis/order.api';
 import ManagerContact from '../contacts/ManagerContact';
 import { useNavigate } from 'react-router-dom';
-
+import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
+import moment from 'moment';
 const OrderProduct = () => {
   const getAllUser = JSON.parse(localStorage.getItem('userOrder')) ?? [];
   const [choose, setChoose] = useState([]);
   const [search, setSearch] = useState('');
   const [btnSearchUser, setBtnSearchUser] = useState([]);
   const [userName, setUsername] = useState('');
+  const [orderUser, setOrderUser] = useState([]);
+  // const [selectedColor, setSelectedColor] = useState('#ffffff');
+  const [getNumberPages, setGetNumberPages] = useState();
   const navigate = useNavigate();
+  const onchangeStatus = (event, userId) => {
+    const newStatus = event.target.value;
+
+    const updatedOrderUser = orderUser.map((user) => {
+      if (user.order_id === userId) {
+        return { ...user, status: newStatus };
+      }
+      return user;
+    });
+    setOrderUser(updatedOrderUser);
+
+    orderApi.updateStatus(userId, newStatus);
+  };
+  const getNumberPager = (event) => {
+    setGetNumberPages(event.target.textContent);
+  };
+
+  useEffect(() => {
+    const fetchDataOrder = async () => {
+      await orderApi
+        .searchOrder()
+        .then((response) => {
+          setOrderUser(response.data.result.recount);
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    };
+    fetchDataOrder();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = window.localStorage.getItem('X-API-key');
-
         const response = await authAPI.getAuth(token);
+
         setUsername(response.username);
         <ManagerContact userName={response.username} />;
       } catch (error) {
@@ -70,11 +105,18 @@ const OrderProduct = () => {
     }
   };
 
-  const deleteUser = (index) => {
-    const spead = [...getAllUser];
-    spead.splice(index, 1);
-    localStorage.setItem('userOrder', JSON.stringify(spead));
-    window.location.reload();
+  const deleteUser = (id) => {
+   
+    
+   try {
+    orderApi.deleteOrder(id)
+   } catch (error) {
+    alert(error)
+   }
+    // const spead = [...getAllUser];
+    // spead.splice(index, 1);
+    // localStorage.setItem('userOrder', JSON.stringify(spead));
+    // window.location.reload();
   };
 
   const btnSearch = () => {
@@ -85,7 +127,15 @@ const OrderProduct = () => {
     });
     setBtnSearchUser(searchNameUser);
   };
+  const getBackgroundColor = (status) => {
+    const colorMapping = {
+      1: '#ff0000', // Đỏ
+      2: '#00ff00', // Xanh lá
+      3: '#0000ff', // Xanh dương
+    };
 
+    return colorMapping[status] || '#ffffff';
+  };
   const Container = () => {
     return (
       <>
@@ -177,7 +227,7 @@ const OrderProduct = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {btnSearchUser.length === 0 ? (
+                  {orderUser.length === 0 ? (
                     <div className="空洞的">
                       <b>
                         <h1 className="text-center">Không tìm thấy đơn hàng</h1>
@@ -186,7 +236,7 @@ const OrderProduct = () => {
                   ) : (
                     <>
                       {' '}
-                      {btnSearchUser.map((user, index) => (
+                      {orderUser.map((user, index) => (
                         <tr key={user.id}>
                           <td>
                             <input
@@ -195,14 +245,44 @@ const OrderProduct = () => {
                               onChange={() => toggleCheckbox(user.id)}
                             />
                           </td>
-                          <td>{user.code}</td>
-                          <td>{user.nameUserOrder}</td>
+                          <td>{user.serial_number}</td>
+                          <td>{user.username}</td>
                           <td>{user.note}</td>
-                          <td>{user.time}</td>
-                          <td>{user.totalPrice}</td>
-                          <td>{user.classify}</td>
-                          <td>{user.time}</td>
-                          <td>{user.timmeUpdate}</td>
+                          <td>
+                            {moment(user.order_at).format('YYYY-MM-DD HH:mm')}
+                          </td>
+                          <td>{user.total_price}</td>
+                          <td>
+                            {' '}
+                            <form method="put">
+                              <select
+                                value={user.status}
+                                onChange={(event) =>
+                                  onchangeStatus(event, user.order_id)
+                                }
+                                // onChange={(e) => {
+
+                                //   // setSelectedColor(
+                                //   //   getBackgroundColor(selectedStatus),
+                                //   // );
+                                // }}
+                              >
+                                <option value="1">Đơn hàng mới</option>
+                                <option value="2">Đơn xác thực</option>
+                                <option value="3">Đơn giao hàng</option>
+                                <option value="4">Đã giao hàng</option>
+                                <option value="5">Đã thanh toán</option>
+                                <option value="6"> Hoàn tất</option>
+                                <option value="7"> Bị từ chối</option>
+                              </select>{' '}
+                            </form>
+                          </td>
+                          <td>
+                            {moment(user.created_at).format('YYYY-MM-DD HH:mm')}
+                          </td>
+                          <td>
+                            {moment(user.updated_at).format('YYYY-MM-DD HH:mm')}
+                          </td>
                           <td>
                             <Link to={`/admin/order_detail/${user.id}`}>
                               <Button>Xem</Button>
@@ -210,7 +290,7 @@ const OrderProduct = () => {
                             <Button
                               className="ml-3"
                               variant="danger"
-                              onClick={() => deleteUser(index)}
+                              onClick={() => deleteUser(user.order_id)}
                             >
                               Xóa
                             </Button>
@@ -221,6 +301,41 @@ const OrderProduct = () => {
                   )}
                 </tbody>
               </table>
+            </div>
+          </div>
+          <div className="paging text-center mt-5 mb-5">
+            <div>
+              <button className="btn-pagig">
+                <AiOutlineLeft />
+              </button>
+              <a href={`/admin/order/${getNumberPages}`}>
+                <button
+                  className="btn-pagig"
+                  onClick={(event) => getNumberPager(event)}
+                >
+                  1
+                </button>
+              </a>
+              <a href={`/admin/order/${getNumberPages}`}>
+                <button
+                  className="btn-pagig"
+                  onClick={(event) => getNumberPager(event)}
+                >
+                  2
+                </button>
+              </a>
+              <a href={`/admin/order/${getNumberPages}`}>
+                <button
+                  className="btn-pagig"
+                  onClick={(event) => getNumberPager(event)}
+                >
+                  3
+                </button>
+              </a>
+              <span className="btn-pagig">...</span>
+              <button className="btn-pagig">
+                <AiOutlineRight />
+              </button>
             </div>
           </div>
         </div>

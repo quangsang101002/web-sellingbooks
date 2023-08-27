@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment/moment';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
+import userAPI from '../../../apis/user.api';
+import authAPI from '../../../apis/auth.api';
 
 function CustomerRegisterPage() {
   const [user, setUser] = useState('');
@@ -16,7 +18,9 @@ function CustomerRegisterPage() {
   const [repeat, setRepeatPassWord] = useState('');
   const [validate, setValidate] = useState({});
   const [validatePw, setValidatePw] = useState('');
-
+  const [showPw, setShowPw] = useState('');
+  const [displayErorr, setDisplayErorr] = useState('');
+  console.log(displayErorr.errorPw);
   const navigate = useNavigate();
   const setShowPassword = () => {
     setShowPw(!showPw);
@@ -26,16 +30,44 @@ function CustomerRegisterPage() {
   };
   const getAddUser = JSON.parse(localStorage.getItem('infoUser')) ?? [];
   const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
-  const [showPw, setShowPw] = useState('');
-  const addInfoUser = (event) => {
+  const handleRegister = async (event) => {
     event.preventDefault();
-    const validationResult = validateInput();
-    if (validationResult.isValid) {
-      addUser();
-      navigate('/login');
+    const registerUser = {
+      username: user,
+      email: email,
+      first_name: firstName,
+      last_name: lastName,
+      password: passWord,
+    };
+
+    const validatePw = validateName();
+
+    if (validatePw.size === 0) {
+      try {
+        await authAPI.register(registerUser);
+      } catch (error) {
+        // console.log(error);
+        alert(error);
+      }
     } else {
-      setValidate(validationResult.errors);
+      setDisplayErorr(Object.fromEntries(validatePw));
     }
+
+    // const validationResult = validateInput();
+    // if (validationResult.isValid) {
+    //   addUser();
+    //   navigate('/login');
+    // } else {
+    //   setValidate(validationResult.errors);
+    // }
+  };
+
+  const validateName = () => {
+    let error = new Map();
+    if (passWord !== repeat) {
+      error.set('errorPw', 'Mật khẩu không trùng lặp');
+    }
+    return error;
   };
 
   const validateInput = () => {
@@ -105,7 +137,7 @@ function CustomerRegisterPage() {
         <div className="title">
           <h2 className="text-center">Đăng kí</h2>
         </div>
-        <Form>
+        <Form method="POST">
           <Form.Group className="mb-3" controlId="formPlaintextUserName">
             <Col>
               <Form.Control
@@ -166,7 +198,7 @@ function CustomerRegisterPage() {
                 <FaEyeSlash className="showinput" onClick={setShowPassword} />
               )}
             </Col>
-            <small>{validate.passWord}</small>
+            <small>{displayErorr.errorPw}</small>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPlaintextRepeatPassword">
@@ -193,7 +225,7 @@ function CustomerRegisterPage() {
             <Button
               type="submit"
               className="add-product_buy"
-              onClick={addInfoUser}
+              onClick={handleRegister}
             >
               Submit
             </Button>

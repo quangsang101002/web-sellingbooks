@@ -26,7 +26,9 @@ function AdminApp() {
         <Route path="/product" element={<ProductList />}>
           <Route path=":id" element={<ProductList />} />
         </Route>
-        <Route path="/order" element={<OrderProduct />} />
+        <Route path="/order" element={<OrderProduct />}>
+          <Route path=":id" element={<OrderProduct />} />
+        </Route>
         <Route path="/order_detail/:id" element={<OrderDetail />} />
         <Route path="/manager_contact" element={<ManagerContact />} />
         <Route path="/manager_contact_detail/:id" element={<ContactDetail />} />

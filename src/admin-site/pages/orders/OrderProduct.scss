@@ -18,3 +18,22 @@
     margin-left: 100px;
   }
 }
+.page-wrapper {
+  min-height: 100vh; /* Đảm bảo wrapper che phủ toàn bộ viewport */
+  transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu mượt mà */
+}
+.colored-select {
+  background-color: white; /* Màu nền mặc định */
+}
+
+.colored-select option[value='1']:selected {
+  background-color: red; /* Thay đổi màu khi chọn tùy chọn "Đơn hàng mới" */
+}
+
+.colored-select option[value='2']:selected {
+  background-color: green; /* Thay đổi màu khi chọn tùy chọn "Đơn xác thực" */
+}
+.colored-select {
+  background-color: white; /* Màu nền mặc định */
+  transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu mượt mà */
+}

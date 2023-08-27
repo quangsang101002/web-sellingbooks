@@ -24,34 +24,35 @@ const AdminLayout = () => {
   const [getNumberPage, setGetNumberPage] = useState();
   const [userAdmin, setUserAdmin] = useState([]);
   const [avatar, setAvatar] = useState();
+  const [idAdmin, setIdAdmin] = useState();
   const { page } = useParams();
-
   const navigate = useNavigate();
-  const fetchData = async () => {
-    await userAPI
-      .searchUsers(5, Number(page || 1))
-      .then((response) => {
-        setGetUser(response.result.recount);
-      })
-      .catch((error) => {
-        alert(error);
-      });
-  };
-
+  console.log();
   useEffect(() => {
-    fetchData();
-    const fetchDataUsers = async () => {
+    const fetchData = async () => {
       await userAPI
-        .searchUsers()
+        .searchUsers(5, Number(page || 1))
         .then((response) => {
-          setUserAdmin(response.result.recount);
+          setGetUser(response.result.recount);
         })
         .catch((error) => {
           alert(error);
         });
     };
-    fetchDataUsers();
+    fetchData();
   }, []);
+
+  const changeAvatar = async (avatar) => {
+    try {
+      if (avatar) {
+        const formData = new FormData();
+        formData.append('avatar', avatar);
+        await userAPI.updateAvatar(idAdmin, formData);
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,6 +61,7 @@ const AdminLayout = () => {
         const response = await authAPI.getAuth(token);
         setAvatar(response.avatar);
         setUsername(response.username);
+        setIdAdmin(response.id);
       } catch (error) {
         navigate('/admin');
       }
@@ -135,6 +137,13 @@ const AdminLayout = () => {
         <div className="mt-5">
           <div className="row">
             <div className="col-3">
+              <div>
+                <input
+                  type="file"
+                  name="avatar"
+                  onChange={(event) => changeAvatar(event.target.files[0])}
+                />
+              </div>
               <Table striped hover variant="dark" className="text-center">
                 <thead>
                   <tr>

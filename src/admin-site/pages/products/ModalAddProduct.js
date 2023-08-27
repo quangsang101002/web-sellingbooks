@@ -204,6 +204,7 @@ function ModalAddProduct() {
             </Form.Label>
             <Col sm="10">
               <Form.Control
+                name="listProduct"
                 type="file"
                 accept="image/*"
                 value={image}

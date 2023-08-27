@@ -40,7 +40,7 @@ const Modals = (props) => {
   const changeValue = (users) => {
     if (users) {
       users.forEach((user) => {
-        if (user.id == props.user) {
+        if (user.id === props.user) {
           setUserName(user.username);
           setEmail(user.email);
           setFistName(user.first_name);

@@ -18,6 +18,7 @@ function ModalAddUser() {
   const [validatePw, setValidatePw] = useState('');
   const [show, setShow] = useState(false);
   const [selectedClassify, setSelectedClassify] = useState('');
+  const [avatar, setAvatar] = useState();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -41,6 +42,7 @@ function ModalAddUser() {
       last_name: lastName,
       role: selectedClassify,
       password: passWord,
+      avatar: avatar,
     };
     if (email && firstName && lastName && passWord) {
       try {
@@ -169,6 +171,26 @@ function ModalAddUser() {
                   type="text"
                   placeholder="LastName"
                   onChange={(event) => setLastName(event.target.value)}
+                />
+              </Col>
+            </Form.Group>
+
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="formPlaintextFirstName"
+            >
+              <Form.Label column sm="2">
+                {/* Họ */}
+              </Form.Label>
+              <Col sm="10">
+                <Form.Control
+                  type="file"
+                  enctype="multipart/form-data"
+                  name="avatar"
+                  onChange={(event) =>
+                    setAvatar(event.target.files[0].originalname)
+                  }
                 />
               </Col>
             </Form.Group>

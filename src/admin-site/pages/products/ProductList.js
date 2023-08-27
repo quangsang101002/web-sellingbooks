@@ -19,6 +19,7 @@ const ProductList = () => {
   const [btnSearchUser, setBtnSearchUser] = useState([]);
   const [userName, setUsername] = useState('');
   const [getProduct, setGetProduct] = useState([]);
+  const [displayProduct, setDisplayProduct] = useState([]);
   const [getNumberPages, setGetNumberPages] = useState();
 
   const navigate = useNavigate();
@@ -30,9 +31,10 @@ const ProductList = () => {
   useEffect(() => {
     const fetchDataProduct = async () => {
       await productAPI
-        .searchProduct(7, Number(id) || 1)
+        .searchProduct(search, 7, Number(id) || 1)
         .then((response) => {
           setGetProduct(response.result.recount);
+          setDisplayProduct(response.result.recount);
         })
         .catch((error) => {
           alert(error);
@@ -40,6 +42,13 @@ const ProductList = () => {
     };
     fetchDataProduct();
   }, []);
+
+  useEffect(() => {
+    if (search === '') {
+      setDisplayProduct(getProduct);
+    } else {
+    }
+  }, [search]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -104,13 +113,15 @@ const ProductList = () => {
     window.location.reload();
   };
 
-  const btnSearch = () => {
-    const searchNameUser = btnSearchUser.filter((user) => {
-      return unidecode(user.nameProduct.toLowerCase()).includes(
-        unidecode(search.toLowerCase()),
-      );
-    });
-    setBtnSearchUser(searchNameUser);
+  const btnSearch = async () => {
+    await productAPI
+      .searchProduct(search, 7, Number(id) || 1)
+      .then((response) => {
+        setDisplayProduct(response.result.recount);
+      })
+      .catch((error) => {
+        alert(error);
+      });
   };
 
   const container = () => {
@@ -169,7 +180,7 @@ const ProductList = () => {
                     value={search}
                     onChange={(event) => setSearch(event.target.value)}
                   />
-                  <button type="button" onClick={() => btnSearch()}>
+                  <button type="button" onClick={btnSearch}>
                     Tìm kiếm
                   </button>
                 </div>
@@ -203,7 +214,7 @@ const ProductList = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {getProduct.length === 0 ? (
+                  {displayProduct.length === 0 ? (
                     <div className="空洞的">
                       <b>
                         <h1 className="text-center">Không tìm thấy sản phẩm</h1>
@@ -212,7 +223,7 @@ const ProductList = () => {
                   ) : (
                     <>
                       {' '}
-                      {getProduct.map((user, index) => (
+                      {displayProduct.map((user, index) => (
                         <tr key={user.id}>
                           <td>
                             <input
@@ -225,7 +236,14 @@ const ProductList = () => {
                           <td>{user.name}</td>
                           <td>{user.unit_price}</td>
                           <td>{user.description}</td>
-                          <td>{user.category}</td>
+                          <td>
+                            {user.category === 1
+                              ? 'STN'
+                              : user.category === 2
+                              ? 'VH & NT'
+                              : 'T & TT'}
+                          </td>
+
                           <td>
                             {moment(user.created_at).format('YYYY-MM-DD HH:mm')}
                           </td>

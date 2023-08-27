@@ -39,16 +39,13 @@ const logout = async () => {
     });
 };
 
-const register = async (requestBody) => {
-  return await api
-    .post('/register', requestBody)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.error(error);
-      throw error;
-    });
+const register = async (registerUserBody) => {
+  try {
+    const response = await api.post('/register', registerUserBody);
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 
 const authAPI = {

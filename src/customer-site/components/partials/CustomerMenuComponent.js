@@ -15,6 +15,20 @@ function CustomerMenuComponent() {
   const filterProduct = (event) => {
     setKeySearch(event.target.value);
   };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const token = window.localStorage.getItem('X-API-key');
+  //       const response = await authAPI.getAuth(token);
+  //       setAvatar(response.avatar);
+  //       setUsername(response.username);
+  //       setIdAdmin(response.id);
+  //     } catch (error) {
+  //       navigate('/admin');
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
   useEffect(() => {
     const fetchDataProduct = async () => {
       try {

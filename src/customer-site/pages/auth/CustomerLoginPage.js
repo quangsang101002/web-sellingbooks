@@ -2,9 +2,10 @@ import { Button } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import './CustomerRegisterPage.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
+import authAPI from '../../../apis/auth.api';
 
 function CustomerLoginPage() {
   const [email, setEmail] = useState('');
@@ -12,18 +13,31 @@ function CustomerLoginPage() {
   const [validate, setValidate] = useState({});
   const [validatePw, setValidatePw] = useState({});
   const [showPw, setShowPw] = useState(false);
+  const [displayErorr, setDisplayErorr] = useState('');
 
+  console.log('displayErorr---');
   const navigate = useNavigate();
   const getAddUser = JSON.parse(localStorage.getItem('infoUser')) ?? [];
-
   const setShowPassword = () => {
     setShowPw(!showPw);
   };
 
   const addInfoUser = (event) => {
     event.preventDefault();
-    validateName();
-    validatePassWord();
+
+    const fetchDataUser = async () => {
+      try {
+        const response = await authAPI.login(email, passWord);
+        window.localStorage.setItem('X-API-key-Custermer', response.token);
+        console.log('>>>', response);
+        navigate('/');
+      } catch (error) {
+        setDisplayErorr(error);
+      }
+    };
+    fetchDataUser();
+    // validateName();
+    // validatePassWord();
   };
 
   const validateName = () => {
@@ -99,7 +113,11 @@ function CustomerLoginPage() {
                 onChange={(event) => setEmail(event.target.value)}
               />
             </Col>
-            <small>{validate.mesEmail}</small>
+            {displayErorr === 'User not found' ? (
+              <small>User not found</small>
+            ) : (
+              ''
+            )}
           </Form.Group>
           <Form.Group className="mb-3" controlId="formPlaintextPassword">
             <Col className="wrapper_password">
@@ -112,7 +130,7 @@ function CustomerLoginPage() {
                 {showPw ? <FaEyeSlash /> : <FaEye />}
               </span>
             </Col>
-            <small>{validatePw.mesPw}</small>
+            {displayErorr === 'Sai mật khẩu' ? <small>Sai mật khẩu</small> : ''}
           </Form.Group>
 
           <div className="text-end">

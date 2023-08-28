@@ -19,8 +19,14 @@ function CustomerRegisterPage() {
   const [validate, setValidate] = useState({});
   const [validatePw, setValidatePw] = useState('');
   const [showPw, setShowPw] = useState('');
-  const [displayErorr, setDisplayErorr] = useState('');
-  console.log(displayErorr.errorPw);
+  const [displayErorr, setDisplayErorr] = useState({ errorPw: '' });
+  const [displayDb, setDisplayDb] = useState({
+    username: '',
+    email: '',
+    last_name: '',
+    password: '',
+  });
+
   const navigate = useNavigate();
   const setShowPassword = () => {
     setShowPw(!showPw);
@@ -40,33 +46,25 @@ function CustomerRegisterPage() {
       password: passWord,
     };
 
-    const validatePw = validateName();
-
-    if (validatePw.size === 0) {
-      try {
-        await authAPI.register(registerUser);
-      } catch (error) {
-        // console.log(error);
-        alert(error);
-      }
-    } else {
-      setDisplayErorr(Object.fromEntries(validatePw));
+    const validatePwResult = validateName();
+    try {
+      await authAPI.register(registerUser);
+    } catch (error) {
+      setDisplayDb(error.response.data.error);
     }
-
-    // const validationResult = validateInput();
-    // if (validationResult.isValid) {
-    //   addUser();
-    //   navigate('/login');
-    // } else {
-    //   setValidate(validationResult.errors);
-    // }
+    if (validatePwResult.size === 0) {
+      setDisplayErorr('');
+    } else {
+      setDisplayErorr(Object.fromEntries(validatePwResult));
+    }
   };
 
   const validateName = () => {
     let error = new Map();
     if (passWord !== repeat) {
-      error.set('errorPw', 'Mật khẩu không trùng lặp');
+      error.set('errorPw', 'Mật khẩu không trùng khớp');
     }
+
     return error;
   };
 
@@ -137,7 +135,7 @@ function CustomerRegisterPage() {
         <div className="title">
           <h2 className="text-center">Đăng kí</h2>
         </div>
-        <Form method="POST">
+        <Form>
           <Form.Group className="mb-3" controlId="formPlaintextUserName">
             <Col>
               <Form.Control
@@ -147,7 +145,7 @@ function CustomerRegisterPage() {
                 onChange={(event) => setUser(event.target.value)}
               />
             </Col>
-            <small>{validate.userName}</small>
+            <small>{displayDb.username}</small>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPlaintextEmail">
@@ -160,7 +158,7 @@ function CustomerRegisterPage() {
                 onChange={(event) => setEmail(event.target.value)}
               />
             </Col>
-            <small>{validate.email}</small>
+            <small>{displayDb.email}</small>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPlaintextFirstName">
@@ -182,7 +180,7 @@ function CustomerRegisterPage() {
                 onChange={(event) => setLastName(event.target.value)}
               />
             </Col>
-            <small>{validate.lastName}</small>
+            <small>{displayDb.last_name}</small>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formPlaintextPassword">
@@ -198,6 +196,7 @@ function CustomerRegisterPage() {
                 <FaEyeSlash className="showinput" onClick={setShowPassword} />
               )}
             </Col>
+            <small>{displayDb.password}</small>
             <small>{displayErorr.errorPw}</small>
           </Form.Group>
 

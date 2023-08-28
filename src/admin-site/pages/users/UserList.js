@@ -22,7 +22,6 @@ const AdminLayout = () => {
   const [username, setUsername] = useState('');
   const [getUser, setGetUser] = useState([]);
   const [getNumberPage, setGetNumberPage] = useState();
-  const [userAdmin, setUserAdmin] = useState([]);
   const [avatar, setAvatar] = useState();
   const [idAdmin, setIdAdmin] = useState();
   const { page } = useParams();

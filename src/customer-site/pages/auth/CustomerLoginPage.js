@@ -24,12 +24,10 @@ function CustomerLoginPage() {
 
   const addInfoUser = (event) => {
     event.preventDefault();
-
     const fetchDataUser = async () => {
       try {
         const response = await authAPI.login(email, passWord);
-        window.localStorage.setItem('X-API-key-Custermer', response.token);
-        console.log('>>>', response);
+        window.localStorage.setItem('X-API-Key', response.token);
         navigate('/');
       } catch (error) {
         setDisplayErorr(error);

@@ -11,14 +11,12 @@ const ModalProduct = (props) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   console.log('props.id', props.id);
-  // const getAddUser = JSON.parse(localStorage.getItem('products')) ?? [];
   const [sku, setSku] = useState('');
   const [nameProduct, setNameProduct] = useState('');
   const [categoryProduct, setCategoryProduct] = useState('');
   const [description, setDescription] = useState('');
   const [unitPrice, setUnitPrice] = useState('');
   const [image, setImage] = useState('');
-  const [category, setCategory] = useState(0);
   const [getProduct, setGetProduct] = useState([]);
   console.log('user', getProduct);
   const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');

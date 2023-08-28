@@ -5,30 +5,37 @@ import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import unidecode from 'unidecode';
 import productAPI from '../../../apis/products.api';
+import authAPI from '../../../apis/auth.api';
+import { useNavigate } from 'react-router-dom';
 
 function CustomerMenuComponent() {
   // const products = JSON.parse(localStorage.getItem('products')) ?? [];
   const [keySearch, setKeySearch] = useState('');
   const [filterSearchProduct, setFilterSearchProduct] = useState([]);
   const [allProduct, setAllProduct] = useState([]);
+  const [userName, setUsername] = useState();
 
+  console.log('---', userName);
+  const navigate = useNavigate();
   const filterProduct = (event) => {
     setKeySearch(event.target.value);
   };
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const token = window.localStorage.getItem('X-API-key');
-  //       const response = await authAPI.getAuth(token);
-  //       setAvatar(response.avatar);
-  //       setUsername(response.username);
-  //       setIdAdmin(response.id);
-  //     } catch (error) {
-  //       navigate('/admin');
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
+
+  const fetchData = async () => {
+    try {
+      if (window.localStorage.getItem('X-API-Key')) {
+        const response = await authAPI.getAuth();
+
+        setUsername(response.username);
+      }
+    } catch (error) {
+      navigate('/');
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   useEffect(() => {
     const fetchDataProduct = async () => {
       try {

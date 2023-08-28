@@ -21,7 +21,7 @@ function AdminLayout() {
     setShowPw(!showPw);
   };
   useEffect(() => {
-    const getUserLogin = window.localStorage.getItem('X-API-key');
+    const getUserLogin = window.localStorage.getItem('X-API-Key');
     if (getUserLogin) {
       navigate('/admin/product');
     } else {
@@ -35,7 +35,7 @@ function AdminLayout() {
     validatePassWord();
     try {
       const response = await authAPI.login(email, passWord, 'admin');
-      window.localStorage.setItem('X-API-key', response.token);
+      window.localStorage.setItem('X-API-Key', response.token);
       navigate('/admin/manager');
     } catch (error) {
       setMgs(error);

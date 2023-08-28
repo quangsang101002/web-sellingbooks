@@ -19,7 +19,7 @@ function CustomerRegisterPage() {
   const [validate, setValidate] = useState({});
   const [validatePw, setValidatePw] = useState('');
   const [showPw, setShowPw] = useState('');
-  const [displayErorr, setDisplayErorr] = useState({ errorPw: '' });
+  const [displayErorr, setDisplayErorr] = useState(new Map());
   const [displayDb, setDisplayDb] = useState({
     username: '',
     email: '',
@@ -38,6 +38,7 @@ function CustomerRegisterPage() {
   const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
   const handleRegister = async (event) => {
     event.preventDefault();
+    setDisplayErorr(new Map());
     const registerUser = {
       username: user,
       email: email,
@@ -47,15 +48,17 @@ function CustomerRegisterPage() {
     };
 
     const validatePwResult = validateName();
+
+    if (validatePwResult.size === 0) {
+      await setDisplayErorr('');
+    } else {
+      await setDisplayErorr(Object.fromEntries(validatePwResult));
+    }
+
     try {
       await authAPI.register(registerUser);
     } catch (error) {
       setDisplayDb(error.response.data.error);
-    }
-    if (validatePwResult.size === 0) {
-      setDisplayErorr('');
-    } else {
-      setDisplayErorr(Object.fromEntries(validatePwResult));
     }
   };
 
@@ -64,6 +67,7 @@ function CustomerRegisterPage() {
     if (passWord !== repeat) {
       error.set('errorPw', 'Mật khẩu không trùng khớp');
     }
+    console.log(error);
 
     return error;
   };

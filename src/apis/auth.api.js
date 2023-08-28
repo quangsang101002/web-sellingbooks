@@ -16,6 +16,8 @@ const login = async (username, password, type = 'customer') => {
 };
 
 const getAuth = async () => {
+  console.log('getAuth');
+  console.log('getHeaders', getHeaders());
   return await api
     .get('/auth', { headers: getHeaders() })
     .then((response) => {

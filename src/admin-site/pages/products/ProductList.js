@@ -52,7 +52,7 @@ const ProductList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = window.localStorage.getItem('X-API-key');
+        const token = window.localStorage.getItem('X-API-Key');
         const response = await authAPI.getAuth(token);
         setUsername(response.username);
       } catch (error) {
@@ -65,9 +65,9 @@ const ProductList = () => {
 
   const logoutUser = async () => {
     try {
-      const token = window.localStorage.getItem('X-API-key');
+      const token = window.localStorage.getItem('X-API-Key');
       await authAPI.logout(token);
-      localStorage.removeItem('X-API-key');
+      localStorage.removeItem('X-API-Key');
       navigate('/admin');
     } catch (error) {
       alert(error);

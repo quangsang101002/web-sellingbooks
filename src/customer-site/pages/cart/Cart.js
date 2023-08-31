@@ -31,6 +31,7 @@ const Cart = () => {
   const products = useSelector(
     (state) => state.customerProductReducer.products,
   );
+  console.log('----product', products);
   const deleteProductCart = (product) => {
     Swal.fire({
       title: 'Bạn có chắc chắn xóa không',
@@ -60,6 +61,7 @@ const Cart = () => {
 
   const increaseProduct = (product, id) => {
     let initNumber = product + 1;
+
     dispatch(changeQuantity(initNumber, id));
     setAuto(initNumber);
   };
@@ -94,18 +96,20 @@ const Cart = () => {
                 <div className="cart-img">
                   <img src={product.image} alt=""></img>
                 </div>
-                <p> {product.nameProduct}</p>
-                <span className="mr-2">{product.price}</span>
+                <p> {product.name}</p>
+                <span className="mr-2">${product.unit_price}</span>
                 <div className="quality-cart">
                   <button
-                    onClick={() => reducerProduct(product.quantity, product.id)}
+                    onClick={() =>
+                      reducerProduct(product.quantity, product.product_id)
+                    }
                   >
                     -
                   </button>
                   <input value={product.quantity}></input>
                   <button
                     onClick={() =>
-                      increaseProduct(product.quantity, product.id)
+                      increaseProduct(product.quantity, product.product_id)
                     }
                   >
                     +

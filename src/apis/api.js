@@ -7,5 +7,6 @@ const getHeaders = () => {
     'X-API-Key': window.localStorage.getItem('X-API-Key'),
   };
 };
+
 export { getHeaders };
 export default axios;

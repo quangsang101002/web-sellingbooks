@@ -14,22 +14,26 @@ function ModalAddProduct() {
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
   const [classify, setClassify] = useState('');
-  const [image, setImage] = useState('');
   const [validate, setValidate] = useState('');
   const [show, setShow] = useState(false);
+  const [avatar, setAvatar] = useState('');
+  const [gallery, setGallery] = useState('');
+  const [errorDisplay, setErrorDisplay] = useState('');
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const getAddProduct = JSON.parse(localStorage.getItem('products')) ?? [];
-  const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
+  // const getAddProduct = JSON.parse(localStorage.getItem('products')) ?? [];
+  // const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
-  const addInfoUser = () => {
+  const addInfoUser = (event) => {
+    event.preventDefault();
     const validateError = validateName();
     if (validateError.size === 0) {
-      addUser();
       setShow(false);
+      addUser();
     } else {
       setValidate(Object.fromEntries(validateError));
+      return;
     }
   };
 
@@ -54,26 +58,29 @@ function ModalAddProduct() {
       error.set('nameProduct', 'Tên sản phẩm không được bỏ trống');
     } else if (price.length === 0) {
       error.set('price', 'Đơn giá không được bỏ trống');
+    } else if (avatar.length === 0) {
+      error.set('avatar', 'Hình ảnh không được để trống');
+    } else if (gallery.length === 0) {
+      error.set('gallery', 'Hình ảnh không được để trống');
     }
-    // } else if (image.length === 0) {
-    //   error.set('image', 'Hình ảnh không được để trống');
-    // }
     return error;
   };
 
-  const addUser = () => {
+  const addUser = async () => {
     const allProduct = {
       sku: code,
       name: nameProduct,
       category: classify,
       description: description,
       unit_price: price,
-      image: image,
+      avatar: avatar,
+      gallery: gallery,
     };
     try {
-      productAPI.addProduct(allProduct);
+      await productAPI.addProduct(allProduct);
     } catch (error) {
-      alert(error);
+      setShow(true);
+      setErrorDisplay(error);
     }
   };
 
@@ -110,6 +117,8 @@ function ModalAddProduct() {
             </Col>
             <small className="text-center" style={{ color: 'red' }}>
               {validate.sku}
+              {errorDisplay.messageSku}
+              {errorDisplay.sku}
             </small>
           </Form.Group>
 
@@ -128,6 +137,8 @@ function ModalAddProduct() {
             </Col>
             <small className="text-center" style={{ color: 'red' }}>
               {validate.nameProduct}
+              {errorDisplay.messageName}
+              {errorDisplay.nameProduct}
             </small>
           </Form.Group>
 
@@ -203,30 +214,50 @@ function ModalAddProduct() {
               {/* Mật khẩu nhập lại */}
             </Form.Label>
             <Col sm="10">
+              <label for="myfile">
+                <b>avatarImage:</b>
+              </label>
               <Form.Control
                 name="listProduct"
                 type="file"
-                accept="image/*"
-                value={image}
-                onChange={(event) => setImage(event.target.value)}
+                // accept="image/*"
+                // value={image}
+                onChange={(event) => setAvatar(event.target.files[0])}
               />
               <small className="text-center" style={{ color: 'red' }}>
-                {validate.image}
+                {validate.avatar}
               </small>
             </Col>
           </Form.Group>
 
-          {/* <div className="col-12 text-end">
-            <Button onClick={addInfoUser}>Submit</Button>
-          </div> */}
-          {/* </Form>
-          </div> */}
+          <Form.Group
+            as={Row}
+            className="mb-3"
+            controlId="formPlaintextRepeatPassword"
+          >
+            <Form.Label column sm="2"></Form.Label>
+            <Col sm="10">
+              <label for="myfile">
+                <b>galleryImage:</b>
+              </label>
+              <Form.Control
+                name="galleryImage"
+                type="file"
+                // accept="image/*"
+                // value={image}
+                onChange={(event) => setGallery(event.target.files[0])}
+              />
+              <small className="text-center" style={{ color: 'red' }}>
+                {validate.gallery}
+              </small>
+            </Col>
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Đóng
           </Button>
-          <Button variant="primary" onClick={addInfoUser}>
+          <Button variant="primary" onClick={(event) => addInfoUser(event)}>
             Thêm mới
           </Button>
         </Modal.Footer>

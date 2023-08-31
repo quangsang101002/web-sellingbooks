@@ -7,6 +7,7 @@ import unidecode from 'unidecode';
 import productAPI from '../../../apis/products.api';
 import authAPI from '../../../apis/auth.api';
 import { useNavigate } from 'react-router-dom';
+import getStaticFileUrl from '../../../admin-site/utilities/getStaticFileUrl';
 
 function CustomerMenuComponent() {
   // const products = JSON.parse(localStorage.getItem('products')) ?? [];
@@ -14,18 +15,17 @@ function CustomerMenuComponent() {
   const [filterSearchProduct, setFilterSearchProduct] = useState([]);
   const [allProduct, setAllProduct] = useState([]);
   const [userName, setUsername] = useState();
-
-  console.log('---', userName);
   const navigate = useNavigate();
+
+  console.log('allProduct--->>', allProduct);
   const filterProduct = (event) => {
     setKeySearch(event.target.value);
   };
 
   const fetchData = async () => {
     try {
-      if (window.localStorage.getItem('X-API-Key')) {
+      if (window.localStorage.setItem('X-API-Key-Ctm')) {
         const response = await authAPI.getAuth();
-
         setUsername(response.username);
       }
     } catch (error) {
@@ -128,11 +128,17 @@ function CustomerMenuComponent() {
           </div>
           <div className="container-product mt-5 mb-5 row">
             {allProduct.map((product) => {
+              const inputString = product.image;
+              const parts = inputString.split(',');
+              const part1 = parts[0];
               return (
-                <div key={product.id} className="col-2 wrap-container_product">
-                  <Link to={`/detail-product/${product.id}`}>
+                <div
+                  key={product.product_id}
+                  className="col-2 wrap-container_product"
+                >
+                  <Link to={`/detail-product/${product.product_id}`}>
                     <div className="product_image">
-                      <img src={product.image} alt="" />
+                      <img src={getStaticFileUrl(part1)} alt="" />
                     </div>
                   </Link>
                   <h2 className="mt-4 product-description text-center">

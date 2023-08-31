@@ -27,7 +27,7 @@ function CustomerLoginPage() {
     const fetchDataUser = async () => {
       try {
         const response = await authAPI.login(email, passWord);
-        window.localStorage.setItem('X-API-Key', response.token);
+        window.localStorage.setItem('X-API-Key-Ctm', response.token);
         navigate('/');
       } catch (error) {
         setDisplayErorr(error);

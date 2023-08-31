@@ -46,7 +46,7 @@ function AdminLayout() {
     let isUser = false;
     const admin = 'Quản trị viên';
     for (const user of getAddUser) {
-      if (user.classify == admin && user.email === email) {
+      if (user.classify === admin && user.email === email) {
         isUser = true;
         break;
       }

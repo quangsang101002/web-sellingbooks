@@ -9,65 +9,81 @@ import { addProduct } from '../../store/actions/customerProductAction';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { useNavigate } from 'react-router-dom';
 import 'sweetalert2/src/sweetalert2.scss';
+import productAPI from '../../../apis/products.api';
+import getStaticFileUrl from '../../../admin-site/utilities/getStaticFileUrl';
 
 const CustomerDetails = () => {
+  const [similarProducts, setSimilarProducts] = useState('');
+  const [inceaseProduct, setInceaseProduct] = useState(1);
+  const [products, setProduct] = useState([]);
+  const [changeImg, setChangeimg] = useState('');
   const useParam = useParams();
   let { id } = useParam;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const products = JSON.parse(localStorage.getItem('products'));
+  // const products = JSON.parse(localStorage.getItem('products'));
   const getUserAccount =
     JSON.parse(localStorage.getItem('userAccount')) ?? null;
-  const [similarProducts, setSimilarProducts] = useState('');
-  const [inceaseProduct, setInceaseProduct] = useState(1);
 
   useEffect(() => {
-    const selectedProduct = () => {
-      return (
-        <>
-          <div className="container mt-5">
-            {products.map((product, index) => {
-              if (product.id == id) {
-                setSimilarProducts(product.classify);
-                return (
-                  <div className="row detail-book" key={index}>
-                    <div className="col-8">
-                      <h2>
-                        <b>Tên sách: </b>
-                        {product.nameProduct}
-                      </h2>
-                      <p>
-                        <b>Tác giả: </b>
-                        {product.description}
-                      </p>
-                      <h2>{product.price}đ</h2>
-                      Số lượng
-                      <div className="d-flex mb-5">
-                        <Button>-</Button>
-                        <FormControl
-                          style={{ width: '35px' }}
-                          min="1"
-                        ></FormControl>
-
-                        <Button>+</Button>
-                      </div>
-                      <Link to="/cart">
-                        <Button>Chọn mua</Button>
-                      </Link>
-                      <Button>Thêm vào giỏ hàng</Button>
-                    </div>
-                  </div>
-                );
-              }
-              return null;
-            })}
-          </div>
-        </>
-      );
-    };
-    selectedProduct();
+    fetchDataProduct();
   }, []);
+
+  const fetchDataProduct = async () => {
+    await productAPI
+      .searchProduct()
+      .then((response) => {
+        setProduct(response.result.recount);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+  // useEffect(() => {
+  //   const selectedProduct = () => {
+  //     return (
+  //       <>
+  //         <div className="container mt-5">
+  //           {products.map((product, index) => {
+  //             if (product.id == id) {
+  //               return (
+  //                 <div className="row detail-book" key={index}>
+  //                   <div className="col-8">
+  //                     <h2>
+  //                       <b>Tên sách: </b>
+  //                       {product.name}
+  //                     </h2>
+  //                     <p>
+  //                       <b>Tác giả: </b>
+  //                       {product.description}
+  //                     </p>
+  //                     <h2>{product.price}đ</h2>
+  //                     Số lượng
+  //                     <div className="d-flex mb-5">
+  //                       <Button>-</Button>
+  //                       <FormControl
+  //                         style={{ width: '35px' }}
+  //                         min="1"
+  //                       ></FormControl>
+
+  //                       <Button>+</Button>
+  //                     </div>
+  //                     <Link to="/cart">
+  //                       <Button>Chọn mua</Button>
+  //                     </Link>
+  //                     <Button>Thêm vào giỏ hàng</Button>
+  //                   </div>
+  //                 </div>
+  //               );
+  //             }
+  //             return null;
+  //           })}
+  //         </div>
+  //       </>
+  //     );
+  //   };
+  //   selectedProduct();
+  // }, []);
 
   const addProductNew = (product, inceaseProduct) => {
     if (getUserAccount) {
@@ -86,11 +102,12 @@ const CustomerDetails = () => {
     }
   };
   const addProductBuy = (product, inceaseProduct) => {
-    if (getUserAccount) {
-      dispatch(addProduct(product, inceaseProduct));
-    } else {
-      navigate('/register');
-    }
+    dispatch(addProduct(product, inceaseProduct));
+    // if (getUserAccount) {
+    //   dispatch(addProduct(product, inceaseProduct));
+    // } else {
+    //   navigate('/register');
+    // }
   };
   const increaseQuality = () => {
     setInceaseProduct(inceaseProduct + 1);
@@ -101,24 +118,38 @@ const CustomerDetails = () => {
     }
   };
 
+  const changeImage = (img) => {
+    setChangeimg(img);
+  };
   const displaySelectedProduct = () => {
     return (
       <>
         <div className="container mt-5">
           {products.map((product, index) => {
-            if (product.id == id) {
+            if (product.product_id == id) {
+              const inputString = product.image;
+              const parts = inputString.split(',');
+              const part1 = parts[0];
+              const part2 = parts[1];
               return (
                 <div className="row detail-book" key={index}>
-                  <div className="col-4 text-center ">
+                  <div className="col-4 text-center">
                     <div className="col-height">
                       {' '}
-                      <img src={product.image} alt=""></img>
+                      <img
+                        src={changeImg || getStaticFileUrl(part1)}
+                        alt=""
+                      ></img>
                     </div>
 
                     <div className="row prev-container">
                       <div className="col-2 prev-img">
                         {' '}
-                        <img src={product.image2} alt=""></img>
+                        <img
+                          src={getStaticFileUrl(part2)}
+                          alt="ảnh sp"
+                          onClick={() => changeImage(getStaticFileUrl(part2))}
+                        ></img>
                       </div>
                       <div className="col-2 prev-img">
                         {' '}
@@ -141,13 +172,13 @@ const CustomerDetails = () => {
                   <div className="col-8">
                     <h2>
                       <b>Tên sách: </b>
-                      {product.nameProduct}
+                      {product.name}
                     </h2>
                     <p>
                       <b>Tác giả: </b>
                       {product.description}
                     </p>
-                    <h2>{product.price}đ</h2>
+                    <h2>{product.unit_price}đ</h2>
                     Số lượng
                     <div className="d-flex mb-5">
                       <button className="color-btn" onClick={reduceQuality}>
@@ -172,25 +203,14 @@ const CustomerDetails = () => {
                         <LiaCartPlusSolid /> Thêm vào giỏ hàng
                       </button>
 
-                      {getUserAccount ? (
-                        <Link to="/carts">
-                          <button
-                            className="add-product_buy"
-                            onClick={() =>
-                              addProductBuy(product, inceaseProduct)
-                            }
-                          >
-                            Chọn mua
-                          </button>
-                        </Link>
-                      ) : (
+                      <Link to="/carts">
                         <button
                           className="add-product_buy"
                           onClick={() => addProductBuy(product, inceaseProduct)}
                         >
                           Chọn mua
                         </button>
-                      )}
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -219,7 +239,7 @@ const CustomerDetails = () => {
             )}
           </div>
           <div className="container-product mt-5 mb-5 row">
-            {products.map((product) => {
+            {/* {products.map((product) => {
               if (product.classify == similarProducts) {
                 return (
                   <div
@@ -248,7 +268,7 @@ const CustomerDetails = () => {
                 );
               }
               return null;
-            })}
+            })} */}
           </div>
         </Container>
       </>

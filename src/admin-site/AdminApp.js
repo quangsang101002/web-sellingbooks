@@ -16,28 +16,36 @@ import ContactDetail from './pages/contacts/ContactDetail';
 
 function AdminApp() {
   return (
-    <Provider store={store}>
-      <Routes>
-        {/* <Route path="/login" element={<AdminLoginPage />} /> */}
-        <Route path="/login" element={<AdminLayout />} />
-        <Route path="/manager" element={<UserList />}>
-          <Route path=":page" element={<UserList />} />
-        </Route>
-        <Route path="/product" element={<ProductList />}>
-          <Route path=":id" element={<ProductList />} />
-        </Route>
-        <Route path="/order" element={<OrderProduct />}>
-          <Route path=":id" element={<OrderProduct />} />
-        </Route>
-        <Route path="/order_detail/:id" element={<OrderDetail />} />
-        <Route path="/manager_contact" element={<ManagerContact />} />
-        <Route path="/manager_contact_detail/:id" element={<ContactDetail />} />
-        <Route path="/" element={<AdminLayout />}>
-          <Route index element={<AdminHomePage />} />
-          <Route path="*" element={<AdminNotFoundPage />} />
-        </Route>
-      </Routes>
-    </Provider>
+    // <div style={{ display: 'flex' }}>
+    <>
+      {/* <Menu /> */}
+      <Provider store={store}>
+        <Routes>
+          {/* <Route path="/login" element={<AdminLoginPage />} /> */}
+          <Route path="/login" element={<AdminLayout />} />
+          <Route path="/manager" element={<UserList />}>
+            <Route path=":page" element={<UserList />} />
+          </Route>
+          <Route path="/product" element={<ProductList />}>
+            <Route path=":id" element={<ProductList />} />
+          </Route>
+          <Route path="/order" element={<OrderProduct />}>
+            <Route path=":id" element={<OrderProduct />} />
+          </Route>
+          <Route path="/order_detail/:id" element={<OrderDetail />} />
+          <Route path="/manager_contact" element={<ManagerContact />} />
+          <Route
+            path="/manager_contact_detail/:id"
+            element={<ContactDetail />}
+          />
+          <Route path="/" element={<AdminLayout />}>
+            <Route index element={<AdminHomePage />} />
+            <Route path="*" element={<AdminNotFoundPage />} />
+          </Route>
+        </Routes>
+      </Provider>
+    </>
+    // </div>
   );
 }
 

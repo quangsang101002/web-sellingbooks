@@ -4,16 +4,17 @@ const initState = {
   totalPricePay: [],
 };
 const customerProductReducer = (state = initState, action) => {
+  console.log('actionPRDUCT======', action);
   let products = [];
   let totalPricePay = [];
   switch (action.type) {
     case 'ADD_TO_CART':
       let isExits = false;
       products = state.products.map((item) => {
-        if (action.payload.id === item.id) {
+        if (action.payload.product_id == item.product_id) {
           isExits = true;
           item.quantity = item.quantity + action.payload.quantity;
-          item.subTotal = item.quantity * Number(item.price);
+          item.subTotal = item.quantity * Number(item.unit_price);
         }
         return item;
       });
@@ -23,7 +24,7 @@ const customerProductReducer = (state = initState, action) => {
           ...products,
           {
             ...action.payload,
-            subTotal: action.payload.price * action.payload.quantity,
+            subTotal: action.payload.unit_price * action.payload.quantity,
           },
         ];
       }
@@ -35,9 +36,9 @@ const customerProductReducer = (state = initState, action) => {
       break;
     case 'CHANGE_QUANTITY':
       products = state.products.map((item) => {
-        if (item.id === action.payload.id) {
+        if (item.product_id == action.payload.id) {
           item.quantity = action.payload.quantity;
-          item.subTotal = item.price * item.quantity;
+          item.subTotal = item.unit_price * item.quantity;
         }
         return item;
       });

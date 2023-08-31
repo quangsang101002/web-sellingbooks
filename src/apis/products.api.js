@@ -17,16 +17,27 @@ const searchProduct = async (name, limit, page) => {
     });
 };
 const addProduct = async (bodyProduct) => {
-  return await api
-    .post('/product', bodyProduct, { headers: getHeaders() })
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.error('API Error', error);
-      throw error;
+  const formData = new FormData();
+  // Thêm các trường dữ liệu sản phẩm vào formData
+  formData.append('sku', bodyProduct.sku);
+  formData.append('name', bodyProduct.name);
+  formData.append('category', bodyProduct.category);
+  formData.append('description', bodyProduct.description);
+  formData.append('unit_price', bodyProduct.unit_price);
+  // Thêm hình ảnh avatar và gallery vào formData
+  formData.append('avatar', bodyProduct.avatar);
+  formData.append('gallery', bodyProduct.gallery);
+
+  try {
+    const response = await api.post('/product', formData, {
+      headers: getHeaders(),
     });
+    return response.data;
+  } catch (error) {
+    return Promise.reject(error.response.data.error);
+  }
 };
+
 const getDetailProduct = () => {};
 
 const deleteProduct = async (id) => {

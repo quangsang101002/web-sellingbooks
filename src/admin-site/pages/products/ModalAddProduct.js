@@ -24,7 +24,7 @@ function ModalAddProduct() {
   const handleShow = () => setShow(true);
   // const getAddProduct = JSON.parse(localStorage.getItem('products')) ?? [];
   // const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
-
+  console.log('Array.from(gallery)----', Array.from(gallery));
   const addInfoUser = (event) => {
     event.preventDefault();
     const validateError = validateName();
@@ -74,7 +74,7 @@ function ModalAddProduct() {
       description: description,
       unit_price: price,
       avatar: avatar,
-      gallery: gallery,
+      gallery: Array.from(gallery),
     };
     try {
       await productAPI.addProduct(allProduct);
@@ -89,179 +89,184 @@ function ModalAddProduct() {
   };
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Thêm
-      </Button>
-      <Modal show={show} onHide={handleClose} animation={false}>
-        <Modal.Header closeButton>
-          <Modal.Title>Thêm người dùng</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {/* <div className="wrapper_CustomerRegisterPage">
+      <form method="post" enctype="multipart/form-data">
+        <Button variant="primary" onClick={handleShow}>
+          Thêm
+        </Button>
+        <Modal show={show} onHide={handleClose} animation={false}>
+          <Modal.Header closeButton>
+            <Modal.Title>Thêm người dùng</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {/* <div className="wrapper_CustomerRegisterPage">
             <Form> */}
-          <Form.Group
-            as={Row}
-            className="mb-3"
-            controlId="formPlaintextUserName"
-          >
-            <Form.Label column sm="2">
-              {/* Tên đăng nhập */}
-            </Form.Label>
-            <Col sm="10">
-              <Form.Control
-                type="text"
-                placeholder="Mã sản phẩm"
-                value={code}
-                onChange={(event) => setCode(event.target.value)}
-              />
-            </Col>
-            <small className="text-center" style={{ color: 'red' }}>
-              {validate.sku}
-              {errorDisplay.messageSku}
-              {errorDisplay.sku}
-            </small>
-          </Form.Group>
-
-          <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
-            <Form.Label column sm="2">
-              {/* Email */}
-            </Form.Label>
-            <Col sm="10">
-              <Form.Control
-                type="email"
-                name="text"
-                placeholder="Tên sản phẩm"
-                value={nameProduct}
-                onChange={(event) => setNameProduct(event.target.value)}
-              />
-            </Col>
-            <small className="text-center" style={{ color: 'red' }}>
-              {validate.nameProduct}
-              {errorDisplay.messageName}
-              {errorDisplay.nameProduct}
-            </small>
-          </Form.Group>
-
-          <Form.Group
-            as={Row}
-            className="mb-3"
-            controlId="formPlaintextFirstName"
-          >
-            <Form.Label column sm="2">
-              {/* Họ */}
-            </Form.Label>
-            <Col sm="10">
-              <Form.Control
-                type="text"
-                as="textarea"
-                placeholder="Mô tả"
-                value={description}
-                onChange={(event) => setDescription(event.target.value)}
-              />
-            </Col>
-          </Form.Group>
-
-          <Form.Group
-            as={Row}
-            className="mb-3"
-            controlId="formPlaintextLastName"
-          >
-            <Form.Label column sm="2">
-              {/* Tên */}
-            </Form.Label>
-            <Col sm="10">
-              <Form.Control
-                type="text"
-                placeholder="Đơn giá"
-                value={price}
-                onChange={(event) => setPrice(event.target.value)}
-              />
-            </Col>
-            <small className="text-center" style={{ color: 'red' }}>
-              {validate.price}
-            </small>
-          </Form.Group>
-
-          <Form.Group
-            as={Row}
-            className="mb-3"
-            controlId="formPlaintextPassword"
-          >
-            <Form.Label column sm="2">
-              {/* Mật khẩu */}
-            </Form.Label>
-            <Col sm="10">
-              <Form.Select
-                onChange={(event) => getClassify(event)}
-                value={classify}
-              >
-                <option disabled hidden value="">
-                  Thể loại
-                </option>
-                <option value="1">Sách thiếu nhi</option>
-                <option value="2">Sách văn học nghệ thuật</option>
-                <option value="3">Sách Truyện, tiểu thuyết</option>
-              </Form.Select>
-            </Col>
-          </Form.Group>
-
-          <Form.Group
-            as={Row}
-            className="mb-3"
-            controlId="formPlaintextRepeatPassword"
-          >
-            <Form.Label column sm="2">
-              {/* Mật khẩu nhập lại */}
-            </Form.Label>
-            <Col sm="10">
-              <label for="myfile">
-                <b>avatarImage:</b>
-              </label>
-              <Form.Control
-                name="listProduct"
-                type="file"
-                // accept="image/*"
-                // value={image}
-                onChange={(event) => setAvatar(event.target.files[0])}
-              />
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="formPlaintextUserName"
+            >
+              <Form.Label column sm="2">
+                {/* Tên đăng nhập */}
+              </Form.Label>
+              <Col sm="10">
+                <Form.Control
+                  type="text"
+                  placeholder="Mã sản phẩm"
+                  value={code}
+                  onChange={(event) => setCode(event.target.value)}
+                />
+              </Col>
               <small className="text-center" style={{ color: 'red' }}>
-                {validate.avatar}
+                {validate.sku}
+                {errorDisplay.messageSku}
+                {errorDisplay.sku}
               </small>
-            </Col>
-          </Form.Group>
+            </Form.Group>
 
-          <Form.Group
-            as={Row}
-            className="mb-3"
-            controlId="formPlaintextRepeatPassword"
-          >
-            <Form.Label column sm="2"></Form.Label>
-            <Col sm="10">
-              <label for="myfile">
-                <b>galleryImage:</b>
-              </label>
-              <Form.Control
-                name="galleryImage"
-                type="file"
-                // accept="image/*"
-                // value={image}
-                onChange={(event) => setGallery(event.target.files[0])}
-              />
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="formPlaintextEmail"
+            >
+              <Form.Label column sm="2">
+                {/* Email */}
+              </Form.Label>
+              <Col sm="10">
+                <Form.Control
+                  type="email"
+                  name="text"
+                  placeholder="Tên sản phẩm"
+                  value={nameProduct}
+                  onChange={(event) => setNameProduct(event.target.value)}
+                />
+              </Col>
               <small className="text-center" style={{ color: 'red' }}>
-                {validate.gallery}
+                {validate.nameProduct}
+                {errorDisplay.messageName}
+                {errorDisplay.nameProduct}
               </small>
-            </Col>
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Đóng
-          </Button>
-          <Button variant="primary" onClick={(event) => addInfoUser(event)}>
-            Thêm mới
-          </Button>
-        </Modal.Footer>
-      </Modal>
+            </Form.Group>
+
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="formPlaintextFirstName"
+            >
+              <Form.Label column sm="2">
+                {/* Họ */}
+              </Form.Label>
+              <Col sm="10">
+                <Form.Control
+                  type="text"
+                  as="textarea"
+                  placeholder="Mô tả"
+                  value={description}
+                  onChange={(event) => setDescription(event.target.value)}
+                />
+              </Col>
+            </Form.Group>
+
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="formPlaintextLastName"
+            >
+              <Form.Label column sm="2">
+                {/* Tên */}
+              </Form.Label>
+              <Col sm="10">
+                <Form.Control
+                  type="text"
+                  placeholder="Đơn giá"
+                  value={price}
+                  onChange={(event) => setPrice(event.target.value)}
+                />
+              </Col>
+              <small className="text-center" style={{ color: 'red' }}>
+                {validate.price}
+              </small>
+            </Form.Group>
+
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="formPlaintextPassword"
+            >
+              <Form.Label column sm="2">
+                {/* Mật khẩu */}
+              </Form.Label>
+              <Col sm="10">
+                <Form.Select
+                  onChange={(event) => getClassify(event)}
+                  value={classify}
+                >
+                  <option disabled hidden value="">
+                    Thể loại
+                  </option>
+                  <option value="1">Sách thiếu nhi</option>
+                  <option value="2">Sách văn học nghệ thuật</option>
+                  <option value="3">Sách Truyện, tiểu thuyết</option>
+                </Form.Select>
+              </Col>
+            </Form.Group>
+
+            <Form.Group
+              as={Row}
+              className="mb-3"
+              controlId="formPlaintextRepeatPassword"
+            >
+              <Form.Label column sm="2">
+                {/* Mật khẩu nhập lại */}
+              </Form.Label>
+              <Col sm="10">
+                <label for="myfile">
+                  <b>avatarImage:</b>
+                </label>
+                <Form.Control
+                  name="listProduct"
+                  type="file"
+                  onChange={(event) => setAvatar(event.target.files[0])}
+                />
+                <small className="text-center" style={{ color: 'red' }}>
+                  {validate.avatar}
+                </small>
+              </Col>
+            </Form.Group>
+
+            <Form.Group
+              method="post"
+              enctype="multipart/form-data"
+              as={Row}
+              className="mb-3"
+              controlId="formPlaintextRepeatPassword"
+            >
+              <Form.Label column sm="2"></Form.Label>
+              <Col sm="10">
+                <label for="myfile">
+                  <b>galleryImage:</b>
+                </label>
+                <Form.Control
+                  name="galleryImage"
+                  type="file"
+                  multiple
+                  onChange={(event) => setGallery(event.target.files)}
+                />
+                <small className="text-center" style={{ color: 'red' }}>
+                  {validate.gallery}
+                </small>
+              </Col>
+            </Form.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Đóng
+            </Button>
+            <Button variant="primary" onClick={(event) => addInfoUser(event)}>
+              Thêm mới
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </form>
     </>
   );
 }

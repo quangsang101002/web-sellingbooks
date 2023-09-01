@@ -129,8 +129,12 @@ const CustomerDetails = () => {
             if (product.product_id == id) {
               const inputString = product.image;
               const parts = inputString.split(',');
+
               const part1 = parts[0];
               const part2 = parts[1];
+              const part3 = parts[2];
+              const part4 = parts[3];
+              const part5 = parts[4];
               return (
                 <div className="row detail-book" key={index}>
                   <div className="col-4 text-center">
@@ -153,20 +157,20 @@ const CustomerDetails = () => {
                       </div>
                       <div className="col-2 prev-img">
                         {' '}
-                        <img src={product.image3} alt=""></img>
+                        <img src={getStaticFileUrl(part3)} alt=""></img>
                       </div>
                       <div className="col-2 prev-img">
                         {' '}
-                        <img src={product.image4} alt=""></img>
+                        <img src={getStaticFileUrl(part4)} alt=""></img>
                       </div>
                       <div className="col-2 prev-img">
                         {' '}
-                        <img src={product.image5} alt=""></img>
+                        <img src={getStaticFileUrl(part5)} alt=""></img>
                       </div>
-                      <div className="col-2 prev-img">
+                      {/* <div className="col-2 prev-img">
                         {' '}
-                        <img src={product.image6} alt=""></img>
-                      </div>
+                        <img src={getStaticFileUrl(part5)} alt=""></img>
+                      </div> */}
                     </div>
                   </div>
                   <div className="col-8">

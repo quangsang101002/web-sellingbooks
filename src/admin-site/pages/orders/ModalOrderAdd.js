@@ -187,9 +187,9 @@ function ModalOrderAdd() {
             controlId="formPlaintextRepeatPassword"
           ></Form.Group>
 
-          <div className="col-12 text-end">
+          {/* <div className="col-12 text-end">
             <Button onClick={() => addInfoUser()}>Submit</Button>
-          </div>
+          </div> */}
           {/* </Form>
           </div> */}
         </Modal.Body>
@@ -197,7 +197,7 @@ function ModalOrderAdd() {
           <Button variant="secondary" onClick={handleClose}>
             Đóng
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={addInfoUser}>
             Thêm mới
           </Button>
         </Modal.Footer>

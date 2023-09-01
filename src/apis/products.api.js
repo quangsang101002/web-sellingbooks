@@ -29,7 +29,7 @@ const addProduct = async (bodyProduct) => {
   formData.append('gallery', bodyProduct.gallery);
 
   try {
-    const response = await api.post('/product', formData, {
+    const response = await api.postForm('/product', formData, {
       headers: getHeaders(),
     });
     return response.data;

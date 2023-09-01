@@ -11,6 +11,18 @@ const searchOrder = async () => {
       throw error;
     });
 };
+const addOrder = async (bodyOrder) => {
+  console.log('>>>-??', bodyOrder);
+  return await api
+    .post('/order', bodyOrder, { headers: getHeaders() })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error('API Error', error);
+      throw error;
+    });
+};
 const updateStatus = async (id, statusValue) => {
   const formData = new FormData();
   formData.append('status', Number(statusValue));
@@ -38,6 +50,7 @@ const deleteOrder = (id) => {
 };
 const productAPI = {
   searchOrder,
+  addOrder,
   updateStatus,
   deleteOrder,
 };

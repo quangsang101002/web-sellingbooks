@@ -448,6 +448,8 @@ button.swal2-confirm.swal2-styled {
     border-radius: 4px;
     padding-right: 10px;
     padding-left: 10px;
+    border: 1px solid;
+    margin-left: 25px;
   }
 }
 .total-order-pay {
@@ -466,4 +468,8 @@ button.swal2-confirm.swal2-styled {
   height: 100%;
   cursor: pointer;
   width: 100%;
+}
+.col-2.prev-img {
+  height: 68px;
+  margin: 0 2px;
 }

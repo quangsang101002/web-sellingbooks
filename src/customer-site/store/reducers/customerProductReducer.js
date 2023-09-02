@@ -4,7 +4,7 @@ const initState = {
   totalPricePay: [],
 };
 const customerProductReducer = (state = initState, action) => {
-  console.log('actionPRDUCT======', action);
+  console.log(action);
   let products = [];
   let totalPricePay = [];
   switch (action.type) {

@@ -30,7 +30,6 @@ const Contacts = () => {
   }));
 
   const orderProduct = (product) => {
-    console.log('pro--->>', product);
     const products = product.map((prd) => {
       return {
         serial_number: prd.sku,
@@ -44,7 +43,7 @@ const Contacts = () => {
     // const newData = [...existingData, ...infoOrder];
     // localStorage.setItem('userOrder', JSON.stringify(newData));
     try {
-      orderApi.addOrder(products[0]);
+      orderApi.addOrder(products);
       Swal.fire({
         title: '',
         text: 'Bạn đã đặt hàng thành công',
@@ -82,63 +81,53 @@ const Contacts = () => {
                   <td className="td-order">{product.quantity}</td>
                   <td className="td-order">{product.subTotal}</td>
                 </tr>
-                <tr>
-                  <td colSpan="2">
-                    <div className="address-contact">
-                      {/* <input
-                  type="text"
-                  placeholder="Tên người liên hệ"
-                  value={userContact}
-                  onChange={(event) => setUserContact(event.target.value)}
-                ></input> */}
-                    </div>
-                    <div className="address-contact">
-                      <label for="note">Lời nhắn</label>
-                      <input
-                        type="text"
-                        name="content"
-                        placeholder="Lưu ý cho người bán..."
-                        value={content}
-                        onChange={(event) => setContent(event.target.value)}
-                      ></input>
-                    </div>
-                    <div className="address-contact">
-                      {/* <Col sm="10">
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    type="text"
-                    placeholder="Nội dung"
-                    value={content}
-                    onChange={(event) => setContent(event.target.value)}
-                  />
-                </Col> */}
-                    </div>
-                  </td>
-                  {/* <td colSpan="2"></td> */}
-                  <td colSpan="2" className="td-order">
-                    Tổng số tiền({products.length} sản phẩm) {totalPircePay}
-                  </td>
-                </tr>
-
-                <tr>
-                  <td colSpan="4">
-                    <div className="total-order-pay">
-                      <h2>Tổng thanh toán</h2>
-                      <h2 className="text-center">{totalPircePay}</h2>
-                      <button
-                        type="button"
-                        className="mb-5 add-product_order add-product_buy"
-                        onClick={() => orderProduct(products)}
-                      >
-                        Đặt hàng
-                      </button>
-                    </div>
-                  </td>
-                </tr>
               </tbody>
             );
           })}
+          <tr>
+            <td colSpan="2">
+              <div className="address-contact"></div>
+
+              <div className="address-contact"></div>
+            </td>
+
+            <td colSpan="2" className="td-order">
+              Tổng số tiền({products.length} sản phẩm) {totalPircePay}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <div className="address-contact">
+                <label for="note">Lời nhắn</label>
+                <input
+                  type="text"
+                  name="content"
+                  placeholder="Lưu ý cho người bán..."
+                  value={content}
+                  onChange={(event) => setContent(event.target.value)}
+                ></input>
+              </div>
+            </td>
+            <td colspan="2">
+              <div>Đơn vị vận chuyển</div>
+            </td>
+          </tr>
+
+          <tr>
+            <td colSpan="4">
+              <div className="total-order-pay">
+                <h2>Tổng thanh toán</h2>
+                <h2 className="text-center">{totalPircePay}</h2>
+                <button
+                  type="button"
+                  className="mb-5 add-product_order add-product_buy"
+                  onClick={() => orderProduct(products)}
+                >
+                  Đặt hàng
+                </button>
+              </div>
+            </td>
+          </tr>
         </table>
       </div>
     </>

@@ -50,15 +50,15 @@ function CustomerRegisterPage() {
     const validatePwResult = validateName();
 
     if (validatePwResult.size === 0) {
-      await setDisplayErorr('');
+      setDisplayErorr('');
+      try {
+        await authAPI.register(registerUser);
+        navigate('/login');
+      } catch (error) {
+        setDisplayDb(error.response.data.error);
+      }
     } else {
-      await setDisplayErorr(Object.fromEntries(validatePwResult));
-    }
-
-    try {
-      await authAPI.register(registerUser);
-    } catch (error) {
-      setDisplayDb(error.response.data.error);
+      setDisplayErorr(Object.fromEntries(validatePwResult));
     }
   };
 
@@ -67,7 +67,6 @@ function CustomerRegisterPage() {
     if (passWord !== repeat) {
       error.set('errorPw', 'Mật khẩu không trùng khớp');
     }
-    console.log(error);
 
     return error;
   };

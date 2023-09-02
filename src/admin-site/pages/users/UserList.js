@@ -56,8 +56,8 @@ const AdminLayout = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = window.localStorage.getItem('X-API-Key');
-        const response = await authAPI.getAuth(token);
+        // const token = window.localStorage.getItem('X-API-Key');
+        const response = await authAPI.getAuth();
         setAvatar(response.avatar);
         setUsername(response.username);
         setIdAdmin(response.id);

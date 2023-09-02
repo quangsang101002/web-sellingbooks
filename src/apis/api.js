@@ -7,6 +7,11 @@ const getHeaders = () => {
     'X-API-Key': window.localStorage.getItem('X-API-Key'),
   };
 };
+const getHeadersCustomers = () => {
+  return {
+    'X-API-Key-customers': window.localStorage.getItem('X-API-Key-customers'),
+  };
+};
 
-export { getHeaders };
+export { getHeaders, getHeadersCustomers };
 export default axios;

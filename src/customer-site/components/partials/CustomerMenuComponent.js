@@ -24,10 +24,8 @@ function CustomerMenuComponent() {
 
   const fetchData = async () => {
     try {
-      if (window.localStorage.setItem('X-API-Key-Ctm')) {
-        const response = await authAPI.getAuth();
-        setUsername(response.username);
-      }
+      const response = await authAPI.getAuth();
+      setUsername(response.username);
     } catch (error) {
       navigate('/');
     }

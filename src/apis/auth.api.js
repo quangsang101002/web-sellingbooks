@@ -1,4 +1,4 @@
-import api, { getHeaders } from './api';
+import api, { getHeaders, getHeadersCustomers } from './api';
 
 const login = async (username, password, type = 'customer') => {
   const requestBody = {
@@ -16,6 +16,7 @@ const login = async (username, password, type = 'customer') => {
 };
 
 const getAuth = async () => {
+  console.log('getHeaders()', getHeaders());
   return await api
     .get('/auth', { headers: getHeaders() })
     .then((response) => {

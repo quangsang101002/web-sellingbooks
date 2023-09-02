@@ -12,17 +12,20 @@ const searchOrder = async () => {
     });
 };
 const addOrder = async (bodyOrder) => {
-  console.log('>>>-??', bodyOrder);
-  return await api
-    .post('/order', bodyOrder, { headers: getHeaders() })
-    .then((response) => {
-      return response;
-    })
-    .catch((error) => {
-      console.error('API Error', error);
+  for (const order of bodyOrder) {
+    try {
+      const response = await api.post('/order', order, {
+        headers: getHeaders(),
+      });
+      console.log('Success:', response);
+      // Xử lý dữ liệu trả về nếu cần
+    } catch (error) {
+      console.error('API Error:', error);
       throw error;
-    });
+    }
+  }
 };
+
 const updateStatus = async (id, statusValue) => {
   const formData = new FormData();
   formData.append('status', Number(statusValue));

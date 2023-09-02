@@ -31,7 +31,6 @@ const Cart = () => {
   const products = useSelector(
     (state) => state.customerProductReducer.products,
   );
-  console.log('----product', products);
   const deleteProductCart = (product) => {
     Swal.fire({
       title: 'Bạn có chắc chắn xóa không',

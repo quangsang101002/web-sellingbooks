@@ -14,17 +14,16 @@ function CustomerMenuComponent() {
   const [keySearch, setKeySearch] = useState('');
   const [filterSearchProduct, setFilterSearchProduct] = useState([]);
   const [allProduct, setAllProduct] = useState([]);
-  const [userName, setUsername] = useState();
+  const [userName, setUsername] = useState('');
   const navigate = useNavigate();
 
-  console.log('allProduct--->>', allProduct);
   const filterProduct = (event) => {
     setKeySearch(event.target.value);
   };
 
   const fetchData = async () => {
     try {
-      const response = await authAPI.getAuth();
+      const response = await authAPI.getAuthCustomer();
       setUsername(response.username);
     } catch (error) {
       navigate('/');

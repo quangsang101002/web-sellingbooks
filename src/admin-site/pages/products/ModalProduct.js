@@ -10,7 +10,6 @@ const ModalProduct = (props) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  console.log('props.id', props.id);
   const [sku, setSku] = useState('');
   const [nameProduct, setNameProduct] = useState('');
   const [categoryProduct, setCategoryProduct] = useState('');
@@ -18,7 +17,6 @@ const ModalProduct = (props) => {
   const [unitPrice, setUnitPrice] = useState('');
   const [image, setImage] = useState('');
   const [getProduct, setGetProduct] = useState([]);
-  console.log('user', getProduct);
   const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
   useEffect(() => {

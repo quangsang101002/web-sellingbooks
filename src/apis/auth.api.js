@@ -16,7 +16,6 @@ const login = async (username, password, type = 'customer') => {
 };
 
 const getAuth = async () => {
-  console.log('getHeaders()', getHeaders());
   return await api
     .get('/auth', { headers: getHeaders() })
     .then((response) => {
@@ -28,9 +27,9 @@ const getAuth = async () => {
     });
 };
 
-const logout = async () => {
+const getAuthCustomer = async () => {
   return await api
-    .post('/logout', {}, { headers: getHeaders() })
+    .get('/auth/customers', { headers: getHeadersCustomers() })
     .then((response) => {
       return response.data;
     })
@@ -40,6 +39,33 @@ const logout = async () => {
     });
 };
 
+const logout = async () => {
+  return await api
+    .post(
+      '/logout',
+      {},
+      { headers: getHeaders() } || { headers: getHeadersCustomers() },
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+      throw error;
+    });
+};
+
+const logoutCustomers = async () => {
+  return await api
+    .post('/logout', {}, { headers: getHeadersCustomers() })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+      throw error;
+    });
+};
 const register = async (registerUserBody) => {
   try {
     const response = await api.post('/register', registerUserBody);
@@ -52,7 +78,9 @@ const register = async (registerUserBody) => {
 const authAPI = {
   login,
   getAuth,
+  getAuthCustomer,
   logout,
+  logoutCustomers,
   register,
 };
 

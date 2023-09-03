@@ -11,12 +11,14 @@ import { useNavigate } from 'react-router-dom';
 import 'sweetalert2/src/sweetalert2.scss';
 import productAPI from '../../../apis/products.api';
 import getStaticFileUrl from '../../../admin-site/utilities/getStaticFileUrl';
+import authAPI from '../../../apis/auth.api';
 
 const CustomerDetails = () => {
   const [similarProducts, setSimilarProducts] = useState('');
   const [inceaseProduct, setInceaseProduct] = useState(1);
   const [products, setProduct] = useState([]);
   const [changeImg, setChangeimg] = useState('');
+  const [userName, setUsername] = useState('');
   const useParam = useParams();
   let { id } = useParam;
   const dispatch = useDispatch();
@@ -24,6 +26,19 @@ const CustomerDetails = () => {
   // const products = JSON.parse(localStorage.getItem('products'));
   const getUserAccount =
     JSON.parse(localStorage.getItem('userAccount')) ?? null;
+
+  const fetchData = async () => {
+    try {
+      const response = await authAPI.getAuthCustomer();
+      setUsername(response.username);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     fetchDataProduct();
@@ -86,7 +101,7 @@ const CustomerDetails = () => {
   // }, []);
 
   const addProductNew = (product, inceaseProduct) => {
-    if (getUserAccount) {
+    if (userName) {
       dispatch(addProduct(product, inceaseProduct));
       localStorage.setItem('cart', JSON.stringify(product));
       Swal.fire({
@@ -102,12 +117,12 @@ const CustomerDetails = () => {
     }
   };
   const addProductBuy = (product, inceaseProduct) => {
-    dispatch(addProduct(product, inceaseProduct));
-    // if (getUserAccount) {
-    //   dispatch(addProduct(product, inceaseProduct));
-    // } else {
-    //   navigate('/register');
-    // }
+    // dispatch(addProduct(product, inceaseProduct));
+    if (userName) {
+      dispatch(addProduct(product, inceaseProduct));
+    } else {
+      navigate('/register');
+    }
   };
   const increaseQuality = () => {
     setInceaseProduct(inceaseProduct + 1);
@@ -207,14 +222,29 @@ const CustomerDetails = () => {
                         <LiaCartPlusSolid /> Thêm vào giỏ hàng
                       </button>
 
-                      <Link to="/carts">
-                        <button
-                          className="add-product_buy"
-                          onClick={() => addProductBuy(product, inceaseProduct)}
-                        >
-                          Chọn mua
-                        </button>
-                      </Link>
+                      {userName ? (
+                        <Link to="/carts">
+                          <button
+                            className="add-product_buy"
+                            onClick={() =>
+                              addProductBuy(product, inceaseProduct)
+                            }
+                          >
+                            Chọn mua
+                          </button>
+                        </Link>
+                      ) : (
+                        <Link to="/register">
+                          <button
+                            className="add-product_buy"
+                            // onClick={() =>
+                            //   addProductBuy(product, inceaseProduct)
+                            // }
+                          >
+                            Chọn mua
+                          </button>
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>

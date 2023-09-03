@@ -29,6 +29,7 @@ function CustomerLoginPage() {
         const response = await authAPI.login(email, passWord);
         window.localStorage.setItem('X-API-Key-customers', response.token);
         navigate('/');
+        window.location.reload();
       } catch (error) {
         setDisplayErorr(error);
       }

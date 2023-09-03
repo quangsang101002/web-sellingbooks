@@ -43,10 +43,38 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  position: relative;
+
   & p {
     margin-bottom: 0;
     font-weight: bold;
+    display: block;
   }
+}
+
+.edit-info {
+  display: none;
+  position: absolute;
+  top: 40px;
+  right: 30px;
+  list-style: none;
+  padding-left: 0;
+  background-color: #cc2020;
+  color: #fff;
+  /* padding-right: 30px; */
+  width: 150px;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  & li {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+}
+.wrapper_accout:hover .account-info .edit-info {
+  display: block !important;
+  color: #fff;
 }
 
 img.d-block.w-100 {
@@ -100,6 +128,7 @@ a {
 }
 .wrapper_accout {
   gap: 35px;
+  padding: 10px;
 }
 ul.wrapper_playlist-list {
   margin-left: 250px;

@@ -5,10 +5,25 @@ import { BsCart4 } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useNavigate } from 'react-router-dom';
+import authAPI from '../../../apis/auth.api';
 function CustomerHeaderComponent() {
   const navigate = useNavigate();
   const [login, setLogin] = useState('');
+  const [userName, setUsername] = useState();
   const getUserAccount = JSON.parse(localStorage.getItem('userAccount'));
+
+  const fetchData = async () => {
+    try {
+      const response = await authAPI.getAuthCustomer();
+      setUsername(response.username);
+    } catch (error) {
+      navigate('/');
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     setLogin(getUserAccount);
@@ -17,10 +32,17 @@ function CustomerHeaderComponent() {
     (state) => state.customerProductReducer.products,
   );
 
-  const logoutUser = () => {
-    localStorage.removeItem('userAccount');
-    navigate('/');
-    window.location.reload();
+  const logoutUser = async () => {
+    try {
+      await authAPI.logoutCustomers();
+      window.location.reload();
+    } catch (error) {
+      alert(error);
+    }
+
+    // localStorage.removeItem('userAccount');
+    // navigate('/');
+    // window.location.reload();
   };
   return (
     <div className="wrapper">
@@ -49,22 +71,6 @@ function CustomerHeaderComponent() {
         </Link>
       </ul>
 
-      {login ? (
-        <div className="wrapper_accout">
-          <Link to="/personal-infomation">
-            <p>{login.email}</p>
-          </Link>
-
-          <small onClick={logoutUser}>
-            <FiLogOut />
-          </small>
-        </div>
-      ) : (
-        <Link to="/register">
-          <FiUser /> Tài khoản
-        </Link>
-      )}
-
       <div className="wrapper_accout">
         <Link to="/carts">
           <div className="cart-product-main">
@@ -80,6 +86,29 @@ function CustomerHeaderComponent() {
           <option>Tiếng Anh</option>
         </select>
       </div>
+      {userName ? (
+        <div className="wrapper_accout">
+          <div className="account-info">
+            <p className="userName">{userName}</p>
+            <ul className="edit-info">
+              <Link className="change-page" to="/personal-infomation">
+                <li>Tài Khoản Của Tôi</li>
+              </Link>
+              <li>Đơn Mua</li>
+              <li onClick={logoutUser}>
+                Đăng Xuất{' '}
+                <small>
+                  <FiLogOut />
+                </small>
+              </li>
+            </ul>
+          </div>
+        </div>
+      ) : (
+        <Link to="/register">
+          <FiUser /> Tài khoản
+        </Link>
+      )}
     </div>
   );
 }

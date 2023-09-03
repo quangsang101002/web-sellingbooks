@@ -24,7 +24,6 @@ function ModalAddProduct() {
   const handleShow = () => setShow(true);
   // const getAddProduct = JSON.parse(localStorage.getItem('products')) ?? [];
   // const formattedTime = moment().format('YYYY-MM-DD HH:mm:ss');
-  console.log('Array.from(gallery)----', Array.from(gallery));
   const addInfoUser = (event) => {
     event.preventDefault();
     const validateError = validateName();

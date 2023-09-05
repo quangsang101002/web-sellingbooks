@@ -1,6 +1,5 @@
 .content-edit_info {
   height: 300px;
-  border: 2px solid;
 }
 // personal.scss
 
@@ -60,4 +59,28 @@
       cursor: pointer;
     }
   }
+}
+.info-label {
+  text-align: right; /* Căn lề phải cho nhãn (label) */
+  padding-right: 10px; /* Khoảng cách giữa nhãn và giá trị */
+  font-weight: bold; /* Tạo đậm cho nhãn */
+  width: 150px; /* Độ rộng cố định cho nhãn */
+}
+
+.info-value {
+  // text-align: left; /* Căn lề trái cho giá trị */
+  // padding-left: 10px; /* Khoảng cách giữa giá trị và nhãn */
+}
+
+.info-radio {
+  // margin-right: 5px; /* Khoảng cách giữa các radio buttons */
+}
+.center-input {
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  // height: 100%; /* Để ô input chiếm toàn bộ chiều cao của ô td */
+}
+tbody {
+  border: 1px solid #ddd;
 }

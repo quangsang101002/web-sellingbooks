@@ -7,12 +7,15 @@ import Swal from 'sweetalert2';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import orderApi from '../../../apis/order.api';
+import authAPI from '../../../apis/auth.api';
+import { useEffect } from 'react';
 
 const Contacts = () => {
   const [userContact, setUserContact] = useState('');
   const [content, setContent] = useState('');
-
+  const [userName, setUsername] = useState();
   // const [content, setContent] = useState('');
+  console.log('id', userName);
   const products = useSelector(
     (state) => state.customerAuthReducer.totalPricePay,
   );
@@ -29,6 +32,19 @@ const Contacts = () => {
     id: products.length + 1,
   }));
 
+  const fetchData = async () => {
+    try {
+      const response = await authAPI.getAuthCustomer();
+      setUsername(response.id);
+    } catch (error) {
+      navigate('/');
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const orderProduct = (product) => {
     const products = product.map((prd) => {
       return {
@@ -36,7 +52,7 @@ const Contacts = () => {
         status: '1',
         note: content,
         total_price: prd.subTotal,
-        user_id: 33,
+        user_id: userName,
       };
     });
     // const existingData = JSON.parse(localStorage.getItem('userOrder')) ?? [];

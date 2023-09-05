@@ -33,6 +33,7 @@ function CustomerMenuComponent() {
   useEffect(() => {
     fetchData();
   }, []);
+
   useEffect(() => {
     const fetchDataProduct = async () => {
       try {
@@ -43,8 +44,14 @@ function CustomerMenuComponent() {
         alert(error);
       }
     };
-    fetchDataProduct();
-  }, []);
+
+    if (keySearch == '') {
+      fetchDataProduct();
+    } else {
+      return;
+    }
+  }, [keySearch]);
+
   // useEffect(() => {
   // const displayProducts = allProduct.filter((product) =>
   // unidecode(product.nameProduct.toUpperCase()).includes(
@@ -107,6 +114,14 @@ function CustomerMenuComponent() {
     );
   };
 
+  const searchProduct = async () => {
+    try {
+      const productalls = await productAPI.searchProduct(keySearch);
+      setAllProduct(productalls.result.recount);
+    } catch (error) {
+      alert(error);
+    }
+  };
   const bookReadAlot = () => {
     return (
       <>
@@ -117,7 +132,7 @@ function CustomerMenuComponent() {
               value={keySearch}
               onChange={(event) => filterProduct(event)}
             />
-            <button>Tìm kiếm</button>
+            <button onClick={searchProduct}>Tìm kiếm</button>
           </div>
 
           <div className="body-product">

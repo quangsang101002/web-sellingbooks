@@ -42,6 +42,7 @@ const getUserByUserId = async (userId) => {
 };
 
 const updateUser = async (userId, requestBody) => {
+  console.log('------', userId);
   return await api
     .put(`/users/${userId}`, requestBody, { headers: getHeaders() })
     .then((response) => {

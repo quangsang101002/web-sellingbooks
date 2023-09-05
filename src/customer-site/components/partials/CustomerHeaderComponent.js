@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useNavigate } from 'react-router-dom';
 import authAPI from '../../../apis/auth.api';
+import Personal from '../../pages/personalInfo/Personal';
 function CustomerHeaderComponent() {
   const navigate = useNavigate();
   const [login, setLogin] = useState('');
@@ -16,6 +17,7 @@ function CustomerHeaderComponent() {
     try {
       const response = await authAPI.getAuthCustomer();
       setUsername(response.username);
+      Personal(response.id);
     } catch (error) {
       navigate('/');
     }
@@ -90,8 +92,9 @@ function CustomerHeaderComponent() {
         <div className="wrapper_accout">
           <div className="account-info">
             <p className="userName">{userName}</p>
+
             <ul className="edit-info">
-              <Link className="change-page" to="/personal-infomation">
+              <Link className="change-page" to="/personal-infomation/profile">
                 <li>Tài Khoản Của Tôi</li>
               </Link>
               <li>Đơn Mua</li>
@@ -112,5 +115,6 @@ function CustomerHeaderComponent() {
     </div>
   );
 }
+<Personal />;
 
 export default CustomerHeaderComponent;

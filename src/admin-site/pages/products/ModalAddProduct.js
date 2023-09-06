@@ -73,7 +73,7 @@ function ModalAddProduct() {
       description: description,
       unit_price: price,
       avatar: avatar,
-      gallery: Array.from(gallery),
+      gallery: gallery,
     };
     try {
       await productAPI.addProduct(allProduct);
@@ -134,7 +134,7 @@ function ModalAddProduct() {
                 <Form.Control
                   type="email"
                   name="text"
-                  placeholder="Tên sản phẩm"
+                  placeholder="Tên Tác giả"
                   value={nameProduct}
                   onChange={(event) => setNameProduct(event.target.value)}
                 />

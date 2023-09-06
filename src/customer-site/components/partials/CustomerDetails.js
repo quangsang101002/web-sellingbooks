@@ -12,6 +12,7 @@ import 'sweetalert2/src/sweetalert2.scss';
 import productAPI from '../../../apis/products.api';
 import getStaticFileUrl from '../../../admin-site/utilities/getStaticFileUrl';
 import authAPI from '../../../apis/auth.api';
+import Personal from '../../pages/personalInfo/Personal';
 
 const CustomerDetails = () => {
   const [similarProducts, setSimilarProducts] = useState('');
@@ -144,12 +145,11 @@ const CustomerDetails = () => {
             if (product.product_id == id) {
               const inputString = product.image;
               const parts = inputString.split(',');
-
               const part1 = parts[0];
-              const part2 = parts[1];
-              const part3 = parts[2];
-              const part4 = parts[3];
-              const part5 = parts[4];
+              // const part2 = parts[1];
+              // const part3 = parts[2];
+              // const part4 = parts[3];
+              // const part5 = parts[4];
               return (
                 <div className="row detail-book" key={index}>
                   <div className="col-4 text-center">
@@ -162,30 +162,14 @@ const CustomerDetails = () => {
                     </div>
 
                     <div className="row prev-container">
-                      <div className="col-2 prev-img">
-                        {' '}
-                        <img
-                          src={getStaticFileUrl(part2)}
-                          alt="ảnh sp"
-                          onClick={() => changeImage(getStaticFileUrl(part2))}
-                        ></img>
-                      </div>
-                      <div className="col-2 prev-img">
-                        {' '}
-                        <img src={getStaticFileUrl(part3)} alt=""></img>
-                      </div>
-                      <div className="col-2 prev-img">
-                        {' '}
-                        <img src={getStaticFileUrl(part4)} alt=""></img>
-                      </div>
-                      <div className="col-2 prev-img">
-                        {' '}
-                        <img src={getStaticFileUrl(part5)} alt=""></img>
-                      </div>
-                      {/* <div className="col-2 prev-img">
-                        {' '}
-                        <img src={getStaticFileUrl(part5)} alt=""></img>
-                      </div> */}
+                      {parts.map((imgprd) => {
+                        return (
+                          <div className="col-2 prev-img">
+                            {' '}
+                            <img src={getStaticFileUrl(imgprd)} alt=""></img>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                   <div className="col-8">

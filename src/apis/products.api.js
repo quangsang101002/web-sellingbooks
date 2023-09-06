@@ -26,7 +26,9 @@ const addProduct = async (bodyProduct) => {
   formData.append('unit_price', bodyProduct.unit_price);
   // Thêm hình ảnh avatar và gallery vào formData
   formData.append('avatar', bodyProduct.avatar);
-  formData.append('gallery', bodyProduct.gallery);
+  for (let gallery of bodyProduct.gallery) {
+    formData.append('gallery', gallery);
+  }
 
   try {
     const response = await api.postForm('/product', formData, {

@@ -5,11 +5,13 @@ import authAPI from '../../../apis/auth.api';
 import { useNavigate } from 'react-router-dom';
 import getStaticFileUrl from '../../utilities/getStaticFileUrl';
 import { SlUser } from 'react-icons/sl';
+import userAPI from '../../../apis/user.api';
 import './Menu.scss';
 
 const MenuAdmin = () => {
   const [avatar, setAvatar] = useState('');
   const [userName, setUsername] = useState('');
+  const [idUpdate, setUserId] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,6 +22,7 @@ const MenuAdmin = () => {
       const response = await authAPI.getAuth();
       setAvatar(response.avatar);
       setUsername(response.username);
+      setUserId(response.id);
     } catch (error) {
       navigate('/admin');
     }
@@ -33,6 +36,26 @@ const MenuAdmin = () => {
       navigate('/admin');
     } catch (error) {
       navigate('/admin');
+    }
+  };
+
+  const uploadImage = () => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.click(); // Kích hoạt sự kiện chọn tệp
+    fileInput.addEventListener('change', handleFileSelect);
+  };
+
+  const handleFileSelect = async (e) => {
+    const selectedFile = e.target.files[0];
+    const formData = new FormData();
+    formData.append('avatar', selectedFile);
+    if (selectedFile) {
+      try {
+        await userAPI.updateAvatarCt(idUpdate, formData);
+      } catch (error) {
+        alert(error);
+      }
     }
   };
   return (
@@ -84,6 +107,9 @@ const MenuAdmin = () => {
             </tr>
           </tbody>
         </Table>
+        <button onClick={uploadImage} className="uploadImage">
+          Chọn ảnh
+        </button>
       </div>
     </>
   );

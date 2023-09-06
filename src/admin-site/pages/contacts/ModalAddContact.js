@@ -5,6 +5,7 @@ import Row from 'react-bootstrap/Row';
 import { useState } from 'react';
 import moment from 'moment/moment';
 import Modal from 'react-bootstrap/Modal';
+import MenuAdmin from '../MenuAdmin/Menu';
 
 function ModalAddContact() {
   const [code, setCode] = useState('');

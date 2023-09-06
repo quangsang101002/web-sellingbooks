@@ -37,3 +37,95 @@
   background-color: white; /* Màu nền mặc định */
   transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu mượt mà */
 }
+
+/* Add your CSS styles here */
+
+/* Style for the container */
+
+/* Style for the manager-Product section */
+.manager-Product {
+  // width: 80%;
+  // margin-top: 20px;
+  // padding: 20px;
+  // background-color: #f5f5f5;
+  // border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.manager-Product h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Style for the search section */
+.serch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.btn_search input[type='text'] {
+  padding: 5px;
+  width: 70%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.btn_search button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn_search button:hover {
+  background-color: #0056b3;
+}
+
+.btn-addnew,
+.btn-delete {
+  display: flex;
+  align-items: center;
+}
+
+.btn-addnew button,
+.btn-delete button {
+  margin-left: 10px;
+}
+
+.paging {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-pagig {
+  padding: 5px 10px;
+  margin: 0 5px;
+  background-color: #d4394d;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-pagig:hover {
+  background-color: #ccb6b9;
+}
+
+/* Additional styles can be added as needed */
+.btn_search {
+  display: flex;
+}
+.row {
+  justify-content: center;
+  padding-left: 24px;
+  padding-right: 12px;
+}

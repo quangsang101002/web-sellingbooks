@@ -10,6 +10,7 @@ import ManagerContact from '../contacts/ManagerContact';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 import moment from 'moment';
+import MenuAdmin from '../MenuAdmin/Menu';
 const OrderProduct = () => {
   const getAllUser = JSON.parse(localStorage.getItem('userOrder')) ?? [];
   const [choose, setChoose] = useState([]);
@@ -139,47 +140,7 @@ const OrderProduct = () => {
       <>
         <div className="mt-5">
           <div className="row">
-            <div className="col-3">
-              <Table striped hover variant="dark" className="text-center">
-                <thead>
-                  <tr>
-                    <th>Trang quản trị</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{userName}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Link to="/admin/product">Quản lí sản phẩm</Link>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Link to="/admin/manager">Quản lí người dùng</Link>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Link to="/admin/order">Quản lí đơn hàng</Link>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Link to="/admin/manager_contact">Liên hệ</Link>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Link to="/admin/manager_contact" onClick={logoutUser}>
-                        Đăng xuất
-                      </Link>
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>
+            <MenuAdmin />
             <div className="manager col-9">
               <h1 className="mb-3">Quản lí đơn hàng</h1>
               <div className="serch mb-3">
@@ -196,8 +157,8 @@ const OrderProduct = () => {
                 </div>
                 <div className="btn-addnew">
                   <ModalOrderAdd />
-                </div>
-                <div className="btn-delete">
+                  {/* </div> */}
+                  {/* <div className="btn-delete"> */}
                   <Button variant="danger" type="button" onClick={deleteUsers}>
                     Xóa
                   </Button>
@@ -281,7 +242,7 @@ const OrderProduct = () => {
                           <td>
                             {moment(user.updated_at).format('YYYY-MM-DD HH:mm')}
                           </td>
-                          <td>
+                          <td className="edit-main">
                             <Link to={`/admin/order_detail/${user.id}`}>
                               <Button>Xem</Button>
                             </Link>
@@ -299,41 +260,41 @@ const OrderProduct = () => {
                   )}
                 </tbody>
               </table>
-            </div>
-          </div>
-          <div className="paging text-center mt-5 mb-5">
-            <div>
-              <button className="btn-pagig">
-                <AiOutlineLeft />
-              </button>
-              <a href={`/admin/order/${getNumberPages}`}>
-                <button
-                  className="btn-pagig"
-                  onClick={(event) => getNumberPager(event)}
-                >
-                  1
-                </button>
-              </a>
-              <a href={`/admin/order/${getNumberPages}`}>
-                <button
-                  className="btn-pagig"
-                  onClick={(event) => getNumberPager(event)}
-                >
-                  2
-                </button>
-              </a>
-              <a href={`/admin/order/${getNumberPages}`}>
-                <button
-                  className="btn-pagig"
-                  onClick={(event) => getNumberPager(event)}
-                >
-                  3
-                </button>
-              </a>
-              <span className="btn-pagig">...</span>
-              <button className="btn-pagig">
-                <AiOutlineRight />
-              </button>
+              <div className="paging text-center mt-5 mb-5">
+                <div>
+                  <button className="btn-pagig">
+                    <AiOutlineLeft />
+                  </button>
+                  <a href={`/admin/order/${getNumberPages}`}>
+                    <button
+                      className="btn-pagig"
+                      onClick={(event) => getNumberPager(event)}
+                    >
+                      1
+                    </button>
+                  </a>
+                  <a href={`/admin/order/${getNumberPages}`}>
+                    <button
+                      className="btn-pagig"
+                      onClick={(event) => getNumberPager(event)}
+                    >
+                      2
+                    </button>
+                  </a>
+                  <a href={`/admin/order/${getNumberPages}`}>
+                    <button
+                      className="btn-pagig"
+                      onClick={(event) => getNumberPager(event)}
+                    >
+                      3
+                    </button>
+                  </a>
+                  <span className="btn-pagig">...</span>
+                  <button className="btn-pagig">
+                    <AiOutlineRight />
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

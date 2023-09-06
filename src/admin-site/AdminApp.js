@@ -13,7 +13,7 @@ import OrderProduct from './pages/orders/OrderProduct';
 import OrderDetail from './pages/orders/OrderDetail';
 import ManagerContact from './pages/contacts/ManagerContact';
 import ContactDetail from './pages/contacts/ContactDetail';
-import MenuAdmin from './pages/Menu';
+import MenuAdmin from './pages/MenuAdmin/Menu';
 
 function AdminApp() {
   return (

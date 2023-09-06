@@ -6,6 +6,7 @@ import { Button } from 'react-bootstrap';
 import ModalAddContact from './ModalAddContact';
 import authAPI from '../../../apis/auth.api';
 import { useNavigate } from 'react-router-dom';
+import MenuAdmin from '../MenuAdmin/Menu';
 
 const ManagerContact = () => {
   const getAllUser = JSON.parse(localStorage.getItem('Contacts')) ?? [];
@@ -89,47 +90,7 @@ const ManagerContact = () => {
       <>
         <div className="mt-5">
           <div className="row">
-            <div className="col-3">
-              <Table striped hover variant="dark" className="text-center">
-                <thead>
-                  <tr>
-                    <th>Trang quản trị</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{userName}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Link to="/admin/product">Quản lí sản phẩm</Link>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Link to="/admin/manager">Quản lí người dùng</Link>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Link to="/admin/order">Quản lí đơn hàng</Link>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Link to="/admin/manager_contact">Liên hệ</Link>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Link to="/admin/manager_contact" onClick={logoutUser}>
-                        Đăng xuất
-                      </Link>
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
-            </div>
+            <MenuAdmin />
             <div className="manager col-9">
               <h1 className="mb-3">Quản lí liên hệ</h1>
               <div className="serch mb-3">

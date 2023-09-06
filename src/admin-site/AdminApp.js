@@ -13,6 +13,7 @@ import OrderProduct from './pages/orders/OrderProduct';
 import OrderDetail from './pages/orders/OrderDetail';
 import ManagerContact from './pages/contacts/ManagerContact';
 import ContactDetail from './pages/contacts/ContactDetail';
+import MenuAdmin from './pages/Menu';
 
 function AdminApp() {
   return (
@@ -34,6 +35,7 @@ function AdminApp() {
           </Route>
           <Route path="/order_detail/:id" element={<OrderDetail />} />
           <Route path="/manager_contact" element={<ManagerContact />} />
+          <Route path="/MenuAdmin" element={<MenuAdmin />} />
           <Route
             path="/manager_contact_detail/:id"
             element={<ContactDetail />}

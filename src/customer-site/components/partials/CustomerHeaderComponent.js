@@ -7,16 +7,19 @@ import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useNavigate } from 'react-router-dom';
 import authAPI from '../../../apis/auth.api';
 import Personal from '../../pages/personalInfo/Personal';
+import getStaticFileUrl from '../../../admin-site/utilities/getStaticFileUrl';
+import { SlUser } from 'react-icons/sl';
 function CustomerHeaderComponent() {
   const navigate = useNavigate();
   const [login, setLogin] = useState('');
   const [userName, setUsername] = useState();
+  const [avatar, setAvatar] = useState('');
   const getUserAccount = JSON.parse(localStorage.getItem('userAccount'));
-
   const fetchData = async () => {
     try {
       const response = await authAPI.getAuthCustomer();
       setUsername(response.username);
+      setAvatar(response.avatar);
       Personal(response.id);
     } catch (error) {
       navigate('/');
@@ -91,8 +94,12 @@ function CustomerHeaderComponent() {
       {userName ? (
         <div className="wrapper_accout">
           <div className="account-info">
+            {avatar ? (
+              <img src={getStaticFileUrl(avatar)} alt="avatar" />
+            ) : (
+              <SlUser />
+            )}{' '}
             <p className="userName">{userName}</p>
-
             <ul className="edit-info">
               <Link className="change-page" to="/personal-infomation/profile">
                 <li>Tài Khoản Của Tôi</li>

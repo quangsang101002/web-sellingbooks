@@ -13,6 +13,7 @@ import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import getStaticFileUrl from '../../utilities/getStaticFileUrl';
+import MenuAdmin from '../Menu';
 
 const AdminLayout = () => {
   const getAllUser = JSON.parse(localStorage.getItem('infoUser')) ?? [];

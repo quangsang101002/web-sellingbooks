@@ -1,4 +1,4 @@
-import api, { getHeaders } from './api';
+import api, { getHeaders, getHeadersCustomers } from './api';
 
 const searchUsers = async (limit, page) => {
   const params = {
@@ -42,7 +42,6 @@ const getUserByUserId = async (userId) => {
 };
 
 const updateUser = async (userId, requestBody) => {
-  console.log('------', userId);
   return await api
     .put(`/users/${userId}`, requestBody, { headers: getHeaders() })
     .then((response) => {
@@ -54,6 +53,7 @@ const updateUser = async (userId, requestBody) => {
     });
 };
 const updateAvatar = async (id, avatar) => {
+  console.log(id, avatar);
   return await api
     .putForm(`/avatar/${id}`, avatar, { headers: getHeaders() })
     .then((response) => {
@@ -64,7 +64,17 @@ const updateAvatar = async (id, avatar) => {
       throw error;
     });
 };
-
+const updateAvatarCt = async (id, avatar) => {
+  return await api
+    .putForm(`/avatar/${id}`, avatar, { headers: getHeadersCustomers() })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error('API Error', error);
+      throw error;
+    });
+};
 const deleteUser = async (userId) => {
   return await api
     .delete(`/users/${userId}`, { headers: getHeaders() })
@@ -84,5 +94,6 @@ const userAPI = {
   updateUser,
   deleteUser,
   updateAvatar,
+  updateAvatarCt,
 };
 export default userAPI;

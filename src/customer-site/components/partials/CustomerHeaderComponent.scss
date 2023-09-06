@@ -530,3 +530,13 @@ button.swal2-confirm.swal2-styled {
   height: 68px;
   margin: 0 2px;
 }
+.account-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  & img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+}

@@ -6,19 +6,16 @@ import authAPI from '../../../apis/auth.api';
 import { useNavigate } from 'react-router-dom';
 import './personal.scss';
 import userAPI from '../../../apis/user.api';
+import getStaticFileUrl from '../../../admin-site/utilities/getStaticFileUrl';
 
 const Personal = (id) => {
   const [name, setName] = useState('');
-  const [gender, setGender] = useState('Nam');
   const [userName, setUsername] = useState('');
   const [email, setMail] = useState('');
   const [idUpdate, setIdUpdate] = useState('');
+  const [avatar, setAvatar] = useState('');
 
   const navigate = useNavigate();
-
-  const handleGenderChange = (e) => {
-    setGender(e.target.value);
-  };
 
   const changeName = (event) => {
     setUsername(event.target.value);
@@ -33,6 +30,7 @@ const Personal = (id) => {
       setName(response.username);
       setMail(response.email);
       setIdUpdate(response.id);
+      setAvatar(response.avatar);
     } catch (error) {
       navigate('/personal-infomation/profile');
     }
@@ -53,6 +51,26 @@ const Personal = (id) => {
       navigate('/personal-infomation/profile');
     }
   };
+  const uploadImage = () => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.click(); // Kích hoạt sự kiện chọn tệp
+    fileInput.addEventListener('change', handleFileSelect);
+  };
+
+  const handleFileSelect = async (e) => {
+    const selectedFile = e.target.files[0];
+    const formData = new FormData();
+    formData.append('avatar', selectedFile);
+    if (selectedFile) {
+      try {
+        await userAPI.updateAvatarCt(idUpdate, formData);
+      } catch (error) {
+        alert(error);
+      }
+    }
+  };
+
   return (
     <div className="mt-5 mainFrofile">
       <div className="row">
@@ -70,8 +88,13 @@ const Personal = (id) => {
               </thead>
               <tbody>
                 <tr>
-                  <td>
-                    <SlUser /> <b>{name}</b>
+                  <td className="profile-avatar">
+                    {avatar ? (
+                      <img src={getStaticFileUrl(avatar)} alt="avatar" />
+                    ) : (
+                      <SlUser />
+                    )}{' '}
+                    <b>{name}</b>
                   </td>
                 </tr>
                 <tr>
@@ -104,13 +127,12 @@ const Personal = (id) => {
           </form>
         </div>
 
-        <div className="col-9 content-edit_info">
+        <div className="col-6 content-edit_info">
           <div className="personal-profile">
             <h2>Hồ Sơ Của Tôi</h2>
             <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
-
             <table className="table table-striped table-hover ">
-              <tbody>
+              <tbody className="input-info">
                 <tr>
                   <td className="info-label">Tên đăng nhập</td>
                   <td className="info-value">
@@ -131,61 +153,32 @@ const Personal = (id) => {
                     />
                   </td>
                 </tr>
-                <tr>
-                  <td className="info-label">Số điện thoại</td>
-                  <td className="info-value">
-                    <span className="info-value">*********05</span>
-                    <button className="edit-button">Thay Đổi</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="info-label">Giới tính</td>
-                  <td>
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="Nam"
-                      checked={gender === 'Nam'}
-                      onChange={handleGenderChange}
-                      className="info-radio"
-                    />
-                    <label htmlFor="Nam">Nam</label>
 
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="Nữ"
-                      checked={gender === 'Nữ'}
-                      onChange={handleGenderChange}
-                      className="info-radio"
-                    />
-                    <label htmlFor="Nữ">Nữ</label>
-
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="Khác"
-                      checked={gender === 'Khác'}
-                      onChange={handleGenderChange}
-                      className="info-radio"
-                    />
-                    <label htmlFor="Khác">Khác</label>
-                  </td>
-                </tr>
                 <tr>
-                  <td className="info-label">Ngày sinh</td>
-                  <td>
-                    <span className="info-value">01/01/1990</span>
-                    <button className="edit-button">Thay Đổi</button>
-                  </td>
-                </tr>
-                <tr>
+                  <td></td>
                   <td className="colspan=2">
-                    <button onClick={saveChange}>Lưu</button>
+                    <button onClick={saveChange} className="saveChange">
+                      Lưu
+                    </button>
                   </td>
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+        <div className="col-3">
+          <div className="upload-image text-center">
+            <div className="image-avatar">
+              <img src={getStaticFileUrl(avatar)} alt="avatar" />
+            </div>
+            <button onClick={uploadImage} className="uploadImage">
+              Chọn ảnh
+            </button>
+            <input
+              type="file"
+              style={{ display: 'none' }}
+              onChange={handleFileSelect}
+            />
           </div>
         </div>
       </div>

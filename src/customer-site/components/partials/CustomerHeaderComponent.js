@@ -22,7 +22,7 @@ function CustomerHeaderComponent() {
       setAvatar(response.avatar);
       Personal(response.id);
     } catch (error) {
-      navigate('/');
+      // navigate('/');
     }
   };
 

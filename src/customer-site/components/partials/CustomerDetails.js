@@ -13,6 +13,9 @@ import productAPI from '../../../apis/products.api';
 import getStaticFileUrl from '../../../admin-site/utilities/getStaticFileUrl';
 import authAPI from '../../../apis/auth.api';
 import Personal from '../../pages/personalInfo/Personal';
+import { AiOutlineLeft } from 'react-icons/ai';
+import { AiOutlineRight } from 'react-icons/ai';
+import './CustomerDetails.scss';
 
 const CustomerDetails = () => {
   const [similarProducts, setSimilarProducts] = useState('');
@@ -20,6 +23,12 @@ const CustomerDetails = () => {
   const [products, setProduct] = useState([]);
   const [changeImg, setChangeimg] = useState('');
   const [userName, setUsername] = useState('');
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [parts, setParts] = useState('');
+  const [displayedImage, setDisplayedImage] = useState('');
+  const [displayedImages, setDisplayedImages] = useState([]);
+  const [modalDetail, setModalDetail] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const useParam = useParams();
   let { id } = useParam;
   const dispatch = useDispatch();
@@ -133,10 +142,20 @@ const CustomerDetails = () => {
       setInceaseProduct(inceaseProduct - 1);
     }
   };
-
-  const changeImage = (img) => {
-    setChangeimg(img);
+  const changeImage = (index, length) => {
+    console.log('index, length', index, length);
+    if (index < 0) {
+      setSelectedImageIndex(length - 1); // Nếu index nhỏ hơn 0, đặt lại thành ảnh cuối cùng
+    } else if (index >= length) {
+      setSelectedImageIndex(0); // Nếu index lớn hơn hoặc bằng length, đặt lại thành ảnh đầu tiên
+    } else {
+      setSelectedImageIndex(index);
+    }
   };
+  const displayImageDetail = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+  console.log('isModalVisible', isModalVisible);
   const displaySelectedProduct = () => {
     return (
       <>
@@ -145,11 +164,9 @@ const CustomerDetails = () => {
             if (product.product_id == id) {
               const inputString = product.image;
               const parts = inputString.split(',');
+              // setParts(parts);
               const part1 = parts[0];
-              // const part2 = parts[1];
-              // const part3 = parts[2];
-              // const part4 = parts[3];
-              // const part5 = parts[4];
+
               return (
                 <div className="row detail-book" key={index}>
                   <div className="col-4 text-center">
@@ -166,10 +183,58 @@ const CustomerDetails = () => {
                         return (
                           <div className="col-2 prev-img">
                             {' '}
-                            <img src={getStaticFileUrl(imgprd)} alt=""></img>
+                            <img
+                              src={getStaticFileUrl(imgprd)}
+                              alt=""
+                              onClick={displayImageDetail}
+                            ></img>
                           </div>
                         );
                       })}
+                      <div
+                        className={`modal-detail ${
+                          isModalVisible ? 'display' : ''
+                        }`}
+                      >
+                        {parts.length > 0 &&
+                          (() => {
+                            // Chọn chỉ số của ảnh bạn muốn hiển thị
+
+                            if (
+                              selectedImageIndex >= 0 &&
+                              selectedImageIndex < parts.length
+                            ) {
+                              return (
+                                <div className="modal-detail_image">
+                                  <AiOutlineLeft
+                                    onClick={() =>
+                                      changeImage(
+                                        selectedImageIndex - 1,
+                                        parts.length,
+                                      )
+                                    }
+                                  />
+                                  <img
+                                    src={getStaticFileUrl(
+                                      parts[selectedImageIndex],
+                                    )}
+                                    alt=""
+                                  />
+                                  <AiOutlineRight
+                                    onClick={() =>
+                                      changeImage(
+                                        selectedImageIndex + 1,
+                                        parts.length,
+                                      )
+                                    }
+                                  />
+                                </div>
+                              );
+                            } else {
+                              return null; // Nếu chỉ số không hợp lệ, trả về null hoặc thông báo lỗi
+                            }
+                          })()}
+                      </div>
                     </div>
                   </div>
                   <div className="col-8">
@@ -219,14 +284,7 @@ const CustomerDetails = () => {
                         </Link>
                       ) : (
                         <Link to="/register">
-                          <button
-                            className="add-product_buy"
-                            // onClick={() =>
-                            //   addProductBuy(product, inceaseProduct)
-                            // }
-                          >
-                            Chọn mua
-                          </button>
+                          <button className="add-product_buy">Chọn mua</button>
                         </Link>
                       )}
                     </div>

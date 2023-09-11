@@ -10,6 +10,7 @@ import { deleteQuatity } from '../../store/actions/customerProductAction';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
 const Cart = () => {
   const [totalPayProducs, setTotalPayProducs] = useState([]);
   const [auto, setAuto] = useState('');
@@ -22,6 +23,7 @@ const Cart = () => {
   const products = useSelector(
     (state) => state.customerProductReducer.products,
   );
+
   const deleteProductCart = (product) => {
     Swal.fire({
       title: 'Bạn có chắc chắn xóa không',
@@ -73,7 +75,7 @@ const Cart = () => {
   const empty = () => {
     return (
       <div className="container mt-5 container-cart">
-        {getCart.map((product) => {
+        {products.map((product) => {
           return (
             <div className="row">
               <div className="col-12 row-cart">
@@ -137,7 +139,7 @@ const Cart = () => {
 
   return (
     <>
-      <div className="check-empty_product">
+      <div className="check-empty_product-exits">
         {products.length === 0 ? (
           <h2 className="text-center">
             Bạn chưa có sản phẩm nào

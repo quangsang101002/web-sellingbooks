@@ -6,10 +6,14 @@ import { useState } from 'react';
 import { totalPay } from '../../store/actions/customerProductAction';
 import { useEffect } from 'react';
 import orderApi from '../../../apis/order.api';
+import productAPI from '../../../apis/products.api';
+import AddressInfo from '../personalInfo/AddressInfo';
 const PurchaseOrders = () => {
   const [totalPayProducs, setTotalPayProducs] = useState([]);
   const [purchaseOrder, setPurchaseOrder] = useState([]);
+  const [product, setProduct] = useState([]);
   const dispatch = useDispatch();
+
   const products = useSelector(
     (state) => state.customerProductReducer.products,
   );
@@ -30,7 +34,9 @@ const PurchaseOrders = () => {
 
   useEffect(() => {
     fetchDataOrder();
+    fetchDataProduct();
   }, []);
+
   const fetchDataOrder = async () => {
     await orderApi
       .searchOrder()
@@ -41,32 +47,40 @@ const PurchaseOrders = () => {
         alert(error);
       });
   };
-
+  const fetchDataProduct = async () => {
+    await productAPI
+      .searchProduct()
+      .then((response) => {
+        setProduct(response.result.recount);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
   const empty = () => {
     return (
       <div className="container mt-5 container-cart">
-        {purchaseOrder.map((product) => {
-          return (
-            <div className="row">
-              <div className="col-12 row-cart">
-                <div className="cart-img">
-                  <img src={product.image} alt=""></img>
+        <div className="row">
+          <AddressInfo />
+          <div className="col-9">
+            {purchaseOrder.map((product) => {
+              return (
+                <div className="wrapper-purchase">
+                  <tr className="排">
+                    <td>
+                      <b>Sản phẩm: </b> {product.nameproduct}
+                    </td>
+                    <td>
+                      {' '}
+                      <b>Thành Tiền: </b>
+                      {product.total_price} vnd
+                    </td>
+                  </tr>
                 </div>
-                <p>
-                  <b>Sản phẩm: </b> {product.name}
-                </p>
-                <span className="mr-2">{product.unit_price} vnd</span>
-                <div className="quality-cart"></div>
-                <div className="cart-price">
-                  <p>{product.subTotal} vnd</p>
-                </div>
-                <div className="cart-delete">
-                  {/* <button className="add-product_buy">Xoá</button> */}
-                </div>
-              </div>
-            </div>
-          );
-        })}
+              );
+            })}
+          </div>
+        </div>
       </div>
     );
   };
@@ -74,7 +88,7 @@ const PurchaseOrders = () => {
   return (
     <>
       <div className="check-empty_product">
-        {products.length === 0 ? (
+        {purchaseOrder.length === 0 ? (
           <h2 className="text-center">
             Bạn chưa có sản phẩm nào
             <small className="check-empty_icon">

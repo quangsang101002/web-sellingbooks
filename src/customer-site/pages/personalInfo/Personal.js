@@ -9,10 +9,10 @@ import userAPI from '../../../apis/user.api';
 import getStaticFileUrl from '../../../admin-site/utilities/getStaticFileUrl';
 
 const Personal = (id) => {
-  const [name, setName] = useState('');
   const [userName, setUsername] = useState('');
   const [email, setMail] = useState('');
   const [idUpdate, setIdUpdate] = useState('');
+  const [name, setName] = useState('');
   const [avatar, setAvatar] = useState('');
 
   const navigate = useNavigate();
@@ -72,7 +72,7 @@ const Personal = (id) => {
   };
 
   return (
-    <div className="mt-5 mainFrofile">
+    <div className="mt-5 mainFrofile container">
       <div className="row">
         <div className="col-3">
           <form>

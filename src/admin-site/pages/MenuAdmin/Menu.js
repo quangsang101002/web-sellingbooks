@@ -80,6 +80,11 @@ const MenuAdmin = () => {
             </tr>
             <tr>
               <td>
+                <Link to="/admin/home">Home</Link>
+              </td>
+            </tr>
+            <tr>
+              <td>
                 <Link to="/admin/product">Quản lí sản phẩm</Link>
               </td>
             </tr>

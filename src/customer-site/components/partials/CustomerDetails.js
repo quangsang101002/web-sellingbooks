@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
-import { FormControl } from 'react-bootstrap';
 import { Container } from 'react-bootstrap';
 import { LiaCartPlusSolid } from 'react-icons/lia';
 import { useDispatch } from 'react-redux';
@@ -12,7 +10,6 @@ import 'sweetalert2/src/sweetalert2.scss';
 import productAPI from '../../../apis/products.api';
 import getStaticFileUrl from '../../../admin-site/utilities/getStaticFileUrl';
 import authAPI from '../../../apis/auth.api';
-import Personal from '../../pages/personalInfo/Personal';
 import { AiOutlineLeft } from 'react-icons/ai';
 import { AiOutlineRight } from 'react-icons/ai';
 import './CustomerDetails.scss';
@@ -24,18 +21,15 @@ const CustomerDetails = () => {
   const [changeImg, setChangeimg] = useState('');
   const [userName, setUsername] = useState('');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [parts, setParts] = useState('');
-  const [displayedImage, setDisplayedImage] = useState('');
-  const [displayedImages, setDisplayedImages] = useState([]);
-  const [modalDetail, setModalDetail] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const useParam = useParams();
+  console.log('electedImageIndex', selectedImageIndex);
   let { id } = useParam;
+  const myRef = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // const products = JSON.parse(localStorage.getItem('products'));
-  const getUserAccount =
-    JSON.parse(localStorage.getItem('userAccount')) ?? null;
+  const pushCart = JSON.parse(localStorage.getItem('cart')) ?? [];
 
   const fetchData = async () => {
     try {
@@ -113,7 +107,8 @@ const CustomerDetails = () => {
   const addProductNew = (product, inceaseProduct) => {
     if (userName) {
       dispatch(addProduct(product, inceaseProduct));
-      localStorage.setItem('cart', JSON.stringify(product));
+      pushCart.push(product);
+      localStorage.setItem('cart', JSON.stringify(pushCart));
       Swal.fire({
         title: '',
         text: 'Bạn đã thêm sản phẩm vào giỏ hàng',
@@ -126,6 +121,7 @@ const CustomerDetails = () => {
       navigate('/register');
     }
   };
+
   const addProductBuy = (product, inceaseProduct) => {
     // dispatch(addProduct(product, inceaseProduct));
     if (userName) {
@@ -143,7 +139,6 @@ const CustomerDetails = () => {
     }
   };
   const changeImage = (index, length) => {
-    console.log('index, length', index, length);
     if (index < 0) {
       setSelectedImageIndex(length - 1); // Nếu index nhỏ hơn 0, đặt lại thành ảnh cuối cùng
     } else if (index >= length) {
@@ -152,10 +147,18 @@ const CustomerDetails = () => {
       setSelectedImageIndex(index);
     }
   };
+
   const displayImageDetail = () => {
-    setIsModalVisible(!isModalVisible);
+    setIsModalVisible(true); // Show the modal
+    window.onclick = function (event) {
+      if (myRef.current) {
+        if (event.target === myRef.current) {
+          setIsModalVisible(false); // Hide the modal when clicking on it
+        }
+      }
+    };
   };
-  console.log('isModalVisible', isModalVisible);
+
   const displaySelectedProduct = () => {
     return (
       <>
@@ -179,7 +182,7 @@ const CustomerDetails = () => {
                     </div>
 
                     <div className="row prev-container">
-                      {parts.map((imgprd) => {
+                      {parts.map((imgprd, index) => {
                         return (
                           <div className="col-2 prev-img">
                             {' '}
@@ -191,50 +194,56 @@ const CustomerDetails = () => {
                           </div>
                         );
                       })}
-                      <div
-                        className={`modal-detail ${
-                          isModalVisible ? 'display' : ''
-                        }`}
-                      >
-                        {parts.length > 0 &&
-                          (() => {
-                            // Chọn chỉ số của ảnh bạn muốn hiển thị
+                      {isModalVisible ? (
+                        <div
+                          className="modal-detail "
+                          onClick={displayImageDetail}
+                          ref={myRef}
+                        >
+                          {parts.length > 0 &&
+                            (() => {
+                              // Chọn chỉ số của ảnh bạn muốn hiển thị
 
-                            if (
-                              selectedImageIndex >= 0 &&
-                              selectedImageIndex < parts.length
-                            ) {
-                              return (
-                                <div className="modal-detail_image">
-                                  <AiOutlineLeft
-                                    onClick={() =>
-                                      changeImage(
-                                        selectedImageIndex - 1,
-                                        parts.length,
-                                      )
-                                    }
-                                  />
-                                  <img
-                                    src={getStaticFileUrl(
-                                      parts[selectedImageIndex],
-                                    )}
-                                    alt=""
-                                  />
-                                  <AiOutlineRight
-                                    onClick={() =>
-                                      changeImage(
-                                        selectedImageIndex + 1,
-                                        parts.length,
-                                      )
-                                    }
-                                  />
-                                </div>
-                              );
-                            } else {
-                              return null; // Nếu chỉ số không hợp lệ, trả về null hoặc thông báo lỗi
-                            }
-                          })()}
-                      </div>
+                              if (
+                                selectedImageIndex >= 0 &&
+                                selectedImageIndex < parts.length
+                              ) {
+                                return (
+                                  <>
+                                    <AiOutlineLeft
+                                      onClick={() =>
+                                        changeImage(
+                                          selectedImageIndex - 1,
+                                          parts.length,
+                                        )
+                                      }
+                                      className="btn-viewImage"
+                                    />
+                                    <img
+                                      src={getStaticFileUrl(
+                                        parts[selectedImageIndex],
+                                      )}
+                                      alt=""
+                                    />
+                                    <AiOutlineRight
+                                      onClick={() =>
+                                        changeImage(
+                                          selectedImageIndex + 1,
+                                          parts.length,
+                                        )
+                                      }
+                                      className="btn-viewImage"
+                                    />
+                                  </>
+                                );
+                              } else {
+                                return null; // Nếu chỉ số không hợp lệ, trả về null hoặc thông báo lỗi
+                              }
+                            })()}
+                        </div>
+                      ) : (
+                        ''
+                      )}
                     </div>
                   </div>
                   <div className="col-8">

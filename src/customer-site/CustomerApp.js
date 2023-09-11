@@ -11,8 +11,7 @@ import CustomerHomePage from './pages/CustomerHomePage';
 import CustomerHeaderComponent from './components/partials/CustomerHeaderComponent';
 import CustomerDetails from './components/partials/CustomerDetails';
 import Cart from './pages/cart/Cart';
-import Address from './pages/personalInfo/AddressInfo';
-
+import PurchaseOrders from './pages/order/PurchaseOrders';
 import Products from './pages/products/Products';
 import Contacts from './pages/contacts/Contacts';
 
@@ -32,6 +31,7 @@ function CustomerApp() {
         <Route path="/carts" element={<Cart />} />
         <Route path="/Products" element={<Products />} />
         <Route path="/contacts" element={<Contacts />} />
+        <Route path="/purchase" element={<PurchaseOrders />} />
         <Route
           path="/personal-infomation/profile"
           element={<Personal />}

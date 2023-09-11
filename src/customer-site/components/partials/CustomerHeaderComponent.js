@@ -104,7 +104,9 @@ function CustomerHeaderComponent() {
               <Link className="change-page" to="/personal-infomation/profile">
                 <li>Tài Khoản Của Tôi</li>
               </Link>
-              <li>Đơn Mua</li>
+              <Link className="purchase" to="/purchase">
+                <li>Đơn mua</li>
+              </Link>
               <li onClick={logoutUser}>
                 Đăng Xuất{' '}
                 <small>

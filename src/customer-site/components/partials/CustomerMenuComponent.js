@@ -180,17 +180,20 @@ function CustomerMenuComponent() {
             <h2 className="fade-ins">Sách thiếu nhi</h2>
           </div>
           <div className="container-product mt-5 mb-5 row">
-            {filterSearchProduct.map((product) => {
-              if (product.classify == 'Sách thiếu nhi') {
+            {allProduct.map((product) => {
+              const inputString = product.image;
+              const parts = inputString.split(',');
+              const part1 = parts[0];
+              if (product.category == 1) {
                 return (
                   <>
                     <div
                       key={product.id}
                       className="col-2 wrap-container_product"
                     >
-                      <Link to={`/detail-product/${product.id}`}>
+                      <Link to={`/detail-product/${product.product_id}`}>
                         <div className="product_image">
-                          <img src={product.image} alt="" />
+                          <img src={getStaticFileUrl(part1)} alt="" />
                         </div>
                       </Link>
                       <h2 className="mt-4 product-description text-center">
@@ -222,17 +225,21 @@ function CustomerMenuComponent() {
             <h2 className="fade-ins">Sách văn học</h2>
           </div>
           <div className="container-product mt-5 mb-5 row">
-            {filterSearchProduct.map((product) => {
-              if (product.classify === 'Sách văn học nghệ thuật') {
+            {allProduct.map((product) => {
+              console.log(product);
+              if (product.category == 2) {
+                const inputString = product.image;
+                const parts = inputString.split(',');
+                const part1 = parts[0];
                 return (
                   <>
                     <div
                       key={product.id}
                       className="col-2 wrap-container_product"
                     >
-                      <Link to={`/detail-product/${product.id}`}>
+                      <Link to={`/detail-product/${product.product_id}`}>
                         <div className="product_image">
-                          <img src={product.image} alt="" />
+                          <img src={getStaticFileUrl(part1)} alt="" />
                         </div>
                       </Link>
                       <h2 className="mt-4 product-description text-center">

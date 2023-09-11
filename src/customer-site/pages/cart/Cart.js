@@ -17,16 +17,7 @@ const Cart = () => {
   const orderProduct = useSelector(
     (state) => state.customerAuthReducer.totalPricePay,
   );
-
-  // const orderProductCart = () => {
-  //   localStorage.setItem('userOrder', JSON.stringify(orderProduct));
-  //   Swal.fire({
-  //     title: '',
-  //     text: 'Bạn đã đặt hàng thành công',
-  //     icon: 'success',
-  //   });
-  // };
-
+  const getCart = JSON.parse(localStorage.getItem('cart'));
   const dispatch = useDispatch();
   const products = useSelector(
     (state) => state.customerProductReducer.products,
@@ -82,7 +73,7 @@ const Cart = () => {
   const empty = () => {
     return (
       <div className="container mt-5 container-cart">
-        {products.map((product) => {
+        {getCart.map((product) => {
           return (
             <div className="row">
               <div className="col-12 row-cart">

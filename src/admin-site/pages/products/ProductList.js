@@ -16,6 +16,7 @@ import './Products.scss';
 
 const ProductList = () => {
   const getAllUser = JSON.parse(localStorage.getItem('products')) ?? [];
+  console.log(getAllUser);
   const [choose, setChoose] = useState([]);
   const [search, setSearch] = useState('');
   const [btnSearchUser, setBtnSearchUser] = useState([]);
@@ -23,6 +24,7 @@ const ProductList = () => {
   const [getProduct, setGetProduct] = useState([]);
   const [displayProduct, setDisplayProduct] = useState([]);
   const [getNumberPages, setGetNumberPages] = useState();
+  const [isChanged, setIsChanged] = useState(false);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -43,7 +45,7 @@ const ProductList = () => {
         });
     };
     fetchDataProduct();
-  }, []);
+  }, [isChanged]);
 
   useEffect(() => {
     if (search === '') {
@@ -79,16 +81,18 @@ const ProductList = () => {
   useEffect(() => {
     setBtnSearchUser(getAllUser);
   }, [search]);
-  const deleteUsers = (id) => {
+
+  const deleteUsers = async (id) => {
     try {
-      productAPI.deleteProduct(id);
+      await productAPI.deleteProduct(id);
+      // Loại bỏ sản phẩm đã xóa khỏi danh sách sản phẩm hiện tại
+      // const updatedAllUser = getAllUser.filter((user) => user.id !== id);
+      // Cập nhật danh sách sản phẩm trong trạng thái React
+      // setDisplayProduct(updatedAllUser);
+      setIsChanged(!isChanged);
     } catch (error) {
       console.log(error);
     }
-    // const updatedUsers = getAllUser.filter((user) => !choose.includes(user.id));
-    // localStorage.setItem('products', JSON.stringify(updatedUsers));
-    // setChoose([]);
-    // window.location.reload();
   };
 
   const toggleSelectAll = () => {

@@ -19,7 +19,6 @@ const ManagerContact = () => {
     const fetchData = async () => {
       try {
         const token = window.localStorage.getItem('X-API-Key');
-
         const response = await authAPI.getAuth(token);
         setUsername(response.username);
         <ManagerContact userName={response.username} />;

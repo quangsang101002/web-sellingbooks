@@ -54,6 +54,7 @@ const Contacts = () => {
         total_price: prd.subTotal,
         user_id: userName,
         nameproduct: prd.name,
+        avatar: prd.image,
       };
     });
     // const existingData = JSON.parse(localStorage.getItem('userOrder')) ?? [];

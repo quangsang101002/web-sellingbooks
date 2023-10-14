@@ -23,7 +23,6 @@ const CustomerDetails = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const useParam = useParams();
-  console.log('electedImageIndex', selectedImageIndex);
   let { id } = useParam;
   const myRef = useRef();
   const dispatch = useDispatch();

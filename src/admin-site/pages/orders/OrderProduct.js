@@ -243,7 +243,7 @@ const OrderProduct = () => {
                             {moment(user.updated_at).format('YYYY-MM-DD HH:mm')}
                           </td>
                           <td className="edit-main">
-                            <Link to={`/admin/order_detail/${user.id}`}>
+                            <Link to={`/admin/order_detail/${user.order_id}`}>
                               <Button>Xem</Button>
                             </Link>
                             <Button

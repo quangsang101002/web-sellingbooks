@@ -15,6 +15,8 @@ const Cart = () => {
   const [totalPayProducs, setTotalPayProducs] = useState([]);
   const [auto, setAuto] = useState('');
   const totalPircePay = useSelector((state) => state.customerAuthReducer.total);
+
+  console.log('totalPircePay', totalPircePay);
   const orderProduct = useSelector(
     (state) => state.customerAuthReducer.totalPricePay,
   );
